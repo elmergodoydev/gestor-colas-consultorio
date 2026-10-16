@@ -1,0 +1,619 @@
+{
+  "establecimiento": {
+    "codigo_renipress": "00005644",
+    "nombre_ipress": "C.M.I. RÍMAC"
+  },
+  "fecha_sincronizacion": "2026-10-14T07:30:00",
+  "citas": [
+    {
+      "id_cita": "CITA-0001",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "08:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0003",
+        "nombre": "MEDICINA 1",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-01",
+        "nombre": "Medicina General 01"
+      },
+      "servicio": {
+        "codigo": "22400",
+        "nombre": "CONSULTA EXTERNA - MEDICINA GENERAL"
+      },
+      "paciente": {
+        "dni": "71000001",
+        "nombres": "ANDREA MILAGROS",
+        "apellido_paterno": "RAMIREZ",
+        "apellido_materno": "TORRES"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "EDITH HIJAR GUERRA"
+      }
+    },
+    {
+      "id_cita": "CITA-0002",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "08:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0003",
+        "nombre": "MEDICINA 1",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-01",
+        "nombre": "Medicina General 01"
+      },
+      "servicio": {
+        "codigo": "22400",
+        "nombre": "CONSULTA EXTERNA - MEDICINA GENERAL"
+      },
+      "paciente": {
+        "dni": "71000002",
+        "nombres": "MIGUEL ANGEL",
+        "apellido_paterno": "QUISPE",
+        "apellido_materno": "ROJAS"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "EDITH HIJAR GUERRA"
+      }
+    },
+    {
+      "id_cita": "CITA-0003",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "09:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0003",
+        "nombre": "MEDICINA 1",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-01",
+        "nombre": "Medicina General 01"
+      },
+      "servicio": {
+        "codigo": "22400",
+        "nombre": "CONSULTA EXTERNA - MEDICINA GENERAL"
+      },
+      "paciente": {
+        "dni": "71000003",
+        "nombres": "ROSA ELENA",
+        "apellido_paterno": "CASTILLO",
+        "apellido_materno": "VEGA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "EDITH HIJAR GUERRA"
+      }
+    },
+    {
+      "id_cita": "CITA-0004",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "09:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0003",
+        "nombre": "MEDICINA 1",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-01",
+        "nombre": "Medicina General 01"
+      },
+      "servicio": {
+        "codigo": "22400",
+        "nombre": "CONSULTA EXTERNA - MEDICINA GENERAL"
+      },
+      "paciente": {
+        "dni": "71000004",
+        "nombres": "JOSE LUIS",
+        "apellido_paterno": "FLORES",
+        "apellido_materno": "DIAZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "EDITH HIJAR GUERRA"
+      }
+    },
+    {
+      "id_cita": "CITA-0005",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "08:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0004",
+        "nombre": "OBSTETRICIA",
+        "piso": "Segundo Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-03",
+        "nombre": "Obstetricia 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "OBSTETRICIA"
+      },
+      "paciente": {
+        "dni": "72000001",
+        "nombres": "KARLA SOFIA",
+        "apellido_paterno": "MENDOZA",
+        "apellido_materno": "PAREDES"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0006",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "08:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0004",
+        "nombre": "OBSTETRICIA",
+        "piso": "Segundo Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-03",
+        "nombre": "Obstetricia 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "OBSTETRICIA"
+      },
+      "paciente": {
+        "dni": "72000002",
+        "nombres": "JULIA MARIBEL",
+        "apellido_paterno": "SANCHEZ",
+        "apellido_materno": "CRUZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0007",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "09:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0004",
+        "nombre": "OBSTETRICIA",
+        "piso": "Segundo Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-03",
+        "nombre": "Obstetricia 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "OBSTETRICIA"
+      },
+      "paciente": {
+        "dni": "72000003",
+        "nombres": "PATRICIA ELENA",
+        "apellido_paterno": "RAMOS",
+        "apellido_materno": "LEON"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0008",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "09:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0004",
+        "nombre": "OBSTETRICIA",
+        "piso": "Segundo Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-03",
+        "nombre": "Obstetricia 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "OBSTETRICIA"
+      },
+      "paciente": {
+        "dni": "72000004",
+        "nombres": "DIANA CAROLINA",
+        "apellido_paterno": "NAVARRO",
+        "apellido_materno": "SOTO"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0009",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "08:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0005",
+        "nombre": "PEDIATRIA",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-04",
+        "nombre": "Pediatría 01"
+      },
+      "servicio": {
+        "codigo": "SERV-03",
+        "nombre": "PEDIATRÍA"
+      },
+      "paciente": {
+        "dni": "73000001",
+        "nombres": "MATEO ANDRES",
+        "apellido_paterno": "GUTIERREZ",
+        "apellido_materno": "SALAS"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0010",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "08:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0005",
+        "nombre": "PEDIATRIA",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-04",
+        "nombre": "Pediatría 01"
+      },
+      "servicio": {
+        "codigo": "SERV-03",
+        "nombre": "PEDIATRÍA"
+      },
+      "paciente": {
+        "dni": "73000002",
+        "nombres": "VALERIA ISABEL",
+        "apellido_paterno": "RODRIGUEZ",
+        "apellido_materno": "PEREZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0011",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "09:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0005",
+        "nombre": "PEDIATRIA",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-04",
+        "nombre": "Pediatría 01"
+      },
+      "servicio": {
+        "codigo": "SERV-03",
+        "nombre": "PEDIATRÍA"
+      },
+      "paciente": {
+        "dni": "73000003",
+        "nombres": "THIAGO DANIEL",
+        "apellido_paterno": "MORALES",
+        "apellido_materno": "VEGA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0012",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "09:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0005",
+        "nombre": "PEDIATRIA",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-04",
+        "nombre": "Pediatría 01"
+      },
+      "servicio": {
+        "codigo": "SERV-03",
+        "nombre": "PEDIATRÍA"
+      },
+      "paciente": {
+        "dni": "73000004",
+        "nombres": "EMILIA FERNANDA",
+        "apellido_paterno": "AGUILAR",
+        "apellido_materno": "RAMOS"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0013",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "08:25:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0006",
+        "nombre": "ODONTOLOGÍA",
+        "piso": "Segundo Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-05",
+        "nombre": "Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-04",
+        "nombre": "ODONTOLOGÍA"
+      },
+      "paciente": {
+        "dni": "74000001",
+        "nombres": "DIEGO ALONSO",
+        "apellido_paterno": "PEREZ",
+        "apellido_materno": "GARCIA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0014",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "08:55:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0006",
+        "nombre": "ODONTOLOGÍA",
+        "piso": "Segundo Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-05",
+        "nombre": "Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-04",
+        "nombre": "ODONTOLOGÍA"
+      },
+      "paciente": {
+        "dni": "74000002",
+        "nombres": "LUCIA FERNANDA",
+        "apellido_paterno": "TORRES",
+        "apellido_materno": "HUAMAN"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0015",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "09:25:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0006",
+        "nombre": "ODONTOLOGÍA",
+        "piso": "Segundo Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-05",
+        "nombre": "Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-04",
+        "nombre": "ODONTOLOGÍA"
+      },
+      "paciente": {
+        "dni": "74000003",
+        "nombres": "BRUNO SEBASTIAN",
+        "apellido_paterno": "DIAZ",
+        "apellido_materno": "FLORES"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0016",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "09:55:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0006",
+        "nombre": "ODONTOLOGÍA",
+        "piso": "Segundo Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-05",
+        "nombre": "Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-04",
+        "nombre": "ODONTOLOGÍA"
+      },
+      "paciente": {
+        "dni": "74000004",
+        "nombres": "CAMILA ALEJANDRA",
+        "apellido_paterno": "VARGAS",
+        "apellido_materno": "CASTRO"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0017",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "10:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0005",
+        "nombre": "PEDIATRIA",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-04",
+        "nombre": "Pediatría 01"
+      },
+      "servicio": {
+        "codigo": "SERV-03",
+        "nombre": "PEDIATRÍA"
+      },
+      "paciente": {
+        "dni": "88765245",
+        "nombres": "KEVIN",
+        "apellido_paterno": "PINCHI",
+        "apellido_materno": "GARCIA"
+      },
+      "profesional": {
+        "dni": "88765256",
+        "nombre": "ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0018",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "10:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0005",
+        "nombre": "PEDIATRIA",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-04",
+        "nombre": "Pediatría 01"
+      },
+      "servicio": {
+        "codigo": "SERV-03",
+        "nombre": "PEDIATRÍA"
+      },
+      "paciente": {
+        "dni": "73000004",
+        "nombres": " ALEXANDER",
+        "apellido_paterno": "GONZALES",
+        "apellido_materno": "LLUEN"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0019",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "10:40:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0005",
+        "nombre": "PEDIATRIA",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-04",
+        "nombre": "Pediatría 01"
+      },
+      "servicio": {
+        "codigo": "SERV-03",
+        "nombre": "PEDIATRÍA"
+      },
+      "paciente": {
+        "dni": "73000004",
+        "nombres": "JORGE",
+        "apellido_paterno": "LOPEZ",
+        "apellido_materno": "RAMOS"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0020",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "11:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0005",
+        "nombre": "PEDIATRIA",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-04",
+        "nombre": "Pediatría 01"
+      },
+      "servicio": {
+        "codigo": "SERV-03",
+        "nombre": "PEDIATRÍA"
+      },
+      "paciente": {
+        "dni": "73000096",
+        "nombres": "LUIS",
+        "apellido_paterno": "GONZALES",
+        "apellido_materno": "QUISPE"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    },
+    {
+      "id_cita": "CITA-0021",
+      "fecha_cita": "2026-10-14",
+      "hora_cita": "11:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "T0005",
+        "nombre": "PEDIATRIA",
+        "piso": "Primer Piso"
+      },
+      "consultorio": {
+        "codigo": "CONS-04",
+        "nombre": "Pediatría 01"
+      },
+      "servicio": {
+        "codigo": "SERV-03",
+        "nombre": "PEDIATRÍA"
+      },
+      "paciente": {
+        "dni": "73000096",
+        "nombres": "SERGIO",
+        "apellido_paterno": "CANALES",
+        "apellido_materno": "QUISPE"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "ANA LOPEZ RAMIREZ"
+      }
+    }
+
+  ]
+}

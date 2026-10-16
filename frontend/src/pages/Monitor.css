@@ -1,0 +1,932 @@
+
+.monitor {
+  --monitor-navy: #123b67;
+  --monitor-blue: #1d5c98;
+  --monitor-ink: #172b43;
+  --monitor-muted: #64758b;
+  --monitor-border: #dce5ef;
+  --monitor-bg: #f3f6fa;
+  --monitor-green: #16805d;
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: clamp(12px, 1.35vw, 24px);
+  overflow: hidden;
+  background: var(--monitor-bg);
+  color: var(--monitor-ink);
+  font-family: "Segoe UI", Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.monitor *,
+.monitor *::before,
+.monitor *::after {
+  box-sizing: border-box;
+}
+
+html.monitor-active,
+body.monitor-active {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body.monitor-active #root {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* ENCABEZADO */
+
+.monitor .monitor-header {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--monitor-border);
+}
+
+.monitor .monitor-brand {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.3vw, 22px);
+  min-width: 0;
+}
+
+.monitor .monitor-logo {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: clamp(75px, 8vw, 135px);
+  height: clamp(46px, 6vh, 68px);
+}
+
+.monitor .monitor-logo img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.monitor .monitor-brand-text {
+  min-width: 0;
+}
+
+.monitor .monitor-eyebrow,
+.monitor .monitor-section-kicker {
+  color: var(--monitor-blue);
+  font-size: clamp(11px, 0.8vw, 15px);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.monitor .monitor-brand-text h1 {
+  margin: 5px 0;
+  font-size: clamp(24px, 2vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.monitor .monitor-brand-text p {
+  margin: 0;
+  color: var(--monitor-muted);
+  font-size: clamp(13px, 0.95vw, 18px);
+}
+
+.monitor .monitor-header-right {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(10px, 1.1vw, 20px);
+}
+
+.monitor .monitor-date {
+  display: grid;
+  gap: 6px;
+  text-align: right;
+  text-transform: capitalize;
+}
+
+.monitor .monitor-date strong {
+  font-size: clamp(13px, 1vw, 19px);
+}
+
+.monitor .monitor-date span {
+  color: var(--monitor-muted);
+  font-size: clamp(11px, 0.78vw, 15px);
+}
+
+.monitor .monitor-sound-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 clamp(12px, 1.2vw, 21px);
+  border: 1px solid #cbd8e8;
+  border-radius: 11px;
+  background: white;
+  color: var(--monitor-navy);
+  font-size: clamp(12px, 0.85vw, 16px);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.monitor .monitor-sound-button:hover,
+.monitor .monitor-sound-button.is-active {
+  border-color: #a6d7bc;
+  background: #e6f5ed;
+}
+
+.monitor .monitor-sound-button > span {
+  font-size: 22px;
+}
+
+.monitor .monitor-error {
+  flex: 0 0 auto;
+  margin-top: 8px;
+  padding: 9px 13px;
+  border: 1px solid #f2d1d1;
+  border-radius: 9px;
+  background: #fff0f0;
+  color: #9d3131;
+  font-size: 13px;
+}
+
+/* LLAMADOS ACTIVOS */
+
+.monitor .monitor-section {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  margin-top: clamp(10px, 1.25vh, 18px);
+}
+
+.monitor .monitor-section-heading {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: clamp(9px, 1.1vh, 15px);
+}
+
+.monitor .monitor-section-heading h2 {
+  margin: 5px 0 0;
+  font-size: clamp(26px, 2.2vw, 41px);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.monitor .monitor-live {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 13px;
+  border-radius: 999px;
+  background: #e7f6ed;
+  color: #176d49;
+  font-size: clamp(11px, 0.8vw, 15px);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.monitor .monitor-live-dot,
+.monitor .monitor-footer-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #20a56c;
+}
+
+.monitor .monitor-live-dot {
+  animation: monitor-pulse 1.8s infinite;
+}
+
+.monitor .monitor-calls-grid {
+  display: grid;
+  flex: 1 1 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  align-content: stretch;
+  gap: clamp(9px, 1vw, 18px);
+  min-width: 0;
+  min-height: 0;
+}
+
+.monitor .monitor-calls-grid.grid-one {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.monitor .monitor-calls-grid.grid-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.monitor .monitor-calls-grid.grid-three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.monitor .monitor-calls-grid.grid-four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.monitor .monitor-calls-grid.grid-five {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.monitor .monitor-call-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-width: 0;
+  min-height: 0;
+  padding: clamp(13px, 1.5vw, 28px);
+  overflow: hidden;
+  border: 1px solid var(--monitor-border);
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 4px 15px #17375b09;
+  animation: monitor-card-in 400ms ease both;
+}
+
+.monitor .monitor-call-card::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: var(--monitor-blue);
+  content: "";
+}
+
+.monitor .monitor-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  min-width: 0;
+}
+
+.monitor .monitor-call-label {
+  color: var(--monitor-muted);
+  font-size: clamp(11px, 0.85vw, 17px);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.monitor .monitor-call-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--monitor-green);
+  font-size: clamp(11px, 0.85vw, 17px);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.monitor .monitor-speaker {
+  display: inline-flex;
+  flex: 0 0 auto;
+  animation: monitor-speaker-motion 1.1s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.monitor .monitor-speaker-svg {
+  display: block;
+  width: clamp(20px, 1.7vw, 31px);
+  height: clamp(20px, 1.7vw, 31px);
+}
+
+.monitor .monitor-card-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  padding: 7px 0;
+  text-align: center;
+}
+
+.monitor .monitor-consultorio {
+  max-width: 100%;
+  margin: 0;
+  color: var(--monitor-blue);
+  font-size: clamp(20px, 1.9vw, 35px);
+  font-weight: 800;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.monitor .monitor-servicio {
+  max-width: 100%;
+  margin-top: 5px;
+  color: var(--monitor-muted);
+  font-size: clamp(11px, 0.9vw, 16px);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.monitor .monitor-patient {
+  max-width: 100%;
+  margin: clamp(8px, 1.2vh, 16px) 0 0;
+  font-size: clamp(28px, 2.8vw, 51px);
+  font-weight: 850;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+.monitor .monitor-card-bottom {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  padding-top: clamp(8px, 1.1vh, 15px);
+  border-top: 1px solid #e9eef4;
+}
+
+.monitor .monitor-card-bottom > span:first-child {
+  color: var(--monitor-muted);
+  font-size: clamp(13px, 0.95vw, 18px);
+}
+
+.monitor .monitor-card-bottom strong {
+  color: var(--monitor-navy);
+  font-size: clamp(20px, 1.5vw, 28px);
+  letter-spacing: 0.05em;
+}
+
+.monitor .monitor-calls-grid.grid-one .monitor-call-card {
+  padding: clamp(20px, 2.5vw, 44px);
+}
+
+.monitor .monitor-calls-grid.grid-one .monitor-call-label,
+.monitor .monitor-calls-grid.grid-one .monitor-call-status {
+  font-size: clamp(14px, 1.15vw, 22px);
+}
+
+.monitor .monitor-calls-grid.grid-one .monitor-consultorio {
+  font-size: clamp(28px, 2.7vw, 48px);
+}
+
+.monitor .monitor-calls-grid.grid-one .monitor-patient {
+  font-size: clamp(38px, 4vw, 72px);
+}
+
+.monitor .monitor-calls-grid.grid-dense .monitor-call-label,
+.monitor .monitor-calls-grid.grid-dense .monitor-call-status {
+  font-size: clamp(10px, 0.72vw, 14px);
+}
+
+.monitor .monitor-calls-grid.grid-dense .monitor-consultorio {
+  font-size: clamp(17px, 1.35vw, 25px);
+}
+
+.monitor .monitor-calls-grid.grid-dense .monitor-servicio {
+  font-size: clamp(10px, 0.72vw, 13px);
+}
+
+.monitor .monitor-calls-grid.grid-dense .monitor-patient {
+  font-size: clamp(22px, 1.8vw, 34px);
+}
+
+.monitor .monitor-calls-grid.grid-dense .monitor-card-bottom strong {
+  font-size: clamp(17px, 1.25vw, 23px);
+}
+
+/* VACÍO Y CARGA */
+
+.monitor .monitor-empty {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 20px;
+  border: 1px dashed #cbd7e5;
+  border-radius: 16px;
+  background: white;
+  text-align: center;
+}
+
+.monitor .monitor-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #e8f6ee;
+  color: var(--monitor-green);
+  font-size: 28px;
+}
+
+.monitor .monitor-empty h3 {
+  margin: 13px 0 5px;
+  font-size: clamp(20px, 1.7vw, 31px);
+}
+
+.monitor .monitor-empty p,
+.monitor .monitor-muted {
+  color: var(--monitor-muted);
+  font-size: clamp(13px, 0.95vw, 17px);
+}
+
+.monitor .monitor-loader {
+  width: 35px;
+  height: 35px;
+  border: 4px solid #dce7f4;
+  border-top-color: var(--monitor-blue);
+  border-radius: 50%;
+  animation: monitor-spin 800ms linear infinite;
+}
+
+/* PANELES INFERIORES */
+
+.monitor .monitor-bottom {
+  display: grid;
+  flex: 0 1 clamp(260px, 34vh, 365px);
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+  gap: clamp(10px, 1.1vw, 20px);
+  min-width: 0;
+  min-height: 0;
+  margin-top: clamp(10px, 1.3vh, 18px);
+}
+
+.monitor .monitor-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: clamp(12px, 1.3vw, 23px);
+  overflow: hidden;
+  border: 1px solid var(--monitor-border);
+  border-radius: 16px;
+  background: white;
+}
+
+.monitor .monitor-panel-heading {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: clamp(8px, 1vh, 14px);
+}
+
+.monitor .monitor-panel-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: clamp(38px, 3.3vw, 53px);
+  height: clamp(38px, 3.3vw, 53px);
+  border-radius: 12px;
+  background: #e8f6ee;
+  color: var(--monitor-green);
+  font-size: clamp(22px, 1.8vw, 31px);
+}
+
+.monitor .monitor-panel-icon.history-icon {
+  background: #eaf2fb;
+  color: var(--monitor-blue);
+}
+
+.monitor .monitor-panel-heading h2 {
+  margin: 0 0 4px;
+  font-size: clamp(19px, 1.45vw, 27px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.monitor .monitor-panel-heading p {
+  margin: 0;
+  color: var(--monitor-muted);
+  font-size: clamp(12px, 0.9vw, 17px);
+}
+
+/* ATENDIDOS: HASTA 10, EN DOS COLUMNAS CUANDO SUPERAN 5 */
+
+.monitor .monitor-attended-columns {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: clamp(10px, 1.2vw, 20px);
+  min-width: 0;
+  min-height: 0;
+}
+
+.monitor .monitor-attended-columns.has-two-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.monitor .monitor-attended-list {
+  display: grid;
+  align-content: start;
+  grid-auto-rows: minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+}
+
+.monitor .monitor-attended-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  padding: clamp(5px, 0.8vh, 11px) 0;
+  border-top: 1px solid #edf1f6;
+  font-size: clamp(12px, 0.95vw, 18px);
+}
+
+.monitor .monitor-attended-row span {
+  min-width: 0;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.monitor .monitor-attended-row strong {
+  display: grid;
+  flex: 0 0 auto;
+  min-width: clamp(28px, 2.3vw, 38px);
+  height: clamp(27px, 2.3vw, 38px);
+  place-items: center;
+  border-radius: 8px;
+  background: #edf7f1;
+  color: var(--monitor-green);
+  font-size: clamp(13px, 0.9vw, 17px);
+}
+
+/* ÚLTIMOS 10 LLAMADOS: 5 COLUMNAS POR DOS FILAS */
+
+.monitor .monitor-history-grid {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  align-content: stretch;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+}
+
+.monitor .monitor-history-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  min-height: 0;
+  padding: 8px 10px;
+  overflow: hidden;
+  border: 1px solid #e8eef5;
+  border-radius: 10px;
+  background: #fbfcfe;
+}
+
+.monitor .monitor-history-time {
+  color: var(--monitor-muted);
+  font-size: clamp(11px, 0.78vw, 15px);
+  font-variant-numeric: tabular-nums;
+}
+
+.monitor .monitor-history-patient {
+  max-width: 100%;
+  color: var(--monitor-ink);
+  font-size: clamp(12px, 0.95vw, 18px);
+  font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.monitor .monitor-history-consultorio {
+  max-width: 100%;
+  color: var(--monitor-muted);
+  font-size: clamp(10px, 0.75vw, 14px);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+/* PIE */
+
+.monitor .monitor-footer {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: clamp(8px, 1vh, 14px);
+  color: var(--monitor-muted);
+  font-size: clamp(10px, 0.75vw, 14px);
+}
+
+.monitor .monitor-footer > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ANIMACIONES */
+
+@keyframes monitor-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes monitor-speaker-motion {
+  0%,
+  100% {
+    transform: rotate(0) scale(1);
+  }
+
+  25% {
+    transform: rotate(-8deg) scale(1.08);
+  }
+
+  75% {
+    transform: rotate(8deg) scale(1.08);
+  }
+}
+
+@keyframes monitor-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes monitor-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* AJUSTE PARA MONITORES DE ANCHO MEDIO */
+
+@media (min-width: 901px) and (max-width: 1200px) {
+  .monitor .monitor-calls-grid.grid-four,
+  .monitor .monitor-calls-grid.grid-five {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .monitor .monitor-bottom {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+
+  .monitor .monitor-history-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .monitor .monitor-attended-columns.has-two-columns {
+    gap: 8px;
+  }
+}
+
+/* TELEVISORES CON POCA ALTURA */
+
+@media (min-width: 901px) and (max-height: 850px) {
+  .monitor {
+    padding: 10px 20px;
+  }
+
+  .monitor .monitor-header {
+    padding-bottom: 9px;
+  }
+
+  .monitor .monitor-logo {
+    height: 45px;
+  }
+
+  .monitor .monitor-brand-text h1 {
+    font-size: clamp(22px, 1.8vw, 31px);
+  }
+
+  .monitor .monitor-section {
+    margin-top: 9px;
+  }
+
+  .monitor .monitor-section-heading {
+    margin-bottom: 7px;
+  }
+
+  .monitor .monitor-section-heading h2 {
+    font-size: clamp(24px, 1.8vw, 33px);
+  }
+
+  .monitor .monitor-call-card {
+    padding: 12px 16px;
+  }
+
+  .monitor .monitor-card-main {
+    padding: 4px 0;
+  }
+
+  .monitor .monitor-consultorio {
+    font-size: clamp(18px, 1.5vw, 27px);
+  }
+
+  .monitor .monitor-patient {
+    margin: 7px 0 0;
+    font-size: clamp(26px, 2.2vw, 41px);
+  }
+
+  .monitor .monitor-card-bottom {
+    padding-top: 7px;
+  }
+
+  .monitor .monitor-bottom {
+    flex-basis: clamp(245px, 35vh, 310px);
+    margin-top: 9px;
+  }
+
+  .monitor .monitor-panel {
+    padding: 10px 14px;
+  }
+
+  .monitor .monitor-panel-heading {
+    margin-bottom: 7px;
+  }
+
+  .monitor .monitor-panel-heading h2 {
+    font-size: clamp(18px, 1.3vw, 24px);
+  }
+
+  .monitor .monitor-attended-row {
+    padding: 4px 0;
+  }
+
+  .monitor .monitor-attended-row strong {
+    min-width: 27px;
+    height: 27px;
+  }
+
+  .monitor .monitor-history-grid {
+    gap: 5px;
+  }
+
+  .monitor .monitor-history-row {
+    gap: 4px;
+    padding: 5px;
+  }
+
+  .monitor .monitor-footer {
+    padding-top: 6px;
+  }
+}
+
+/* PANTALLAS ESTRECHAS */
+
+@media (max-width: 900px) {
+  html.monitor-active,
+  body.monitor-active,
+  body.monitor-active #root {
+    height: auto;
+    min-height: 100%;
+  }
+
+  html.monitor-active,
+  body.monitor-active {
+    overflow: auto;
+  }
+
+  .monitor {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .monitor .monitor-header {
+    flex-wrap: wrap;
+  }
+
+  .monitor .monitor-header-right {
+    flex-wrap: wrap;
+  }
+
+  .monitor .monitor-section {
+    flex: 0 0 auto;
+    min-height: 300px;
+  }
+
+  .monitor .monitor-calls-grid {
+    flex: 0 0 auto;
+    grid-auto-rows: minmax(190px, auto);
+  }
+
+  .monitor .monitor-calls-grid.grid-three,
+  .monitor .monitor-calls-grid.grid-four,
+  .monitor .monitor-calls-grid.grid-five,
+  .monitor .monitor-calls-grid.grid-one,
+  .monitor .monitor-calls-grid.grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .monitor .monitor-bottom {
+    flex: 0 0 auto;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .monitor .monitor-panel {
+    min-height: 230px;
+    overflow: visible;
+  }
+
+  .monitor .monitor-history-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(100px, auto);
+  }
+
+  .monitor .monitor-footer {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 520px) {
+  .monitor {
+    padding: 12px;
+  }
+
+  .monitor .monitor-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .monitor .monitor-header-right {
+    justify-content: space-between;
+  }
+
+  .monitor .monitor-date {
+    text-align: left;
+  }
+
+  .monitor .monitor-calls-grid,
+  .monitor .monitor-calls-grid.grid-one,
+  .monitor .monitor-calls-grid.grid-two,
+  .monitor .monitor-calls-grid.grid-three,
+  .monitor .monitor-calls-grid.grid-four,
+  .monitor .monitor-calls-grid.grid-five {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .monitor .monitor-call-card {
+    min-height: 205px;
+  }
+
+  .monitor .monitor-attended-columns.has-two-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .monitor .monitor-history-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .monitor .monitor-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* ACCESIBILIDAD */
+
+@media (prefers-reduced-motion: reduce) {
+  .monitor *,
+  .monitor *::before,
+  .monitor *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
