@@ -1,226 +1,117 @@
 # Gestor de Colas de Consultorios - SIHCE
 
-Sistema web para gestionar los llamados y visualizar la atención por consultorio. La aplicación está compuesta por un frontend React, un backend Django y una base de datos PostgreSQL, desplegados mediante Docker Compose.
+Aplicación web para gestionar los llamados y visualizar la atención por consultorio. Utiliza React, Django, PostgreSQL y Docker Compose.
 
-> **Estado de la integración SIHCE:** actualmente se utilizan archivos JSON ficticios para el catálogo de la IPRESS y las citas. La conexión con la API oficial de SIHCE queda pendiente de contar con las credenciales, documentación y autorización correspondientes.
+> **Nota:** actualmente se usan archivos JSON ficticios para las citas y el catálogo de consultorios. La integración con la API oficial de SIHCE está pendiente.
 
-## 1. Arquitectura y tecnologías
+## Requisitos
 
-- **Frontend:** React, Vite y Material UI.
-- **Backend:** Django y Django REST Framework.
-- **Base de datos:** PostgreSQL.
-- **Servidor web:** Nginx (según la configuración Docker del proyecto).
-- **Despliegue:** Docker Engine y Docker Compose v2.
-- **Datos de prueba:** archivos JSON ubicados en `backend/data/`.
+- Acceso al repositorio de GitLab desde una computadora con Git.
+- Windows con OpenSSH (`scp`) y `tar`, para transferir el proyecto si el servidor no puede acceder a GitLab.
+- Servidor Linux con Docker Engine y Docker Compose v2.
+- Conectividad de red al servidor y un puerto disponible para la aplicación.
 
-## 2. Requisitos del servidor
+## 1. Descargar el proyecto en Windows
 
-- Git y acceso al repositorio de GitLab.
-- Docker Engine (Linux) o Docker Desktop (Windows).
-- Docker Compose v2 (`docker compose`, con espacio).
-- Acceso a la red donde se utilizará la aplicación.
-- Puerto TCP seleccionado para la aplicación, permitido por el firewall únicamente a los clientes autorizados.
+Clonar el repositorio (si todavía no está descargado):
 
-En un servidor Linux, verificar la instalación:
-
-```bash
-docker --version
-docker compose version
+```powershell
+git clone --branch develop https://git.minsa.gob.pe/interoperabilidad/gestor-colas-consultorios.git gestor-colas-sihce
 ```
 
-## 3. Clonar el repositorio
+## 2. Empaquetar y copiarlo al servidor
 
-```bash
-git clone https://git.minsa.gob.pe/interoperabilidad/gestor-colas-consultorios.git
-cd gestor-colas-consultorios
+Desde PowerShell, sustituir la ruta por la carpeta donde se descargó el proyecto:
+
+```powershell
+tar.exe -czf "$env:USERPROFILE\Desktop\gestor-colas-sihce-deploy.tar.gz" -C "C:\RUTA\AL\PROYECTO" .
 ```
 
-Se necesita permiso de acceso al repositorio de GitLab.
+En el servidor, crear la carpeta de destino (se puede ejecutar por SSH):
 
-## 4. Configurar las variables de entorno
+```bash
+mkdir -p ~/apps
+```
 
-Crear el archivo `.env` a partir de la plantilla:
+Desde PowerShell, transferir el archivo. Sustituir `USUARIO` e `IP_SERVIDOR` por los valores del servidor:
 
-**Linux:**
+```powershell
+scp "$env:USERPROFILE\Desktop\gestor-colas-sihce-deploy.tar.gz" USUARIO@IP_SERVIDOR:/home/USUARIO/apps/
+```
+
+## 3. Extraer el proyecto en el servidor
+
+Conectarse por SSH y ejecutar:
+
+```bash
+mkdir -p ~/apps/gestor-colas-sihce
+tar -xzf ~/apps/gestor-colas-sihce-deploy.tar.gz -C ~/apps/gestor-colas-sihce
+cd ~/apps/gestor-colas-sihce
+```
+
+## 4. Configurar el entorno
+
+Crear y editar el archivo `.env`:
 
 ```bash
 cp .env.example .env
+nano .env
 ```
 
-**Windows PowerShell:**
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Editar `.env` y establecer los valores de base de datos, clave secreta de Django y demás opciones definidas en `.env.example`. No publicar ni enviar este archivo al repositorio.
-
-Los valores de `POSTGRES_DB`, `POSTGRES_USER` y `POSTGRES_PASSWORD` deben coincidir con `DB_NAME`, `DB_USER` y `DB_PASSWORD`, respectivamente.
-
-### Dirección y puerto de acceso
-
-Para probar únicamente desde el mismo servidor, la configuración puede ser:
+Configurar estos valores según el servidor:
 
 ```dotenv
-APP_BIND_IP=127.0.0.1
+APP_BIND_IP=IP_SERVIDOR
 APP_PORT=8088
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,IP_SERVIDOR
+DJANGO_CSRF_TRUSTED_ORIGINS=http://IP_SERVIDOR:8088
 ```
 
-Para que otras computadoras de la red local accedan a la aplicación, configurar la dirección de publicación para todas las interfaces de red:
+Reemplazar `IP_SERVIDOR` por la IP real del servidor. Configurar también las credenciales de PostgreSQL y `DJANGO_SECRET_KEY`. `POSTGRES_DB`, `POSTGRES_USER` y `POSTGRES_PASSWORD` deben coincidir con `DB_NAME`, `DB_USER` y `DB_PASSWORD`; ambos campos de contraseña de PostgreSQL deben tener exactamente el mismo valor. Usar contraseñas fuertes y una clave secreta única. No subir ni compartir el archivo `.env`.
 
-```dotenv
-APP_BIND_IP=0.0.0.0
-APP_PORT=8088
-```
+## 5. Construir e iniciar la aplicación
 
-`0.0.0.0` permite publicar el puerto en las interfaces del servidor; no es la dirección que se escribe en el navegador. Configurar el firewall para permitir el puerto `8088` únicamente desde la red autorizada. No exponerlo directamente a Internet sin controles de seguridad y HTTPS.
-
-## 5. Construir las imágenes
-
-Desde la raíz del repositorio:
+Ejecutar desde `~/apps/gestor-colas-sihce`:
 
 ```bash
 docker compose build
-```
-
-## 6. Iniciar PostgreSQL
-
-```bash
 docker compose up -d db
-docker compose ps
-```
-
-Verificar que el servicio `db` esté en ejecución antes de continuar.
-
-## 7. Ejecutar las migraciones de Django
-
-```bash
 docker compose run --rm backend python manage.py migrate
-```
-
-## 8. Recopilar archivos estáticos
-
-```bash
 docker compose run --rm backend python manage.py collectstatic --noinput
-```
-
-## 9. Iniciar la aplicación
-
-```bash
 docker compose up -d backend frontend
-docker compose ps
 ```
 
-Consultar los registros si algún servicio no inicia:
+## 6. Configuración inicial y datos de prueba
 
-```bash
-docker compose logs --tail=100 backend
-docker compose logs --tail=100 frontend
-docker compose logs --tail=100 db
-```
+1. Abrir `http://IP_SERVIDOR:8088` desde un equipo de la red.
+2. En la sección **IPRESS**, registrar el establecimiento de prueba con RENIPRESS `00005644` y nombre `C.M.I. RÍMAC`.
+3. Entrar en la sección de consultorios de esa IPRESS y sincronizar el catálogo de prueba.
+4. Importar las citas ficticias:
 
-## 10. Acceder desde el navegador
+   ```bash
+   docker compose run --rm backend python manage.py importar_citas_json
+   ```
 
-Desde el mismo servidor, si se configuró `APP_BIND_IP=127.0.0.1`:
+5. Activar los equipos en este orden:
 
-- Aplicación: `http://127.0.0.1:8088`
+   **a. Activar la computadora de consultorio**
+   - En la administración de consultorios, generar un código de activación para el equipo.
+   - En esa computadora, abrir `http://IP_SERVIDOR:8088/consultorio` e introducir el código.
 
-Desde otra computadora de la red, si se configuró `APP_BIND_IP=0.0.0.0`:
+   **b. Registrar y activar el monitor de TV**
+   - En la administración de monitores, registrar el monitor, asignarle los consultorios correspondientes y generar su código de activación.
+   - En la pantalla de TV, abrir `http://IP_SERVIDOR:8088/monitor` e introducir el código.
 
-- Aplicación: `http://IP_DEL_SERVIDOR:8088`
+El archivo `backend/data/citas_sihce_prueba.json` contiene citas ficticias del 22 al 30 de octubre de 2026: seis por consultorio por día para tres consultorios (162 citas). Las vistas operativas muestran las citas según la fecha actual; fuera del intervalo de prueba pueden no aparecer.
 
-Reemplazar `IP_DEL_SERVIDOR` por la dirección IP real del servidor. Comprobar que el firewall permita la conexión desde la red de pruebas.
-
-## 11. Configuración inicial de la IPRESS y consultorios
-
-Después de iniciar los servicios:
-
-1. Abrir la sección **IPRESS** (`/ipress`) y registrar o seleccionar el establecimiento de prueba.
-2. Entrar a `/ipress/<id>/consultorios`, sustituyendo `<id>` por el identificador de la IPRESS. Sincronizar el catálogo de consultorios de prueba.
-3. Entrar a `/ipress/<id>/monitores` para registrar los monitores y asignarles los consultorios que deben mostrar.
-4. Usar la sección de videos (`/videos`) para administrar la biblioteca de videos, si corresponde.
-
-El catálogo local de prueba se encuentra en `backend/data/ipress_sihce_prueba.json`. Actualmente contempla estos tres consultorios de prueba:
-
-- `CONS-MED-01` — Consultorio Medicina 01.
-- `CONS-MED-02` — Consultorio Medicina 02.
-- `CONS-ODO-01` — Consultorio Odontología 01.
-
-### Activar la computadora de ventanilla
-
-Desde la administración de consultorios, generar un código de activación para el consultorio que utilizará esa computadora. Abrir `/consultorio` en la computadora correspondiente e introducir el código. Después de la activación se mostrará la pantalla operativa de ventanilla.
-
-### Activar una pantalla de monitor
-
-Desde `/ipress/<id>/monitores`, registrar el monitor, asignarle uno o más consultorios y generar un código de activación. En la pantalla que se utilizará para mostrar los llamados, abrir `/monitor` e introducir dicho código. Cada monitor debe tener asignaciones y activación propias.
-
-## 12. Citas de prueba
-
-Las citas ficticias se encuentran en:
-
-```text 
-backend/data/citas_sihce_prueba.json
-```
-
-El archivo de prueba preparado para este entorno incluye citas entre el **22 y el 30 de octubre de 2026**, con seis citas por consultorio por día (tres consultorios, 162 citas en total). Los identificadores de las citas son únicos para evitar conflictos al importarlas.
-
-Las vistas operativas filtran las citas por la fecha actual. Por tanto, en una fecha fuera del intervalo del archivo, las citas de prueba pueden no aparecer. Para repetir pruebas en otra fecha, actualizar las fechas del fixture antes de importarlo.
-
-### Importar o sincronizar citas sin reiniciar todos los datos
-
-Cuando solo se necesita volver a importar las citas del JSON:
-
-```bash
-docker compose run --rm backend python manage.py importar_citas_json
-```
-
-### Reiniciar los datos operativos de prueba
-
-El proyecto dispone del comando `reiniciar_datos_prueba`, que limpia los datos operativos de prueba, restablece los registros de prueba que administra y vuelve a importar las citas del JSON:
+Para reiniciar los datos operativos de prueba y volver a importar las citas, ejecutar solo en un entorno de pruebas:
 
 ```bash
 docker compose run --rm backend python manage.py reiniciar_datos_prueba --confirmar
 ```
 
-**Advertencia:** este comando elimina registros operativos, incluyendo turnos, eventos y activaciones de equipos/monitores según la implementación actual. Debe usarse únicamente en el entorno de pruebas. Tras reiniciarlo, será necesario generar nuevos códigos y activar nuevamente las pantallas.
+Este comando elimina datos operativos y activaciones, por lo que será necesario activar nuevamente los equipos y monitores. No ejecutar `docker compose down -v` si se desea conservar el volumen de PostgreSQL.
 
-## 13. Actualizar una instalación existente
+## Acceso y seguridad
 
-Después de obtener los cambios del repositorio, desde la raíz del proyecto:
-
-```bash
-git pull
-docker compose build
-docker compose up -d db
-docker compose run --rm backend python manage.py migrate
-docker compose run --rm backend python manage.py collectstatic --noinput
-docker compose up -d backend frontend
-docker compose ps
-```
-
-Revisar los registros si hay problemas:
-
-```bash
-docker compose logs -f backend
-docker compose logs -f frontend
-```
-
-Antes de actualizar, conservar una copia de seguridad de la base de datos y del archivo `.env` en un lugar seguro.
-
-## 14. Persistencia de la base de datos
-
-Los datos PostgreSQL se conservan en el volumen persistente de Docker cuando se detienen los servicios con:
-
-```bash
-docker compose down
-```
-
-No ejecutar `docker compose down -v` salvo que se desee eliminar deliberadamente los volúmenes, ya que puede borrar la base de datos persistente.
-
-## 15. Seguridad y alcance
-
-- Utilizar únicamente datos ficticios en los archivos JSON de prueba.
-- No guardar contraseñas ni claves secretas en el repositorio.
-- Restringir el puerto de la aplicación a las redes autorizadas.
-- Para uso fuera de una red controlada, implementar HTTPS y los controles de seguridad institucionales antes de exponer el servicio.
-- La integración con la API real de SIHCE está pendiente; los datos del fixture JSON no representan información consultada en tiempo real desde SIHCE.
+Acceder a `http://IP_SERVIDOR:8088` desde la red autorizada. Permitir el puerto configurado en el firewall solo a los equipos que deban usar la aplicación. No exponer el servicio directamente a Internet sin HTTPS y los controles de seguridad correspondientes.
