@@ -6,9 +6,15 @@ import {
   Box,
   Button,
   Card,
+  CardContent,
   Chip,
   Container,
   Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   InputAdornment,
   Paper,
   Stack,
@@ -38,8 +44,225 @@ import DoneAllIcon from "@mui/icons-material/DoneAll";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import PhoneForwardedOutlinedIcon from "@mui/icons-material/PhoneForwardedOutlined";
+import ComputerOutlinedIcon from "@mui/icons-material/ComputerOutlined";
 
 import api from "../services/api";
+
+function limpiarActivacionLocal() {
+  localStorage.removeItem("equipo_token");
+  localStorage.removeItem("equipo_id");
+  localStorage.removeItem("equipo_consultorio");
+  localStorage.removeItem("equipo_establecimiento");
+}
+
+function mensajeDeError(error, predeterminado) {
+  const datos = error?.response?.data;
+
+  if (typeof datos?.codigo === "string") return datos.codigo;
+  if (typeof datos?.detail === "string") return datos.detail;
+  if (typeof datos?.mensaje === "string") return datos.mensaje;
+
+  if (datos && typeof datos === "object") {
+    const mensajes = Object.values(datos).flatMap((valor) =>
+      Array.isArray(valor) ? valor.map(String) : [String(valor)]
+    );
+    if (mensajes.length) return mensajes.join(" · ");
+  }
+
+  return predeterminado;
+}
+
+function FormularioActivacion({ onActivado, mensajeInicial = "" }) {
+  const [codigo, setCodigo] = useState("");
+  const [cargandoActivacion, setCargandoActivacion] = useState(false);
+  const [errorActivacion, setErrorActivacion] = useState("");
+  const [mensaje, setMensaje] = useState(mensajeInicial);
+
+  useEffect(() => {
+    setMensaje(mensajeInicial);
+  }, [mensajeInicial]);
+
+  async function activarEquipo(event) {
+    event.preventDefault();
+    const codigoLimpio = codigo.trim().toUpperCase();
+
+    if (!codigoLimpio) {
+      setErrorActivacion("Introduce el código de activación.");
+      return;
+    }
+
+    setCargandoActivacion(true);
+    setErrorActivacion("");
+    setMensaje("");
+
+    try {
+      const respuesta = await api.post("activaciones/canjear/", {
+        codigo: codigoLimpio,
+        nombre_equipo: "",
+      });
+      const datos = respuesta.data;
+
+      localStorage.setItem("equipo_token", datos.token);
+      localStorage.setItem("equipo_id", datos.equipo_id);
+      localStorage.setItem("equipo_consultorio", JSON.stringify(datos.consultorio));
+      localStorage.setItem("equipo_establecimiento", JSON.stringify(datos.establecimiento));
+
+      setCodigo("");
+      onActivado();
+    } catch (err) {
+      setErrorActivacion(
+        mensajeDeError(
+          err,
+          "No se pudo activar la computadora. Verifica el código e inténtalo nuevamente."
+        )
+      );
+    } finally {
+      setCargandoActivacion(false);
+    }
+  }
+
+  return (
+    <Box sx={{ minHeight: "100vh", bgcolor: "#F4F7FB", display: "grid", placeItems: "center", px: 2, py: 4 }}>
+      <Container maxWidth="sm">
+        <Card variant="outlined" sx={{ borderRadius: 3, boxShadow: "0 12px 40px rgba(16,61,112,0.08)" }}>
+          <CardContent sx={{ p: { xs: 3, md: 5 } }}>
+            <Box
+              component="form"
+              onSubmit={activarEquipo}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 3,
+                width: "100%",
+              }}
+            >
+              <Box sx={{ width: 68, height: 68, display: "grid", placeItems: "center", bgcolor: "#EAF3FF", color: "#103D70", borderRadius: 3 }}>
+                <ComputerOutlinedIcon sx={{ fontSize: 38 }} />
+              </Box>
+
+              <Box sx={{ textAlign: "center" }}>
+                <Typography variant="overline" color="primary" fontWeight={700} sx={{ letterSpacing: 1 }}>
+                  GESTOR DE COLAS
+                </Typography>
+                <Typography variant="h4" fontWeight={800} color="#14294B" sx={{ mt: 1 }}>
+                  Activar puesto de atención
+                </Typography>
+                <Typography color="text.secondary" sx={{ mt: 1 }}>
+                  Introduce el código de activación para vincular esta computadora a un consultorio.
+                </Typography>
+              </Box>
+
+              {mensaje && <Alert severity="info" sx={{ width: "100%" }}>{mensaje}</Alert>}
+              {errorActivacion && <Alert severity="error" sx={{ width: "100%" }}>{errorActivacion}</Alert>}
+
+              <TextField
+                fullWidth
+                label="Código de activación"
+                value={codigo}
+                onChange={(event) => setCodigo(event.target.value.toUpperCase())}
+                placeholder="Ej. ABCD-1234"
+                autoComplete="off"
+                slotProps={{ htmlInput: { maxLength: 20, style: { textTransform: "uppercase", letterSpacing: 2 } } }}
+                disabled={cargandoActivacion}
+                helperText="El código vence a los 30 minutos y solo puede utilizarse una vez."
+              />
+
+              <Button type="submit" variant="contained" fullWidth disabled={!codigo.trim() || cargandoActivacion} sx={{ minHeight: 48, borderRadius: 2, textTransform: "none", fontWeight: 700, boxShadow: "none" }}>
+                {cargandoActivacion ? <CircularProgress size={22} color="inherit" /> : "Activar computadora"}
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </Container>
+    </Box>
+  );
+}
+
+export default function Consultorio() {
+  const [estadoActivacion, setEstadoActivacion] = useState("verificando");
+  const [errorVerificacion, setErrorVerificacion] = useState("");
+  const [mensajeActivacion, setMensajeActivacion] = useState("");
+  const [intentoVerificacion, setIntentoVerificacion] = useState(0);
+
+  useEffect(() => {
+    let cancelado = false;
+
+    async function verificarActivacion() {
+      const token = localStorage.getItem("equipo_token");
+      if (!token) {
+        limpiarActivacionLocal();
+        setEstadoActivacion("inactivo");
+        return;
+      }
+
+      setEstadoActivacion("verificando");
+      setErrorVerificacion("");
+
+      try {
+        // La cola es un endpoint protegido: una respuesta correcta confirma
+        // que el token corresponde a un equipo que sigue activo en el backend.
+        await api.get("turnos/cola/");
+        if (!cancelado) setEstadoActivacion("activo");
+      } catch (error) {
+        if (cancelado) return;
+        const statusCode = error?.response?.status;
+
+        if (statusCode === 401 || statusCode === 403) {
+          limpiarActivacionLocal();
+          setMensajeActivacion("Esta computadora no está activada o su activación fue revocada. Ingresa un nuevo código para continuar.");
+          setEstadoActivacion("inactivo");
+        } else {
+          setErrorVerificacion("No se pudo comprobar la activación con el servidor. Verifica que Django esté ejecutándose y vuelve a intentarlo.");
+          setEstadoActivacion("error");
+        }
+      }
+    }
+
+    verificarActivacion();
+    return () => { cancelado = true; };
+  }, [intentoVerificacion]);
+
+  async function desactivarEquipo() {
+    // El servidor invalida el equipo antes de borrar el token local.
+    await api.post("activaciones/desactivar/");
+    limpiarActivacionLocal();
+    setMensajeActivacion("Computadora desactivada. Introduce un nuevo código para asociarla a otro consultorio.");
+    setErrorVerificacion("");
+    setEstadoActivacion("inactivo");
+  }
+
+  if (estadoActivacion === "verificando") {
+    return (
+      <Box sx={{ minHeight: "100vh", bgcolor: "#F4F7FB", display: "grid", placeItems: "center" }}>
+        <Stack spacing={2} sx={{ alignItems: "center" }}>
+          <CircularProgress />
+          <Typography color="text.secondary">Verificando activación del puesto...</Typography>
+        </Stack>
+      </Box>
+    );
+  }
+
+  if (estadoActivacion === "error") {
+    return (
+      <Container maxWidth="sm" sx={{ py: 8 }}>
+        <Alert severity="warning" sx={{ mb: 2 }}>{errorVerificacion}</Alert>
+        <Button variant="contained" onClick={() => setIntentoVerificacion((valor) => valor + 1)}>
+          Volver a comprobar
+        </Button>
+      </Container>
+    );
+  }
+
+  if (estadoActivacion === "inactivo") {
+    return <FormularioActivacion mensajeInicial={mensajeActivacion} onActivado={() => {
+      setMensajeActivacion("");
+      setEstadoActivacion("activo");
+    }} />;
+  }
+
+  return <ConsultorioOperativo onCambiarConsultorio={desactivarEquipo} />;
+}
 
 function nombreVisible(turno) {
   const nombres = (turno.nombres_paciente || "").trim();
@@ -124,7 +347,7 @@ function BotonAccion({
   );
 }
 
-export default function Consultorio() {
+function ConsultorioOperativo({ onCambiarConsultorio }) {
   const [turnos, setTurnos] = useState([]);
   const [turnosAtendidos, setTurnosAtendidos] = useState([]);
 
@@ -140,6 +363,9 @@ export default function Consultorio() {
   const [errorAtendidos, setErrorAtendidos] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [ultimaActualizacion, setUltimaActualizacion] = useState(null);
+  const [dialogoCambioAbierto, setDialogoCambioAbierto] = useState(false);
+  const [cambiandoConsultorio, setCambiandoConsultorio] = useState(false);
+  const [errorCambioConsultorio, setErrorCambioConsultorio] = useState("");
 
   const consultorio = useMemo(() => {
     try {
@@ -355,6 +581,24 @@ export default function Consultorio() {
     }
   }
 
+  async function confirmarCambioConsultorio() {
+    setCambiandoConsultorio(true);
+    setErrorCambioConsultorio("");
+
+    try {
+      await onCambiarConsultorio();
+      // El componente operativo se desmonta tras confirmar la desactivación.
+    } catch (err) {
+      setErrorCambioConsultorio(
+        mensajeDeError(
+          err,
+          "No se pudo desactivar la computadora. Verifica la conexión e inténtalo nuevamente."
+        )
+      );
+      setCambiandoConsultorio(false);
+    }
+  }
+
   const accionesDisponibles =
     seleccionado?.estado === "EN_ESPERA"
       ? [
@@ -419,7 +663,7 @@ export default function Consultorio() {
           bgcolor: "#F4F7FB",
         }}
       >
-        <Stack alignItems="center" spacing={2}>
+        <Stack spacing={2} sx={{ alignItems: "center" }}>
           <CircularProgress />
           <Typography color="text.secondary">
             Cargando pacientes del consultorio...
@@ -443,11 +687,13 @@ export default function Consultorio() {
         <Container maxWidth="xl" disableGutters>
           <Stack
             direction={{ xs: "column", md: "row" }}
-            alignItems={{ xs: "flex-start", md: "center" }}
-            justifyContent="space-between"
             spacing={2}
+            sx={{
+              alignItems: { xs: "flex-start", md: "center" },
+              justifyContent: "space-between",
+            }}
           >
-            <Stack direction="row" alignItems="center" spacing={2}>
+            <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
               <Box
                 sx={{
                   width: { xs: 105, sm: 145 },
@@ -493,18 +739,41 @@ export default function Consultorio() {
               </Box>
             </Stack>
 
-            <Box
-              sx={{
-                bgcolor: "rgba(255,255,255,.12)",
-                px: 2,
-                py: 1,
-                borderRadius: 1.5,
-              }}
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={1.5}
+              sx={{ alignItems: { xs: "stretch", sm: "center" } }}
             >
-              <Typography fontWeight={700}>
-                Consultorio — {consultorio?.nombre || "Sin asignar"}
-              </Typography>
-            </Box>
+              <Box
+                sx={{
+                  bgcolor: "rgba(255,255,255,.12)",
+                  px: 2,
+                  py: 1,
+                  borderRadius: 1.5,
+                }}
+              >
+                <Typography fontWeight={700}>
+                  Consultorio — {consultorio?.nombre || "Sin asignar"}
+                </Typography>
+              </Box>
+              <Button
+                variant="outlined"
+                color="inherit"
+                onClick={() => {
+                  setErrorCambioConsultorio("");
+                  setDialogoCambioAbierto(true);
+                }}
+                sx={{
+                  borderColor: "rgba(255,255,255,.65)",
+                  borderRadius: 1.5,
+                  textTransform: "none",
+                  whiteSpace: "nowrap",
+                  "&:hover": { borderColor: "#fff", bgcolor: "rgba(255,255,255,.08)" },
+                }}
+              >
+                Cambiar consultorio
+              </Button>
+            </Stack>
           </Stack>
         </Container>
       </Box>
@@ -514,10 +783,12 @@ export default function Consultorio() {
           {/* Título y actualización */}
           <Stack
             direction={{ xs: "column", md: "row" }}
-            alignItems={{ xs: "flex-start", md: "center" }}
-            justifyContent="space-between"
             spacing={2}
-            sx={{ width: "100%" }}
+            sx={{
+              alignItems: { xs: "flex-start", md: "center" },
+              justifyContent: "space-between",
+              width: "100%",
+            }}
           >
             <Box sx={{ flex: 1, minWidth: 0 }}>
               <Typography
@@ -585,7 +856,7 @@ export default function Consultorio() {
               }}
             >
               <Box sx={{ p: 2.5 }}>
-                <Stack direction="row" alignItems="center" spacing={1}>
+                <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
                   <HourglassEmptyIcon sx={{ color: "#245DA8" }} />
                   <Typography color="#245DA8" fontWeight={600}>
                     En espera
@@ -609,7 +880,7 @@ export default function Consultorio() {
               }}
             >
               <Box sx={{ p: 2.5 }}>
-                <Stack direction="row" alignItems="center" spacing={1}>
+                <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
                   <CampaignIcon sx={{ color: "#267044" }} />
                   <Typography color="#267044" fontWeight={600}>
                     Llamando
@@ -633,7 +904,7 @@ export default function Consultorio() {
               }}
             >
               <Box sx={{ p: 2.5 }}>
-                <Stack direction="row" alignItems="center" spacing={1}>
+                <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
                   <CheckCircleIcon sx={{ color: "#5754A5" }} />
                   <Typography color="#5754A5" fontWeight={600}>
                     Atendidos
@@ -786,8 +1057,8 @@ export default function Consultorio() {
                           <TableCell>
                             <Stack
                               direction="row"
-                              alignItems="center"
                               spacing={1}
+                              sx={{ alignItems: "center" }}
                             >
                               {estaLlamando && (
                                 <Box
@@ -843,8 +1114,8 @@ export default function Consultorio() {
                           <TableCell>
                             <Stack
                               direction="row"
-                              alignItems="center"
                               spacing={0.7}
+                              sx={{ alignItems: "center" }}
                             >
                               <AccessTimeIcon
                                 sx={{
@@ -895,9 +1166,8 @@ export default function Consultorio() {
                       <TableRow>
                         <TableCell colSpan={4}>
                           <Stack
-                            alignItems="center"
                             spacing={1}
-                            sx={{ py: 5, px: 2 }}
+                            sx={{ py: 5, px: 2, alignItems: "center" }}
                           >
                             {filtro === "ATENDIDOS" ? (
                               <CheckCircleIcon
@@ -918,7 +1188,7 @@ export default function Consultorio() {
                             <Typography
                               variant="body2"
                               color="text.secondary"
-                              textAlign="center"
+                              sx={{ textAlign: "center" }}
                             >
                               {filtro === "ATENDIDOS"
                                 ? "Los pacientes aparecerán aquí cuando finalices su atención."
@@ -947,7 +1217,7 @@ export default function Consultorio() {
                 variant="outlined"
                 sx={{ borderRadius: 2.5, p: 2.5 }}
               >
-                <Stack direction="row" alignItems="center" spacing={1}>
+                <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
                   <AccountCircleIcon color="primary" />
                   <Typography variant="h6" fontWeight={800}>
                     Paciente seleccionado
@@ -970,9 +1240,9 @@ export default function Consultorio() {
                     {seleccionado.estado === "LLAMANDO" && (
                       <Stack
                         direction="row"
-                        alignItems="center"
                         spacing={1}
                         sx={{
+                          alignItems: "center",
                           mb: 1.5,
                           color: "#16804A",
                           animation:
@@ -1000,10 +1270,8 @@ export default function Consultorio() {
 
                     <Stack
                       direction="row"
-                      alignItems="center"
-                      justifyContent="space-between"
                       spacing={1}
-                      sx={{ mt: 1.5 }}
+                      sx={{ mt: 1.5, alignItems: "center", justifyContent: "space-between" }}
                     >
                       <Typography variant="body2" color="text.secondary">
                         Hora de cita
@@ -1015,10 +1283,8 @@ export default function Consultorio() {
 
                     <Stack
                       direction="row"
-                      alignItems="center"
-                      justifyContent="space-between"
                       spacing={1}
-                      sx={{ mt: 1 }}
+                      sx={{ mt: 1, alignItems: "center", justifyContent: "space-between" }}
                     >
                       <Typography variant="body2" color="text.secondary">
                         Estado
@@ -1085,6 +1351,44 @@ export default function Consultorio() {
           </Box>
         </Stack>
       </Container>
+
+      <Dialog
+        open={dialogoCambioAbierto}
+        onClose={() => {
+          if (!cambiandoConsultorio) setDialogoCambioAbierto(false);
+        }}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle sx={{ fontWeight: 800 }}>¿Cambiar de consultorio?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Esta computadora se desactivará del consultorio actual y dejará de gestionar su cola. Para continuar, tendrás que introducir un nuevo código de activación. ¿Deseas continuar?
+          </DialogContentText>
+          {errorCambioConsultorio && (
+            <Alert severity="error" sx={{ mt: 2 }}>{errorCambioConsultorio}</Alert>
+          )}
+        </DialogContent>
+        <DialogActions sx={{ p: 2.5, pt: 1 }}>
+          <Button
+            onClick={() => setDialogoCambioAbierto(false)}
+            disabled={cambiandoConsultorio}
+            sx={{ textTransform: "none" }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="contained"
+            color="warning"
+            onClick={confirmarCambioConsultorio}
+            disabled={cambiandoConsultorio}
+            startIcon={cambiandoConsultorio ? <CircularProgress size={16} color="inherit" /> : undefined}
+            sx={{ textTransform: "none", boxShadow: "none" }}
+          >
+            {cambiandoConsultorio ? "Desactivando..." : "Sí, cambiar consultorio"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

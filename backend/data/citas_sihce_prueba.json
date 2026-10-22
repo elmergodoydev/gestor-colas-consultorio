@@ -3,617 +3,4705 @@
     "codigo_renipress": "00005644",
     "nombre_ipress": "C.M.I. RÍMAC"
   },
-  "fecha_sincronizacion": "2026-10-14T07:30:00",
+  "fecha_sincronizacion": "2026-10-22T07:30:00",
   "citas": [
     {
-      "id_cita": "CITA-0001",
-      "fecha_cita": "2026-10-14",
+      "id_cita": "CITA-20261022-01-CONS-MED-01",
+      "fecha_cita": "2026-10-22",
       "hora_cita": "08:00:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0003",
-        "nombre": "MEDICINA 1",
-        "piso": "Primer Piso"
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-01",
-        "nombre": "Medicina General 01"
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
       },
       "servicio": {
-        "codigo": "22400",
-        "nombre": "CONSULTA EXTERNA - MEDICINA GENERAL"
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
       },
       "paciente": {
-        "dni": "71000001",
+        "dni": "99000001",
         "nombres": "ANDREA MILAGROS",
+        "apellido_paterno": "SANCHEZ",
+        "apellido_materno": "ROJAS"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-02-CONS-MED-01",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "08:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000002",
+        "nombres": "MIGUEL ANGEL",
+        "apellido_paterno": "GUTIERREZ",
+        "apellido_materno": "MEDINA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-03-CONS-MED-01",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "09:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000003",
+        "nombres": "ROSA ELENA",
+        "apellido_paterno": "ROJAS",
+        "apellido_materno": "MORALES"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-04-CONS-MED-01",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "09:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000004",
+        "nombres": "JOSE LUIS",
+        "apellido_paterno": "CRUZ",
+        "apellido_materno": "RAMIREZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-05-CONS-MED-01",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "10:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000005",
+        "nombres": "KARLA SOFIA",
+        "apellido_paterno": "VARGAS",
+        "apellido_materno": "NAVARRO"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-06-CONS-MED-01",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "10:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000006",
+        "nombres": "JULIA MARIBEL",
+        "apellido_paterno": "SALAZAR",
+        "apellido_materno": "CRUZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-01-CONS-MED-02",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "08:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000007",
+        "nombres": "PATRICIA ELENA",
+        "apellido_paterno": "HERRERA",
+        "apellido_materno": "ESPINOZA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-02-CONS-MED-02",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "08:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000008",
+        "nombres": "DIANA CAROLINA",
+        "apellido_paterno": "ROMERO",
+        "apellido_materno": "RIVERA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-03-CONS-MED-02",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "09:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000009",
+        "nombres": "MATEO ANDRES",
+        "apellido_paterno": "REYES",
+        "apellido_materno": "FLORES"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-04-CONS-MED-02",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "09:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000010",
+        "nombres": "LUCIA FERNANDA",
+        "apellido_paterno": "RAMIREZ",
+        "apellido_materno": "TORRES"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-05-CONS-MED-02",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "10:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000011",
+        "nombres": "DIEGO ALEJANDRO",
+        "apellido_paterno": "FLORES",
+        "apellido_materno": "VARGAS"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-06-CONS-MED-02",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "10:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000012",
+        "nombres": "VALERIA ISABEL",
+        "apellido_paterno": "RAMOS",
+        "apellido_materno": "PEREZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-01-CONS-ODO-01",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "08:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000013",
+        "nombres": "LUIS ALBERTO",
+        "apellido_paterno": "PAREDES",
+        "apellido_materno": "CAMPOS"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-02-CONS-ODO-01",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "08:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000014",
+        "nombres": "CAMILA NICOLE",
+        "apellido_paterno": "VEGA",
+        "apellido_materno": "RAMOS"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-03-CONS-ODO-01",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "09:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000015",
+        "nombres": "FERNANDO JAVIER",
+        "apellido_paterno": "LEON",
+        "apellido_materno": "DIAZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-04-CONS-ODO-01",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "09:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000016",
+        "nombres": "GABRIELA PAOLA",
+        "apellido_paterno": "MEDINA",
+        "apellido_materno": "SALAZAR"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-05-CONS-ODO-01",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "10:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000017",
+        "nombres": "MARTIN EDUARDO",
+        "apellido_paterno": "ESPINOZA",
+        "apellido_materno": "SILVA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261022-06-CONS-ODO-01",
+      "fecha_cita": "2026-10-22",
+      "hora_cita": "10:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000018",
+        "nombres": "NATALIA BEATRIZ",
+        "apellido_paterno": "PEREZ",
+        "apellido_materno": "CASTILLO"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-01-CONS-MED-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "08:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000019",
+        "nombres": "CESAR AUGUSTO",
+        "apellido_paterno": "SILVA",
+        "apellido_materno": "PAREDES"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-02-CONS-MED-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "08:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000020",
+        "nombres": "DANIELA ROCIO",
+        "apellido_paterno": "ORTIZ",
+        "apellido_materno": "SOTO"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-03-CONS-MED-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "09:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000021",
+        "nombres": "HECTOR MANUEL",
+        "apellido_paterno": "QUISPE",
+        "apellido_materno": "HERRERA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-04-CONS-MED-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "09:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000022",
+        "nombres": "SOFIA ALEJANDRA",
+        "apellido_paterno": "MENDOZA",
+        "apellido_materno": "ORTIZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-05-CONS-MED-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "10:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000023",
+        "nombres": "OSCAR ENRIQUE",
+        "apellido_paterno": "NAVARRO",
+        "apellido_materno": "SANCHEZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-06-CONS-MED-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "10:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000024",
+        "nombres": "MARIANA LUZ",
+        "apellido_paterno": "TORRES",
+        "apellido_materno": "VEGA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-01-CONS-MED-02",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "08:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000025",
+        "nombres": "VICTOR HUGO",
+        "apellido_paterno": "DIAZ",
+        "apellido_materno": "CHAVEZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-02-CONS-MED-02",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "08:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000026",
+        "nombres": "PAOLA ANDREA",
+        "apellido_paterno": "SOTO",
+        "apellido_materno": "ROMERO"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-03-CONS-MED-02",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "09:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000027",
+        "nombres": "RENATO SEBASTIAN",
+        "apellido_paterno": "CHAVEZ",
+        "apellido_materno": "QUISPE"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-04-CONS-MED-02",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "09:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000028",
+        "nombres": "EMILIA VICTORIA",
+        "apellido_paterno": "AGUILAR",
+        "apellido_materno": "GUTIERREZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-05-CONS-MED-02",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "10:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000029",
+        "nombres": "ALONSO DANIEL",
+        "apellido_paterno": "MORALES",
+        "apellido_materno": "LEON"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-06-CONS-MED-02",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "10:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000030",
+        "nombres": "FABIOLA MERCEDES",
+        "apellido_paterno": "RIVERA",
+        "apellido_materno": "AGUILAR"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-01-CONS-ODO-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "08:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000031",
+        "nombres": "RAUL ANTONIO",
+        "apellido_paterno": "CAMPOS",
+        "apellido_materno": "REYES"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-02-CONS-ODO-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "08:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000032",
+        "nombres": "IRENE CONSUELO",
+        "apellido_paterno": "CASTILLO",
+        "apellido_materno": "MENDOZA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-03-CONS-ODO-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "09:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000033",
+        "nombres": "ANDREA MILAGROS",
+        "apellido_paterno": "SANCHEZ",
+        "apellido_materno": "ROJAS"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-04-CONS-ODO-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "09:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000034",
+        "nombres": "MIGUEL ANGEL",
+        "apellido_paterno": "GUTIERREZ",
+        "apellido_materno": "MEDINA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-05-CONS-ODO-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "10:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000035",
+        "nombres": "ROSA ELENA",
+        "apellido_paterno": "ROJAS",
+        "apellido_materno": "MORALES"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261023-06-CONS-ODO-01",
+      "fecha_cita": "2026-10-23",
+      "hora_cita": "10:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000036",
+        "nombres": "JOSE LUIS",
+        "apellido_paterno": "CRUZ",
+        "apellido_materno": "RAMIREZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-01-CONS-MED-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "08:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000037",
+        "nombres": "KARLA SOFIA",
+        "apellido_paterno": "VARGAS",
+        "apellido_materno": "NAVARRO"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-02-CONS-MED-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "08:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000038",
+        "nombres": "JULIA MARIBEL",
+        "apellido_paterno": "SALAZAR",
+        "apellido_materno": "CRUZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-03-CONS-MED-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "09:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000039",
+        "nombres": "PATRICIA ELENA",
+        "apellido_paterno": "HERRERA",
+        "apellido_materno": "ESPINOZA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-04-CONS-MED-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "09:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000040",
+        "nombres": "DIANA CAROLINA",
+        "apellido_paterno": "ROMERO",
+        "apellido_materno": "RIVERA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-05-CONS-MED-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "10:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000041",
+        "nombres": "MATEO ANDRES",
+        "apellido_paterno": "REYES",
+        "apellido_materno": "FLORES"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-06-CONS-MED-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "10:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000042",
+        "nombres": "LUCIA FERNANDA",
         "apellido_paterno": "RAMIREZ",
         "apellido_materno": "TORRES"
       },
       "profesional": {
         "dni": "87654321",
-        "nombre": "EDITH HIJAR GUERRA"
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
       }
     },
     {
-      "id_cita": "CITA-0002",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "08:30:00",
-      "estado_cita": "PENDIENTE",
-      "ambiente": {
-        "codigo": "T0003",
-        "nombre": "MEDICINA 1",
-        "piso": "Primer Piso"
-      },
-      "consultorio": {
-        "codigo": "CONS-01",
-        "nombre": "Medicina General 01"
-      },
-      "servicio": {
-        "codigo": "22400",
-        "nombre": "CONSULTA EXTERNA - MEDICINA GENERAL"
-      },
-      "paciente": {
-        "dni": "71000002",
-        "nombres": "MIGUEL ANGEL",
-        "apellido_paterno": "QUISPE",
-        "apellido_materno": "ROJAS"
-      },
-      "profesional": {
-        "dni": "87654321",
-        "nombre": "EDITH HIJAR GUERRA"
-      }
-    },
-    {
-      "id_cita": "CITA-0003",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "09:00:00",
-      "estado_cita": "PENDIENTE",
-      "ambiente": {
-        "codigo": "T0003",
-        "nombre": "MEDICINA 1",
-        "piso": "Primer Piso"
-      },
-      "consultorio": {
-        "codigo": "CONS-01",
-        "nombre": "Medicina General 01"
-      },
-      "servicio": {
-        "codigo": "22400",
-        "nombre": "CONSULTA EXTERNA - MEDICINA GENERAL"
-      },
-      "paciente": {
-        "dni": "71000003",
-        "nombres": "ROSA ELENA",
-        "apellido_paterno": "CASTILLO",
-        "apellido_materno": "VEGA"
-      },
-      "profesional": {
-        "dni": "87654321",
-        "nombre": "EDITH HIJAR GUERRA"
-      }
-    },
-    {
-      "id_cita": "CITA-0004",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "09:30:00",
-      "estado_cita": "PENDIENTE",
-      "ambiente": {
-        "codigo": "T0003",
-        "nombre": "MEDICINA 1",
-        "piso": "Primer Piso"
-      },
-      "consultorio": {
-        "codigo": "CONS-01",
-        "nombre": "Medicina General 01"
-      },
-      "servicio": {
-        "codigo": "22400",
-        "nombre": "CONSULTA EXTERNA - MEDICINA GENERAL"
-      },
-      "paciente": {
-        "dni": "71000004",
-        "nombres": "JOSE LUIS",
-        "apellido_paterno": "FLORES",
-        "apellido_materno": "DIAZ"
-      },
-      "profesional": {
-        "dni": "87654321",
-        "nombre": "EDITH HIJAR GUERRA"
-      }
-    },
-    {
-      "id_cita": "CITA-0005",
-      "fecha_cita": "2026-10-14",
+      "id_cita": "CITA-20261024-01-CONS-MED-02",
+      "fecha_cita": "2026-10-24",
       "hora_cita": "08:15:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0004",
-        "nombre": "OBSTETRICIA",
-        "piso": "Segundo Piso"
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-03",
-        "nombre": "Obstetricia 01"
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
       },
       "servicio": {
-        "codigo": "SERV-02",
-        "nombre": "OBSTETRICIA"
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
       },
       "paciente": {
-        "dni": "72000001",
-        "nombres": "KARLA SOFIA",
-        "apellido_paterno": "MENDOZA",
-        "apellido_materno": "PAREDES"
+        "dni": "99000043",
+        "nombres": "DIEGO ALEJANDRO",
+        "apellido_paterno": "FLORES",
+        "apellido_materno": "VARGAS"
       },
       "profesional": {
         "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
       }
     },
     {
-      "id_cita": "CITA-0006",
-      "fecha_cita": "2026-10-14",
+      "id_cita": "CITA-20261024-02-CONS-MED-02",
+      "fecha_cita": "2026-10-24",
       "hora_cita": "08:45:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0004",
-        "nombre": "OBSTETRICIA",
-        "piso": "Segundo Piso"
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-03",
-        "nombre": "Obstetricia 01"
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
       },
       "servicio": {
-        "codigo": "SERV-02",
-        "nombre": "OBSTETRICIA"
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
       },
       "paciente": {
-        "dni": "72000002",
-        "nombres": "JULIA MARIBEL",
-        "apellido_paterno": "SANCHEZ",
-        "apellido_materno": "CRUZ"
-      },
-      "profesional": {
-        "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
-      }
-    },
-    {
-      "id_cita": "CITA-0007",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "09:15:00",
-      "estado_cita": "PENDIENTE",
-      "ambiente": {
-        "codigo": "T0004",
-        "nombre": "OBSTETRICIA",
-        "piso": "Segundo Piso"
-      },
-      "consultorio": {
-        "codigo": "CONS-03",
-        "nombre": "Obstetricia 01"
-      },
-      "servicio": {
-        "codigo": "SERV-02",
-        "nombre": "OBSTETRICIA"
-      },
-      "paciente": {
-        "dni": "72000003",
-        "nombres": "PATRICIA ELENA",
-        "apellido_paterno": "RAMOS",
-        "apellido_materno": "LEON"
-      },
-      "profesional": {
-        "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
-      }
-    },
-    {
-      "id_cita": "CITA-0008",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "09:45:00",
-      "estado_cita": "PENDIENTE",
-      "ambiente": {
-        "codigo": "T0004",
-        "nombre": "OBSTETRICIA",
-        "piso": "Segundo Piso"
-      },
-      "consultorio": {
-        "codigo": "CONS-03",
-        "nombre": "Obstetricia 01"
-      },
-      "servicio": {
-        "codigo": "SERV-02",
-        "nombre": "OBSTETRICIA"
-      },
-      "paciente": {
-        "dni": "72000004",
-        "nombres": "DIANA CAROLINA",
-        "apellido_paterno": "NAVARRO",
-        "apellido_materno": "SOTO"
-      },
-      "profesional": {
-        "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
-      }
-    },
-    {
-      "id_cita": "CITA-0009",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "08:20:00",
-      "estado_cita": "PENDIENTE",
-      "ambiente": {
-        "codigo": "T0005",
-        "nombre": "PEDIATRIA",
-        "piso": "Primer Piso"
-      },
-      "consultorio": {
-        "codigo": "CONS-04",
-        "nombre": "Pediatría 01"
-      },
-      "servicio": {
-        "codigo": "SERV-03",
-        "nombre": "PEDIATRÍA"
-      },
-      "paciente": {
-        "dni": "73000001",
-        "nombres": "MATEO ANDRES",
-        "apellido_paterno": "GUTIERREZ",
-        "apellido_materno": "SALAS"
-      },
-      "profesional": {
-        "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
-      }
-    },
-    {
-      "id_cita": "CITA-0010",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "08:50:00",
-      "estado_cita": "PENDIENTE",
-      "ambiente": {
-        "codigo": "T0005",
-        "nombre": "PEDIATRIA",
-        "piso": "Primer Piso"
-      },
-      "consultorio": {
-        "codigo": "CONS-04",
-        "nombre": "Pediatría 01"
-      },
-      "servicio": {
-        "codigo": "SERV-03",
-        "nombre": "PEDIATRÍA"
-      },
-      "paciente": {
-        "dni": "73000002",
+        "dni": "99000044",
         "nombres": "VALERIA ISABEL",
-        "apellido_paterno": "RODRIGUEZ",
+        "apellido_paterno": "RAMOS",
         "apellido_materno": "PEREZ"
       },
       "profesional": {
         "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
       }
     },
     {
-      "id_cita": "CITA-0011",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "09:20:00",
+      "id_cita": "CITA-20261024-03-CONS-MED-02",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "09:15:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0005",
-        "nombre": "PEDIATRIA",
-        "piso": "Primer Piso"
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-04",
-        "nombre": "Pediatría 01"
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
       },
       "servicio": {
-        "codigo": "SERV-03",
-        "nombre": "PEDIATRÍA"
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
       },
       "paciente": {
-        "dni": "73000003",
-        "nombres": "THIAGO DANIEL",
-        "apellido_paterno": "MORALES",
-        "apellido_materno": "VEGA"
+        "dni": "99000045",
+        "nombres": "LUIS ALBERTO",
+        "apellido_paterno": "PAREDES",
+        "apellido_materno": "CAMPOS"
       },
       "profesional": {
         "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
       }
     },
     {
-      "id_cita": "CITA-0012",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "09:50:00",
+      "id_cita": "CITA-20261024-04-CONS-MED-02",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "09:45:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0005",
-        "nombre": "PEDIATRIA",
-        "piso": "Primer Piso"
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-04",
-        "nombre": "Pediatría 01"
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
       },
       "servicio": {
-        "codigo": "SERV-03",
-        "nombre": "PEDIATRÍA"
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
       },
       "paciente": {
-        "dni": "73000004",
-        "nombres": "EMILIA FERNANDA",
-        "apellido_paterno": "AGUILAR",
+        "dni": "99000046",
+        "nombres": "CAMILA NICOLE",
+        "apellido_paterno": "VEGA",
         "apellido_materno": "RAMOS"
       },
       "profesional": {
         "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
       }
     },
     {
-      "id_cita": "CITA-0013",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "08:25:00",
+      "id_cita": "CITA-20261024-05-CONS-MED-02",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "10:15:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0006",
-        "nombre": "ODONTOLOGÍA",
-        "piso": "Segundo Piso"
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-05",
-        "nombre": "Odontología 01"
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
       },
       "servicio": {
-        "codigo": "SERV-04",
-        "nombre": "ODONTOLOGÍA"
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
       },
       "paciente": {
-        "dni": "74000001",
-        "nombres": "DIEGO ALONSO",
+        "dni": "99000047",
+        "nombres": "FERNANDO JAVIER",
+        "apellido_paterno": "LEON",
+        "apellido_materno": "DIAZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-06-CONS-MED-02",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "10:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000048",
+        "nombres": "GABRIELA PAOLA",
+        "apellido_paterno": "MEDINA",
+        "apellido_materno": "SALAZAR"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-01-CONS-ODO-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "08:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000049",
+        "nombres": "MARTIN EDUARDO",
+        "apellido_paterno": "ESPINOZA",
+        "apellido_materno": "SILVA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-02-CONS-ODO-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "08:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000050",
+        "nombres": "NATALIA BEATRIZ",
         "apellido_paterno": "PEREZ",
-        "apellido_materno": "GARCIA"
+        "apellido_materno": "CASTILLO"
       },
       "profesional": {
         "dni": "91987654",
-        "nombre": "ROBERTO PEREZ DIAZ"
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
       }
     },
     {
-      "id_cita": "CITA-0014",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "08:55:00",
+      "id_cita": "CITA-20261024-03-CONS-ODO-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "09:20:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0006",
-        "nombre": "ODONTOLOGÍA",
-        "piso": "Segundo Piso"
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-05",
-        "nombre": "Odontología 01"
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
       },
       "servicio": {
-        "codigo": "SERV-04",
-        "nombre": "ODONTOLOGÍA"
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
       },
       "paciente": {
-        "dni": "74000002",
-        "nombres": "LUCIA FERNANDA",
+        "dni": "99000051",
+        "nombres": "CESAR AUGUSTO",
+        "apellido_paterno": "SILVA",
+        "apellido_materno": "PAREDES"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-04-CONS-ODO-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "09:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000052",
+        "nombres": "DANIELA ROCIO",
+        "apellido_paterno": "ORTIZ",
+        "apellido_materno": "SOTO"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-05-CONS-ODO-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "10:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000053",
+        "nombres": "HECTOR MANUEL",
+        "apellido_paterno": "QUISPE",
+        "apellido_materno": "HERRERA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261024-06-CONS-ODO-01",
+      "fecha_cita": "2026-10-24",
+      "hora_cita": "10:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000054",
+        "nombres": "SOFIA ALEJANDRA",
+        "apellido_paterno": "MENDOZA",
+        "apellido_materno": "ORTIZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-01-CONS-MED-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "08:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000055",
+        "nombres": "OSCAR ENRIQUE",
+        "apellido_paterno": "NAVARRO",
+        "apellido_materno": "SANCHEZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-02-CONS-MED-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "08:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000056",
+        "nombres": "MARIANA LUZ",
         "apellido_paterno": "TORRES",
-        "apellido_materno": "HUAMAN"
+        "apellido_materno": "VEGA"
       },
       "profesional": {
-        "dni": "91987654",
-        "nombre": "ROBERTO PEREZ DIAZ"
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
       }
     },
     {
-      "id_cita": "CITA-0015",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "09:25:00",
+      "id_cita": "CITA-20261025-03-CONS-MED-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "09:00:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0006",
-        "nombre": "ODONTOLOGÍA",
-        "piso": "Segundo Piso"
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-05",
-        "nombre": "Odontología 01"
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
       },
       "servicio": {
-        "codigo": "SERV-04",
-        "nombre": "ODONTOLOGÍA"
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
       },
       "paciente": {
-        "dni": "74000003",
-        "nombres": "BRUNO SEBASTIAN",
+        "dni": "99000057",
+        "nombres": "VICTOR HUGO",
         "apellido_paterno": "DIAZ",
+        "apellido_materno": "CHAVEZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-04-CONS-MED-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "09:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000058",
+        "nombres": "PAOLA ANDREA",
+        "apellido_paterno": "SOTO",
+        "apellido_materno": "ROMERO"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-05-CONS-MED-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "10:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000059",
+        "nombres": "RENATO SEBASTIAN",
+        "apellido_paterno": "CHAVEZ",
+        "apellido_materno": "QUISPE"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-06-CONS-MED-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "10:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000060",
+        "nombres": "EMILIA VICTORIA",
+        "apellido_paterno": "AGUILAR",
+        "apellido_materno": "GUTIERREZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-01-CONS-MED-02",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "08:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000061",
+        "nombres": "ALONSO DANIEL",
+        "apellido_paterno": "MORALES",
+        "apellido_materno": "LEON"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-02-CONS-MED-02",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "08:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000062",
+        "nombres": "FABIOLA MERCEDES",
+        "apellido_paterno": "RIVERA",
+        "apellido_materno": "AGUILAR"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-03-CONS-MED-02",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "09:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000063",
+        "nombres": "RAUL ANTONIO",
+        "apellido_paterno": "CAMPOS",
+        "apellido_materno": "REYES"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-04-CONS-MED-02",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "09:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000064",
+        "nombres": "IRENE CONSUELO",
+        "apellido_paterno": "CASTILLO",
+        "apellido_materno": "MENDOZA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-05-CONS-MED-02",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "10:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000065",
+        "nombres": "ANDREA MILAGROS",
+        "apellido_paterno": "SANCHEZ",
+        "apellido_materno": "ROJAS"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-06-CONS-MED-02",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "10:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000066",
+        "nombres": "MIGUEL ANGEL",
+        "apellido_paterno": "GUTIERREZ",
+        "apellido_materno": "MEDINA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-01-CONS-ODO-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "08:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000067",
+        "nombres": "ROSA ELENA",
+        "apellido_paterno": "ROJAS",
+        "apellido_materno": "MORALES"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-02-CONS-ODO-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "08:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000068",
+        "nombres": "JOSE LUIS",
+        "apellido_paterno": "CRUZ",
+        "apellido_materno": "RAMIREZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-03-CONS-ODO-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "09:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000069",
+        "nombres": "KARLA SOFIA",
+        "apellido_paterno": "VARGAS",
+        "apellido_materno": "NAVARRO"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-04-CONS-ODO-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "09:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000070",
+        "nombres": "JULIA MARIBEL",
+        "apellido_paterno": "SALAZAR",
+        "apellido_materno": "CRUZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-05-CONS-ODO-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "10:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000071",
+        "nombres": "PATRICIA ELENA",
+        "apellido_paterno": "HERRERA",
+        "apellido_materno": "ESPINOZA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261025-06-CONS-ODO-01",
+      "fecha_cita": "2026-10-25",
+      "hora_cita": "10:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000072",
+        "nombres": "DIANA CAROLINA",
+        "apellido_paterno": "ROMERO",
+        "apellido_materno": "RIVERA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-01-CONS-MED-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "08:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000073",
+        "nombres": "MATEO ANDRES",
+        "apellido_paterno": "REYES",
+        "apellido_materno": "FLORES"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-02-CONS-MED-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "08:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000074",
+        "nombres": "LUCIA FERNANDA",
+        "apellido_paterno": "RAMIREZ",
+        "apellido_materno": "TORRES"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-03-CONS-MED-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "09:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000075",
+        "nombres": "DIEGO ALEJANDRO",
+        "apellido_paterno": "FLORES",
+        "apellido_materno": "VARGAS"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-04-CONS-MED-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "09:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000076",
+        "nombres": "VALERIA ISABEL",
+        "apellido_paterno": "RAMOS",
+        "apellido_materno": "PEREZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-05-CONS-MED-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "10:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000077",
+        "nombres": "LUIS ALBERTO",
+        "apellido_paterno": "PAREDES",
+        "apellido_materno": "CAMPOS"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-06-CONS-MED-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "10:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000078",
+        "nombres": "CAMILA NICOLE",
+        "apellido_paterno": "VEGA",
+        "apellido_materno": "RAMOS"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-01-CONS-MED-02",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "08:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000079",
+        "nombres": "FERNANDO JAVIER",
+        "apellido_paterno": "LEON",
+        "apellido_materno": "DIAZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-02-CONS-MED-02",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "08:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000080",
+        "nombres": "GABRIELA PAOLA",
+        "apellido_paterno": "MEDINA",
+        "apellido_materno": "SALAZAR"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-03-CONS-MED-02",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "09:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000081",
+        "nombres": "MARTIN EDUARDO",
+        "apellido_paterno": "ESPINOZA",
+        "apellido_materno": "SILVA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-04-CONS-MED-02",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "09:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000082",
+        "nombres": "NATALIA BEATRIZ",
+        "apellido_paterno": "PEREZ",
+        "apellido_materno": "CASTILLO"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-05-CONS-MED-02",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "10:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000083",
+        "nombres": "CESAR AUGUSTO",
+        "apellido_paterno": "SILVA",
+        "apellido_materno": "PAREDES"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-06-CONS-MED-02",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "10:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000084",
+        "nombres": "DANIELA ROCIO",
+        "apellido_paterno": "ORTIZ",
+        "apellido_materno": "SOTO"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-01-CONS-ODO-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "08:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000085",
+        "nombres": "HECTOR MANUEL",
+        "apellido_paterno": "QUISPE",
+        "apellido_materno": "HERRERA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-02-CONS-ODO-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "08:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000086",
+        "nombres": "SOFIA ALEJANDRA",
+        "apellido_paterno": "MENDOZA",
+        "apellido_materno": "ORTIZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-03-CONS-ODO-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "09:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000087",
+        "nombres": "OSCAR ENRIQUE",
+        "apellido_paterno": "NAVARRO",
+        "apellido_materno": "SANCHEZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-04-CONS-ODO-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "09:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000088",
+        "nombres": "MARIANA LUZ",
+        "apellido_paterno": "TORRES",
+        "apellido_materno": "VEGA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-05-CONS-ODO-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "10:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000089",
+        "nombres": "VICTOR HUGO",
+        "apellido_paterno": "DIAZ",
+        "apellido_materno": "CHAVEZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261026-06-CONS-ODO-01",
+      "fecha_cita": "2026-10-26",
+      "hora_cita": "10:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000090",
+        "nombres": "PAOLA ANDREA",
+        "apellido_paterno": "SOTO",
+        "apellido_materno": "ROMERO"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-01-CONS-MED-01",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "08:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000091",
+        "nombres": "RENATO SEBASTIAN",
+        "apellido_paterno": "CHAVEZ",
+        "apellido_materno": "QUISPE"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-02-CONS-MED-01",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "08:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000092",
+        "nombres": "EMILIA VICTORIA",
+        "apellido_paterno": "AGUILAR",
+        "apellido_materno": "GUTIERREZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-03-CONS-MED-01",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "09:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000093",
+        "nombres": "ALONSO DANIEL",
+        "apellido_paterno": "MORALES",
+        "apellido_materno": "LEON"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-04-CONS-MED-01",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "09:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000094",
+        "nombres": "FABIOLA MERCEDES",
+        "apellido_paterno": "RIVERA",
+        "apellido_materno": "AGUILAR"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-05-CONS-MED-01",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "10:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000095",
+        "nombres": "RAUL ANTONIO",
+        "apellido_paterno": "CAMPOS",
+        "apellido_materno": "REYES"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-06-CONS-MED-01",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "10:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000096",
+        "nombres": "IRENE CONSUELO",
+        "apellido_paterno": "CASTILLO",
+        "apellido_materno": "MENDOZA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-01-CONS-MED-02",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "08:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000097",
+        "nombres": "ANDREA MILAGROS",
+        "apellido_paterno": "SANCHEZ",
+        "apellido_materno": "ROJAS"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-02-CONS-MED-02",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "08:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000098",
+        "nombres": "MIGUEL ANGEL",
+        "apellido_paterno": "GUTIERREZ",
+        "apellido_materno": "MEDINA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-03-CONS-MED-02",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "09:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000099",
+        "nombres": "ROSA ELENA",
+        "apellido_paterno": "ROJAS",
+        "apellido_materno": "MORALES"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-04-CONS-MED-02",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "09:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000100",
+        "nombres": "JOSE LUIS",
+        "apellido_paterno": "CRUZ",
+        "apellido_materno": "RAMIREZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-05-CONS-MED-02",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "10:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000101",
+        "nombres": "KARLA SOFIA",
+        "apellido_paterno": "VARGAS",
+        "apellido_materno": "NAVARRO"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-06-CONS-MED-02",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "10:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000102",
+        "nombres": "JULIA MARIBEL",
+        "apellido_paterno": "SALAZAR",
+        "apellido_materno": "CRUZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-01-CONS-ODO-01",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "08:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000103",
+        "nombres": "PATRICIA ELENA",
+        "apellido_paterno": "HERRERA",
+        "apellido_materno": "ESPINOZA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-02-CONS-ODO-01",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "08:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000104",
+        "nombres": "DIANA CAROLINA",
+        "apellido_paterno": "ROMERO",
+        "apellido_materno": "RIVERA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261027-03-CONS-ODO-01",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "09:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000105",
+        "nombres": "MATEO ANDRES",
+        "apellido_paterno": "REYES",
         "apellido_materno": "FLORES"
       },
       "profesional": {
         "dni": "91987654",
-        "nombre": "ROBERTO PEREZ DIAZ"
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
       }
     },
     {
-      "id_cita": "CITA-0016",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "09:55:00",
+      "id_cita": "CITA-20261027-04-CONS-ODO-01",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "09:50:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0006",
-        "nombre": "ODONTOLOGÍA",
-        "piso": "Segundo Piso"
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-05",
-        "nombre": "Odontología 01"
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
       },
       "servicio": {
-        "codigo": "SERV-04",
-        "nombre": "ODONTOLOGÍA"
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
       },
       "paciente": {
-        "dni": "74000004",
-        "nombres": "CAMILA ALEJANDRA",
-        "apellido_paterno": "VARGAS",
-        "apellido_materno": "CASTRO"
+        "dni": "99000106",
+        "nombres": "LUCIA FERNANDA",
+        "apellido_paterno": "RAMIREZ",
+        "apellido_materno": "TORRES"
       },
       "profesional": {
         "dni": "91987654",
-        "nombre": "ROBERTO PEREZ DIAZ"
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
       }
     },
     {
-      "id_cita": "CITA-0017",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "10:00:00",
-      "estado_cita": "PENDIENTE",
-      "ambiente": {
-        "codigo": "T0005",
-        "nombre": "PEDIATRIA",
-        "piso": "Primer Piso"
-      },
-      "consultorio": {
-        "codigo": "CONS-04",
-        "nombre": "Pediatría 01"
-      },
-      "servicio": {
-        "codigo": "SERV-03",
-        "nombre": "PEDIATRÍA"
-      },
-      "paciente": {
-        "dni": "88765245",
-        "nombres": "KEVIN",
-        "apellido_paterno": "PINCHI",
-        "apellido_materno": "GARCIA"
-      },
-      "profesional": {
-        "dni": "88765256",
-        "nombre": "ROBERTO PEREZ DIAZ"
-      }
-    },
-    {
-      "id_cita": "CITA-0018",
-      "fecha_cita": "2026-10-14",
+      "id_cita": "CITA-20261027-05-CONS-ODO-01",
+      "fecha_cita": "2026-10-27",
       "hora_cita": "10:20:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0005",
-        "nombre": "PEDIATRIA",
-        "piso": "Primer Piso"
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-04",
-        "nombre": "Pediatría 01"
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
       },
       "servicio": {
-        "codigo": "SERV-03",
-        "nombre": "PEDIATRÍA"
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
       },
       "paciente": {
-        "dni": "73000004",
-        "nombres": " ALEXANDER",
-        "apellido_paterno": "GONZALES",
-        "apellido_materno": "LLUEN"
+        "dni": "99000107",
+        "nombres": "DIEGO ALEJANDRO",
+        "apellido_paterno": "FLORES",
+        "apellido_materno": "VARGAS"
       },
       "profesional": {
-        "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
       }
     },
     {
-      "id_cita": "CITA-0019",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "10:40:00",
+      "id_cita": "CITA-20261027-06-CONS-ODO-01",
+      "fecha_cita": "2026-10-27",
+      "hora_cita": "10:50:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0005",
-        "nombre": "PEDIATRIA",
-        "piso": "Primer Piso"
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-04",
-        "nombre": "Pediatría 01"
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
       },
       "servicio": {
-        "codigo": "SERV-03",
-        "nombre": "PEDIATRÍA"
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
       },
       "paciente": {
-        "dni": "73000004",
-        "nombres": "JORGE",
-        "apellido_paterno": "LOPEZ",
+        "dni": "99000108",
+        "nombres": "VALERIA ISABEL",
+        "apellido_paterno": "RAMOS",
+        "apellido_materno": "PEREZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-01-CONS-MED-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "08:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000109",
+        "nombres": "LUIS ALBERTO",
+        "apellido_paterno": "PAREDES",
+        "apellido_materno": "CAMPOS"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-02-CONS-MED-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "08:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000110",
+        "nombres": "CAMILA NICOLE",
+        "apellido_paterno": "VEGA",
         "apellido_materno": "RAMOS"
       },
       "profesional": {
-        "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
       }
     },
     {
-      "id_cita": "CITA-0020",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "11:00:00",
+      "id_cita": "CITA-20261028-03-CONS-MED-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "09:00:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0005",
-        "nombre": "PEDIATRIA",
-        "piso": "Primer Piso"
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-04",
-        "nombre": "Pediatría 01"
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
       },
       "servicio": {
-        "codigo": "SERV-03",
-        "nombre": "PEDIATRÍA"
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
       },
       "paciente": {
-        "dni": "73000096",
-        "nombres": "LUIS",
-        "apellido_paterno": "GONZALES",
+        "dni": "99000111",
+        "nombres": "FERNANDO JAVIER",
+        "apellido_paterno": "LEON",
+        "apellido_materno": "DIAZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-04-CONS-MED-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "09:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000112",
+        "nombres": "GABRIELA PAOLA",
+        "apellido_paterno": "MEDINA",
+        "apellido_materno": "SALAZAR"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-05-CONS-MED-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "10:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000113",
+        "nombres": "MARTIN EDUARDO",
+        "apellido_paterno": "ESPINOZA",
+        "apellido_materno": "SILVA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-06-CONS-MED-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "10:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000114",
+        "nombres": "NATALIA BEATRIZ",
+        "apellido_paterno": "PEREZ",
+        "apellido_materno": "CASTILLO"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-01-CONS-MED-02",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "08:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000115",
+        "nombres": "CESAR AUGUSTO",
+        "apellido_paterno": "SILVA",
+        "apellido_materno": "PAREDES"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-02-CONS-MED-02",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "08:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000116",
+        "nombres": "DANIELA ROCIO",
+        "apellido_paterno": "ORTIZ",
+        "apellido_materno": "SOTO"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-03-CONS-MED-02",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "09:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000117",
+        "nombres": "HECTOR MANUEL",
+        "apellido_paterno": "QUISPE",
+        "apellido_materno": "HERRERA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-04-CONS-MED-02",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "09:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000118",
+        "nombres": "SOFIA ALEJANDRA",
+        "apellido_paterno": "MENDOZA",
+        "apellido_materno": "ORTIZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-05-CONS-MED-02",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "10:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000119",
+        "nombres": "OSCAR ENRIQUE",
+        "apellido_paterno": "NAVARRO",
+        "apellido_materno": "SANCHEZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-06-CONS-MED-02",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "10:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000120",
+        "nombres": "MARIANA LUZ",
+        "apellido_paterno": "TORRES",
+        "apellido_materno": "VEGA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-01-CONS-ODO-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "08:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000121",
+        "nombres": "VICTOR HUGO",
+        "apellido_paterno": "DIAZ",
+        "apellido_materno": "CHAVEZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-02-CONS-ODO-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "08:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000122",
+        "nombres": "PAOLA ANDREA",
+        "apellido_paterno": "SOTO",
+        "apellido_materno": "ROMERO"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-03-CONS-ODO-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "09:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000123",
+        "nombres": "RENATO SEBASTIAN",
+        "apellido_paterno": "CHAVEZ",
+        "apellido_materno": "QUISPE"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-04-CONS-ODO-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "09:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000124",
+        "nombres": "EMILIA VICTORIA",
+        "apellido_paterno": "AGUILAR",
+        "apellido_materno": "GUTIERREZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-05-CONS-ODO-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "10:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000125",
+        "nombres": "ALONSO DANIEL",
+        "apellido_paterno": "MORALES",
+        "apellido_materno": "LEON"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261028-06-CONS-ODO-01",
+      "fecha_cita": "2026-10-28",
+      "hora_cita": "10:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000126",
+        "nombres": "FABIOLA MERCEDES",
+        "apellido_paterno": "RIVERA",
+        "apellido_materno": "AGUILAR"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-01-CONS-MED-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "08:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000127",
+        "nombres": "RAUL ANTONIO",
+        "apellido_paterno": "CAMPOS",
+        "apellido_materno": "REYES"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-02-CONS-MED-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "08:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000128",
+        "nombres": "IRENE CONSUELO",
+        "apellido_paterno": "CASTILLO",
+        "apellido_materno": "MENDOZA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-03-CONS-MED-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "09:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000129",
+        "nombres": "ANDREA MILAGROS",
+        "apellido_paterno": "SANCHEZ",
+        "apellido_materno": "ROJAS"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-04-CONS-MED-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "09:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000130",
+        "nombres": "MIGUEL ANGEL",
+        "apellido_paterno": "GUTIERREZ",
+        "apellido_materno": "MEDINA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-05-CONS-MED-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "10:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000131",
+        "nombres": "ROSA ELENA",
+        "apellido_paterno": "ROJAS",
+        "apellido_materno": "MORALES"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-06-CONS-MED-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "10:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000132",
+        "nombres": "JOSE LUIS",
+        "apellido_paterno": "CRUZ",
+        "apellido_materno": "RAMIREZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-01-CONS-MED-02",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "08:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000133",
+        "nombres": "KARLA SOFIA",
+        "apellido_paterno": "VARGAS",
+        "apellido_materno": "NAVARRO"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-02-CONS-MED-02",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "08:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000134",
+        "nombres": "JULIA MARIBEL",
+        "apellido_paterno": "SALAZAR",
+        "apellido_materno": "CRUZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-03-CONS-MED-02",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "09:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000135",
+        "nombres": "PATRICIA ELENA",
+        "apellido_paterno": "HERRERA",
+        "apellido_materno": "ESPINOZA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-04-CONS-MED-02",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "09:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000136",
+        "nombres": "DIANA CAROLINA",
+        "apellido_paterno": "ROMERO",
+        "apellido_materno": "RIVERA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-05-CONS-MED-02",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "10:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000137",
+        "nombres": "MATEO ANDRES",
+        "apellido_paterno": "REYES",
+        "apellido_materno": "FLORES"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-06-CONS-MED-02",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "10:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000138",
+        "nombres": "LUCIA FERNANDA",
+        "apellido_paterno": "RAMIREZ",
+        "apellido_materno": "TORRES"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-01-CONS-ODO-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "08:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000139",
+        "nombres": "DIEGO ALEJANDRO",
+        "apellido_paterno": "FLORES",
+        "apellido_materno": "VARGAS"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-02-CONS-ODO-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "08:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000140",
+        "nombres": "VALERIA ISABEL",
+        "apellido_paterno": "RAMOS",
+        "apellido_materno": "PEREZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-03-CONS-ODO-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "09:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000141",
+        "nombres": "LUIS ALBERTO",
+        "apellido_paterno": "PAREDES",
+        "apellido_materno": "CAMPOS"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-04-CONS-ODO-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "09:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000142",
+        "nombres": "CAMILA NICOLE",
+        "apellido_paterno": "VEGA",
+        "apellido_materno": "RAMOS"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-05-CONS-ODO-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "10:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000143",
+        "nombres": "FERNANDO JAVIER",
+        "apellido_paterno": "LEON",
+        "apellido_materno": "DIAZ"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261029-06-CONS-ODO-01",
+      "fecha_cita": "2026-10-29",
+      "hora_cita": "10:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000144",
+        "nombres": "GABRIELA PAOLA",
+        "apellido_paterno": "MEDINA",
+        "apellido_materno": "SALAZAR"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-01-CONS-MED-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "08:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000145",
+        "nombres": "MARTIN EDUARDO",
+        "apellido_paterno": "ESPINOZA",
+        "apellido_materno": "SILVA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-02-CONS-MED-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "08:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000146",
+        "nombres": "NATALIA BEATRIZ",
+        "apellido_paterno": "PEREZ",
+        "apellido_materno": "CASTILLO"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-03-CONS-MED-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "09:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000147",
+        "nombres": "CESAR AUGUSTO",
+        "apellido_paterno": "SILVA",
+        "apellido_materno": "PAREDES"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-04-CONS-MED-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "09:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000148",
+        "nombres": "DANIELA ROCIO",
+        "apellido_paterno": "ORTIZ",
+        "apellido_materno": "SOTO"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-05-CONS-MED-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "10:00:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000149",
+        "nombres": "HECTOR MANUEL",
+        "apellido_paterno": "QUISPE",
+        "apellido_materno": "HERRERA"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-06-CONS-MED-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "10:30:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000150",
+        "nombres": "SOFIA ALEJANDRA",
+        "apellido_paterno": "MENDOZA",
+        "apellido_materno": "ORTIZ"
+      },
+      "profesional": {
+        "dni": "87654321",
+        "nombre": "DRA. ELENA RAMIREZ TORRES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-01-CONS-MED-02",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "08:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000151",
+        "nombres": "OSCAR ENRIQUE",
+        "apellido_paterno": "NAVARRO",
+        "apellido_materno": "SANCHEZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-02-CONS-MED-02",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "08:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000152",
+        "nombres": "MARIANA LUZ",
+        "apellido_paterno": "TORRES",
+        "apellido_materno": "VEGA"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-03-CONS-MED-02",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "09:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000153",
+        "nombres": "VICTOR HUGO",
+        "apellido_paterno": "DIAZ",
+        "apellido_materno": "CHAVEZ"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-04-CONS-MED-02",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "09:45:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000154",
+        "nombres": "PAOLA ANDREA",
+        "apellido_paterno": "SOTO",
+        "apellido_materno": "ROMERO"
+      },
+      "profesional": {
+        "dni": "88765432",
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-05-CONS-MED-02",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "10:15:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
+      },
+      "servicio": {
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
+      },
+      "paciente": {
+        "dni": "99000155",
+        "nombres": "RENATO SEBASTIAN",
+        "apellido_paterno": "CHAVEZ",
         "apellido_materno": "QUISPE"
       },
       "profesional": {
         "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
       }
     },
     {
-      "id_cita": "CITA-0021",
-      "fecha_cita": "2026-10-14",
-      "hora_cita": "11:20:00",
+      "id_cita": "CITA-20261030-06-CONS-MED-02",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "10:45:00",
       "estado_cita": "PENDIENTE",
       "ambiente": {
-        "codigo": "T0005",
-        "nombre": "PEDIATRIA",
-        "piso": "Primer Piso"
+        "codigo": "AMB-01",
+        "nombre": "Consulta Externa",
+        "piso": "1"
       },
       "consultorio": {
-        "codigo": "CONS-04",
-        "nombre": "Pediatría 01"
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02"
       },
       "servicio": {
-        "codigo": "SERV-03",
-        "nombre": "PEDIATRÍA"
+        "codigo": "SERV-01",
+        "nombre": "Consulta externa"
       },
       "paciente": {
-        "dni": "73000096",
-        "nombres": "SERGIO",
-        "apellido_paterno": "CANALES",
-        "apellido_materno": "QUISPE"
+        "dni": "99000156",
+        "nombres": "EMILIA VICTORIA",
+        "apellido_paterno": "AGUILAR",
+        "apellido_materno": "GUTIERREZ"
       },
       "profesional": {
         "dni": "88765432",
-        "nombre": "ANA LOPEZ RAMIREZ"
+        "nombre": "DR. CARLOS SANCHEZ PAREDES"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-01-CONS-ODO-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "08:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000157",
+        "nombres": "ALONSO DANIEL",
+        "apellido_paterno": "MORALES",
+        "apellido_materno": "LEON"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-02-CONS-ODO-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "08:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000158",
+        "nombres": "FABIOLA MERCEDES",
+        "apellido_paterno": "RIVERA",
+        "apellido_materno": "AGUILAR"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-03-CONS-ODO-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "09:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000159",
+        "nombres": "RAUL ANTONIO",
+        "apellido_paterno": "CAMPOS",
+        "apellido_materno": "REYES"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-04-CONS-ODO-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "09:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000160",
+        "nombres": "IRENE CONSUELO",
+        "apellido_paterno": "CASTILLO",
+        "apellido_materno": "MENDOZA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-05-CONS-ODO-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "10:20:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000161",
+        "nombres": "ANDREA MILAGROS",
+        "apellido_paterno": "SANCHEZ",
+        "apellido_materno": "ROJAS"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
+      }
+    },
+    {
+      "id_cita": "CITA-20261030-06-CONS-ODO-01",
+      "fecha_cita": "2026-10-30",
+      "hora_cita": "10:50:00",
+      "estado_cita": "PENDIENTE",
+      "ambiente": {
+        "codigo": "AMB-02",
+        "nombre": "Odontología",
+        "piso": "1"
+      },
+      "consultorio": {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01"
+      },
+      "servicio": {
+        "codigo": "SERV-02",
+        "nombre": "Odontología"
+      },
+      "paciente": {
+        "dni": "99000162",
+        "nombres": "MIGUEL ANGEL",
+        "apellido_paterno": "GUTIERREZ",
+        "apellido_materno": "MEDINA"
+      },
+      "profesional": {
+        "dni": "91987654",
+        "nombre": "DR. ROBERTO PEREZ DIAZ"
       }
     }
-
   ]
 }

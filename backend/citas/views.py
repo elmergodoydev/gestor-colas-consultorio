@@ -3,6 +3,8 @@ from datetime import date, datetime
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from citas.providers.ipress_provider import obtener_ipress
+from citas.serializers import ValidarRENIPRESSSerializer
 
 from rest_framework import generics, status
 from rest_framework.exceptions import ValidationError
@@ -19,6 +21,7 @@ from citas.models import (
     ConfiguracionIPRESS,
     EquipoActivado,
 )
+
 from citas.authentication import EquipoTokenAuthentication, EsEquipoActivado
 from citas.serializers import (
     GenerarCodigoActivacionSerializer,
@@ -30,14 +33,20 @@ from citas.models import (
     Consultorio,
     Establecimiento,
     EventoLlamado,
+    Monitor,
+    Sincronizacion,
     Turno,
 )
+
 from citas.serializers import (
     CitaSerializer,
     ConsultorioSerializer,
     CrearTurnoSerializer,
+    EstablecimientoSerializer,
     TurnoSerializer,
 )
+
+from django.db.models.deletion import ProtectedError
 
 
 def obtener_establecimiento(request):
@@ -63,6 +72,248 @@ class ConsultorioListAPIView(generics.ListAPIView):
         return Consultorio.objects.filter(
             establecimiento=establecimiento
         ).order_by("nombre")
+
+class SincronizarConsultoriosIPRESSAPIView(APIView):
+    """
+    Actualiza el catálogo de consultorios de una IPRESS
+    usando el proveedor independiente de IPRESS.
+
+    No elimina consultorios ni modifica las citas existentes.
+    """
+
+    permission_classes = [AllowAny]
+
+    def post(self, request, pk):
+        establecimiento = get_object_or_404(
+            Establecimiento,
+            pk=pk,
+        )
+
+        try:
+            datos_ipress = obtener_ipress(
+                establecimiento.codigo_renipress
+            )
+        except (FileNotFoundError, ValueError):
+            return Response(
+                {
+                    "mensaje": (
+                        "El proveedor del catálogo no está disponible "
+                        "o sus datos no tienen un formato válido."
+                    )
+                },
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+
+        if datos_ipress is None:
+            return Response(
+                {
+                    "mensaje": (
+                        "No se encontró el catálogo de esta IPRESS "
+                        "en el proveedor de pruebas."
+                    )
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        catalogo = datos_ipress.get("consultorios", [])
+
+        if not isinstance(catalogo, list):
+            return Response(
+                {"mensaje": "El catálogo de consultorios no es válido."},
+                status=status.HTTP_502_BAD_GATEWAY,
+            )
+
+        # Validar todo el catálogo antes de escribir en la base de datos.
+        consultorios_preparados = []
+        codigos_vistos = set()
+
+        for item in catalogo:
+            if not isinstance(item, dict):
+                return Response(
+                    {
+                        "mensaje": (
+                            "El catálogo contiene un consultorio "
+                            "con formato inválido."
+                        )
+                    },
+                    status=status.HTTP_502_BAD_GATEWAY,
+                )
+
+            codigo = str(item.get("codigo") or "").strip()
+            nombre = str(item.get("nombre") or "").strip()
+
+            if not codigo or not nombre:
+                return Response(
+                    {
+                        "mensaje": (
+                            "Cada consultorio debe tener código y nombre."
+                        )
+                    },
+                    status=status.HTTP_502_BAD_GATEWAY,
+                )
+
+            if codigo in codigos_vistos:
+                return Response(
+                    {
+                        "mensaje": (
+                            "El catálogo contiene códigos de consultorio "
+                            "duplicados."
+                        )
+                    },
+                    status=status.HTTP_502_BAD_GATEWAY,
+                )
+
+            codigos_vistos.add(codigo)
+
+            campos = {
+                "codigo_ambiente": (
+                    str(item.get("codigo_ambiente") or "").strip()
+                ),
+                "nombre_ambiente": (
+                    str(item.get("nombre_ambiente") or "").strip()
+                ),
+                "piso_ambiente": (
+                    str(item.get("piso_ambiente") or "").strip()
+                ),
+                "codigo_servicio": (
+                    str(item.get("codigo_servicio") or "").strip()
+                ),
+                "nombre_servicio": (
+                    str(item.get("nombre_servicio") or "").strip()
+                ),
+            }
+
+            if (
+                len(codigo) > 50
+                or len(nombre) > 150
+                or len(campos["codigo_ambiente"]) > 50
+                or len(campos["nombre_ambiente"]) > 150
+                or len(campos["piso_ambiente"]) > 100
+                or len(campos["codigo_servicio"]) > 50
+                or len(campos["nombre_servicio"]) > 200
+            ):
+                return Response(
+                    {
+                        "mensaje": (
+                            "Un consultorio supera la longitud permitida "
+                            "por el modelo de datos."
+                        )
+                    },
+                    status=status.HTTP_502_BAD_GATEWAY,
+                )
+
+            consultorios_preparados.append({
+                "codigo": codigo,
+                "nombre": nombre,
+                **campos,
+            })
+
+        creados = 0
+        actualizados = 0
+        consultorios_respuesta = []
+
+        with transaction.atomic():
+            for item in consultorios_preparados:
+                codigo = item.pop("codigo")
+                nombre = item.pop("nombre")
+
+                consultorio, creado = (
+                    Consultorio.objects.update_or_create(
+                        establecimiento=establecimiento,
+                        codigo=codigo,
+                        defaults={
+                            "nombre": nombre,
+                            **item,
+                        },
+                    )
+                )
+
+                if creado:
+                    creados += 1
+                else:
+                    actualizados += 1
+
+                consultorios_respuesta.append({
+                    "id": consultorio.id,
+                    "codigo": consultorio.codigo,
+                    "nombre": consultorio.nombre,
+                    "codigo_ambiente": consultorio.codigo_ambiente,
+                    "nombre_ambiente": consultorio.nombre_ambiente,
+                    "piso_ambiente": consultorio.piso_ambiente,
+                    "codigo_servicio": consultorio.codigo_servicio,
+                    "nombre_servicio": consultorio.nombre_servicio,
+                })
+
+        return Response(
+            {
+                "mensaje": "Catálogo de consultorios actualizado.",
+                "establecimiento": {
+                    "id": establecimiento.id,
+                    "codigo_renipress": (
+                        establecimiento.codigo_renipress
+                    ),
+                    "nombre_ipress": establecimiento.nombre_ipress,
+                },
+                "total": len(consultorios_respuesta),
+                "creados": creados,
+                "actualizados": actualizados,
+                "consultorios": consultorios_respuesta,
+                "fuente": datos_ipress.get("fuente"),
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class EquiposActivadosIPRESSAPIView(APIView):
+    """
+    Lista los puestos de atención activados pertenecientes
+    a una IPRESS.
+    """
+
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        establecimiento = get_object_or_404(
+            Establecimiento,
+            pk=pk,
+        )
+
+        equipos = (
+            EquipoActivado.objects
+            .filter(
+                establecimiento=establecimiento,
+                activo=True,
+            )
+            .select_related("consultorio")
+            .order_by("consultorio__nombre", "nombre_equipo")
+        )
+
+        resultados = []
+
+        for equipo in equipos:
+            resultados.append({
+                "id": equipo.pk,
+                "equipo_id": str(equipo.identificador_equipo),
+                "nombre_equipo": equipo.nombre_equipo,
+                "activo": equipo.activo,
+                "activado_en": equipo.activado_en.isoformat(),
+                "actualizado_en": equipo.actualizado_en.isoformat(),
+                "consultorio": {
+                    "id": equipo.consultorio_id,
+                    "codigo": equipo.consultorio.codigo,
+                    "nombre": equipo.consultorio.nombre,
+                },
+            })
+
+        return Response({
+            "establecimiento": {
+                "id": establecimiento.id,
+                "codigo_renipress": establecimiento.codigo_renipress,
+                "nombre_ipress": establecimiento.nombre_ipress,
+            },
+            "total": len(resultados),
+            "equipos": resultados,
+        })
 
 
 class CitaListAPIView(generics.ListAPIView):
@@ -410,6 +661,39 @@ class CanjearCodigoActivacionAPIView(APIView):
         )
 
 
+class DesactivarEquipoAPIView(APIView):
+    """Revoca la activación del equipo autenticado actualmente."""
+
+    authentication_classes = [EquipoTokenAuthentication]
+    permission_classes = [EsEquipoActivado]
+
+    @transaction.atomic
+    def post(self, request):
+        equipo = (
+            EquipoActivado.objects
+            .select_for_update()
+            .filter(pk=request.user.pk, activo=True)
+            .first()
+        )
+
+        if equipo is None:
+            raise ValidationError({
+                "detail": "El equipo ya está desactivado o la credencial no es válida."
+            })
+
+        equipo.activo = False
+        equipo.save(update_fields=["activo", "actualizado_en"])
+
+        return Response(
+            {
+                "mensaje": "Equipo desactivado correctamente.",
+                "equipo_id": str(equipo.identificador_equipo),
+                "activo": False,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
 class TurnoAtendidosListAPIView(generics.ListAPIView):
     serializer_class = TurnoSerializer
     authentication_classes = [EquipoTokenAuthentication]
@@ -430,6 +714,308 @@ class TurnoAtendidosListAPIView(generics.ListAPIView):
             .order_by("-actualizado_en", "-id")
         )
 
+class ValidarIPRESSAPIView(APIView):
+    """
+    Valida un código RENIPRESS y devuelve los datos de la IPRESS.
+
+    Actualmente usa el proveedor JSON de pruebas.
+    No consulta todavía la API oficial de SIHCE.
+    """
+
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = ValidarRENIPRESSSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        codigo = serializer.validated_data["codigo_renipress"]
+
+        try:
+            datos_ipress = obtener_ipress(codigo)
+        except (FileNotFoundError, ValueError):
+            return Response(
+                {
+                    "valida": False,
+                    "detalle": (
+                        "El proveedor de pruebas no está disponible "
+                        "o el archivo JSON no es válido."
+                    ),
+                },
+                status=503,
+            )
+
+        if datos_ipress is None:
+            return Response(
+                {
+                    "valida": False,
+                    "detalle": (
+                        "El RENIPRESS no se encuentra en el proveedor "
+                        "de pruebas."
+                    ),
+                },
+                status=404,
+            )
+
+        return Response(
+            {
+                "valida": True,
+                "establecimiento": {
+                    "codigo_renipress": (
+                        datos_ipress["codigo_renipress"]
+                    ),
+                    "nombre_ipress": datos_ipress["nombre_ipress"],
+                },
+                "consultorios": datos_ipress["consultorios"],
+                "fuente": datos_ipress["fuente"],
+            },
+            status=200,
+        )
+
+
+class IPRESSListCreateAPIView(APIView):
+    """
+    Lista las IPRESS registradas y permite registrar una nueva.
+
+    La información del establecimiento y su catálogo se obtienen
+    del proveedor configurado, actualmente el JSON de pruebas.
+    """
+
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        establecimientos = Establecimiento.objects.all().order_by(
+            "nombre_ipress"
+        )
+
+        serializer = EstablecimientoSerializer(
+            establecimientos,
+            many=True,
+        )
+
+        return Response(serializer.data)
+
+    @transaction.atomic
+    def post(self, request):
+        serializer = ValidarRENIPRESSSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        codigo = serializer.validated_data["codigo_renipress"]
+
+        if Establecimiento.objects.filter(
+            codigo_renipress=codigo
+        ).exists():
+            return Response(
+                {
+                    "mensaje": (
+                        "Ya existe una IPRESS registrada con ese "
+                        "código RENIPRESS."
+                    )
+                },
+                status=status.HTTP_409_CONFLICT,
+            )
+
+        try:
+            datos_ipress = obtener_ipress(codigo)
+        except (FileNotFoundError, ValueError):
+            return Response(
+                {
+                    "mensaje": (
+                        "El proveedor de IPRESS no está disponible "
+                        "o sus datos no tienen un formato válido."
+                    )
+                },
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+
+        if datos_ipress is None:
+            return Response(
+                {
+                    "mensaje": (
+                        "No se encontró el RENIPRESS en el proveedor "
+                        "de pruebas."
+                    )
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        nombre = str(
+            datos_ipress.get("nombre_ipress") or ""
+        ).strip()
+
+        consultorios = datos_ipress.get("consultorios", [])
+
+        if not nombre or not isinstance(consultorios, list):
+            return Response(
+                {
+                    "mensaje": (
+                        "Los datos del establecimiento o su catálogo "
+                        "de consultorios no son válidos."
+                    )
+                },
+                status=status.HTTP_502_BAD_GATEWAY,
+            )
+
+        establecimiento = Establecimiento.objects.create(
+            codigo_renipress=codigo,
+            nombre_ipress=nombre,
+        )
+
+        consultorios_creados = 0
+
+        for item in consultorios:
+            if not isinstance(item, dict):
+                raise ValidationError(
+                    "El catálogo contiene un consultorio no válido."
+                )
+
+            codigo_consultorio = str(
+                item.get("codigo") or ""
+            ).strip()
+
+            nombre_consultorio = str(
+                item.get("nombre") or ""
+            ).strip()
+
+            if not codigo_consultorio or not nombre_consultorio:
+                raise ValidationError(
+                    "Cada consultorio debe tener código y nombre."
+                )
+
+            _, creado = Consultorio.objects.update_or_create(
+                establecimiento=establecimiento,
+                codigo=codigo_consultorio,
+                defaults={
+                    "nombre": nombre_consultorio,
+                    "codigo_ambiente": str(
+                        item.get("codigo_ambiente") or ""
+                    ).strip(),
+                    "nombre_ambiente": str(
+                        item.get("nombre_ambiente") or ""
+                    ).strip(),
+                    "piso_ambiente": str(
+                        item.get("piso_ambiente") or ""
+                    ).strip(),
+                    "codigo_servicio": str(
+                        item.get("codigo_servicio") or ""
+                    ).strip(),
+                    "nombre_servicio": str(
+                        item.get("nombre_servicio") or ""
+                    ).strip(),
+                },
+            )
+
+            if creado:
+                consultorios_creados += 1
+
+        return Response(
+            {
+                "mensaje": "IPRESS registrada correctamente.",
+                "establecimiento": EstablecimientoSerializer(
+                    establecimiento
+                ).data,
+                "consultorios_creados": consultorios_creados,
+            },
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class IPRESSDestroyAPIView(APIView):
+    """
+    Elimina una IPRESS únicamente cuando no tiene registros asociados.
+    """
+
+    permission_classes = [AllowAny]
+
+    def delete(self, request, pk):
+        establecimiento = get_object_or_404(
+            Establecimiento,
+            pk=pk,
+        )
+
+        dependencias = [
+            (
+                "configuración del sistema",
+                ConfiguracionIPRESS.objects.filter(
+                    establecimiento=establecimiento
+                ).exists(),
+            ),
+            (
+                "consultorios",
+                Consultorio.objects.filter(
+                    establecimiento=establecimiento
+                ).exists(),
+            ),
+            (
+                "citas",
+                Cita.objects.filter(
+                    establecimiento=establecimiento
+                ).exists(),
+            ),
+            (
+                "turnos",
+                Turno.objects.filter(
+                    establecimiento=establecimiento
+                ).exists(),
+            ),
+            (
+                "historial de sincronizaciones",
+                Sincronizacion.objects.filter(
+                    establecimiento=establecimiento
+                ).exists(),
+            ),
+            (
+                "códigos de activación de consultorios",
+                CodigoActivacion.objects.filter(
+                    establecimiento=establecimiento
+                ).exists(),
+            ),
+            (
+                "equipos de consultorio activados",
+                EquipoActivado.objects.filter(
+                    establecimiento=establecimiento
+                ).exists(),
+            ),
+            (
+                "monitores configurados",
+                Monitor.objects.filter(
+                    establecimiento=establecimiento
+                ).exists(),
+            ),
+        ]
+
+        motivos = [
+            nombre
+            for nombre, existe in dependencias
+            if existe
+        ]
+
+        if motivos:
+            return Response(
+                {
+                    "mensaje": (
+                        "No se puede eliminar la IPRESS porque "
+                        "tiene registros asociados."
+                    ),
+                    "dependencias": motivos,
+                },
+                status=status.HTTP_409_CONFLICT,
+            )
+
+        try:
+            with transaction.atomic():
+                establecimiento.delete()
+        except ProtectedError:
+            return Response(
+                {
+                    "mensaje": (
+                        "No se puede eliminar la IPRESS porque "
+                        "existen otros registros relacionados."
+                    )
+                },
+                status=status.HTTP_409_CONFLICT,
+            )
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ConfiguracionIPRESSAPIView(APIView):

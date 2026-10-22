@@ -1,6 +1,19 @@
 
 from django.urls import path
 
+from citas.monitor_admin_views import (
+    MonitoresIPRESSAPIView,
+    MonitorDetalleIPRESSAPIView,
+    GenerarCodigoActivacionMonitorAPIView,
+)
+
+from citas.monitor_activation_views import (
+    CanjearCodigoActivacionMonitorAPIView,
+    DesactivarMonitorAPIView,
+    MonitorDatosActivadosAPIView,
+    MonitorEventosActivadosAPIView,
+)
+
 from citas.views import (
     ConsultorioListAPIView,
     CitaListAPIView,
@@ -13,6 +26,12 @@ from citas.views import (
     MonitorAPIView,
     MonitorEventosAPIView,
     ConfiguracionIPRESSAPIView,
+    ValidarIPRESSAPIView,
+    IPRESSListCreateAPIView,
+    IPRESSDestroyAPIView,
+    SincronizarConsultoriosIPRESSAPIView,
+    EquiposActivadosIPRESSAPIView,
+    DesactivarEquipoAPIView
 
 )
 
@@ -60,17 +79,73 @@ urlpatterns = [
     ),
     path(
         "monitor/",
-        MonitorAPIView.as_view(),
+        MonitorDatosActivadosAPIView.as_view(),
         name="monitor",
     ),
     path(
         "monitor/eventos/",
-        MonitorEventosAPIView.as_view(),
+        MonitorEventosActivadosAPIView.as_view(),
         name="monitor-eventos",
+    ),
+    path(
+        "monitor/activar/",
+        CanjearCodigoActivacionMonitorAPIView.as_view(),
+        name="activar-monitor",
+    ),
+    path(
+        "monitor/desactivar/",
+        DesactivarMonitorAPIView.as_view(),
+        name="desactivar-monitor",
     ),
     path(
         "configuracion/ipress/",
         ConfiguracionIPRESSAPIView.as_view(),
         name="configuracion-ipress",
     ),
+    path(
+        "configuracion/ipress/validar/",
+        ValidarIPRESSAPIView.as_view(),
+        name="validar-ipress",
+    ),
+    path(
+        "ipress/",
+        IPRESSListCreateAPIView.as_view(),
+        name="lista-registro-ipress",
+    ),
+    path(
+        "ipress/<int:pk>/",
+        IPRESSDestroyAPIView.as_view(),
+        name="eliminar-ipress",
+    ),
+    path(
+        "ipress/<int:pk>/consultorios/sincronizar/",
+        SincronizarConsultoriosIPRESSAPIView.as_view(),
+        name="sincronizar-consultorios-ipress",
+    ),
+    path(
+        "ipress/<int:pk>/equipos-activados/",
+        EquiposActivadosIPRESSAPIView.as_view(),
+        name="equipos-activados-ipress",
+    ),
+    path(
+        "activaciones/desactivar/",
+        DesactivarEquipoAPIView.as_view(),
+        name="desactivar-equipo",
+    ),
+    path(
+    "ipress/<int:pk>/monitores/",
+    MonitoresIPRESSAPIView.as_view(),
+    name="monitores-ipress",
+    ),
+    path(
+        "ipress/<int:pk>/monitores/<int:monitor_id>/",
+        MonitorDetalleIPRESSAPIView.as_view(),
+        name="monitor-detalle-ipress",
+    ),
+    path(
+        "ipress/<int:pk>/monitores/<int:monitor_id>/generar-codigo/",
+        GenerarCodigoActivacionMonitorAPIView.as_view(),
+        name="generar-codigo-activacion-monitor",
+    ),
+
 ]

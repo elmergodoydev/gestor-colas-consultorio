@@ -1,7 +1,12 @@
 
 from rest_framework import serializers
 
-from citas.models import Cita, Consultorio, Turno
+from citas.models import (
+    Cita,
+    Consultorio,
+    Establecimiento,
+    Turno,
+)
 
 
 class ConsultorioSerializer(serializers.ModelSerializer):
@@ -113,3 +118,31 @@ class CanjearCodigoActivacionSerializer(serializers.Serializer):
         allow_blank=True,
         default="",
     )
+
+class ValidarRENIPRESSSerializer(serializers.Serializer):
+    codigo_renipress = serializers.CharField(
+        max_length=20,
+        trim_whitespace=True,
+        required=True,
+    )
+
+    def validate_codigo_renipress(self, value):
+        codigo = value.strip()
+
+        if not codigo:
+            raise serializers.ValidationError(
+                "El código RENIPRESS es obligatorio."
+            )
+
+        return codigo
+
+
+class EstablecimientoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Establecimiento
+        fields = [
+            "id",
+            "codigo_renipress",
+            "nombre_ipress",
+        ]
+        read_only_fields = fields

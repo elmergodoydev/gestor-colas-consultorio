@@ -1,0 +1,222 @@
+.ipress-page {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+.ipress-page__content {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  padding: 30px 32px 48px;
+}
+
+.ipress-page__header {
+  margin-bottom: 30px;
+}
+
+.ipress-page__eyebrow {
+  display: block;
+  margin-bottom: 6px;
+  color: #1565c0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.ipress-page__title {
+  margin: 0;
+  color: #0f172a;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  line-height: 1.3;
+}
+
+.ipress-page__description {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.ipress-page__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.ipress-page__toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.ipress-page__grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, 270px), 320px)
+  );
+  align-items: stretch;
+  justify-content: start;
+  gap: 20px;
+  width: 100%;
+}
+
+.ipress-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 3%);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.ipress-card:hover {
+  transform: translateY(-4px);
+  border-color: #93c5fd !important;
+  box-shadow: 0 12px 26px rgb(15 23 42 / 8%);
+}
+
+.ipress-card__action {
+  flex: 1;
+  align-items: stretch !important;
+  text-align: left !important;
+  cursor: pointer !important;
+}
+
+.ipress-card__content {
+  padding: 24px !important;
+}
+
+.ipress-card__icon {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #1565c0;
+}
+
+.ipress-card__label {
+  display: block;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.ipress-card__code {
+  margin-top: 5px;
+  color: #0f172a;
+  font-size: 21px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.ipress-card__name {
+  min-height: 44px;
+  margin-top: 12px;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.ipress-card__open {
+  margin-top: 18px;
+  color: #1565c0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ipress-card__actions {
+  justify-content: flex-end;
+  padding: 10px 16px !important;
+  border-top: 1px solid #f1f5f9;
+}
+
+.ipress-page__empty {
+  display: flex;
+  min-height: 250px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.ipress-dialog__content {
+  padding-top: 8px !important;
+}
+
+@media (max-width: 900px) {
+  .ipress-page__content {
+    padding: 26px 24px 40px;
+  }
+
+  .ipress-page__grid {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(min(100%, 260px), 1fr)
+    );
+  }
+}
+
+@media (max-width: 600px) {
+  .ipress-page__content {
+    padding: 24px 16px 32px;
+  }
+
+  .ipress-page__title {
+    font-size: 26px;
+  }
+
+  .ipress-page__toolbar {
+    align-items: stretch;
+  }
+
+  .ipress-page__toolbar-actions {
+    width: 100%;
+  }
+
+  .ipress-page__toolbar-actions button {
+    flex: 1;
+  }
+
+  .ipress-page__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ipress-card {
+    transition: none;
+  }
+
+  .ipress-card:hover {
+    transform: none;
+  }
+}

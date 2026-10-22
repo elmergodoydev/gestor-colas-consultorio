@@ -1,4 +1,3 @@
-
 import axios from "axios";
 
 const api = axios.create({
@@ -9,10 +8,13 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("equipo_token");
+  // Respeta el Bearer token enviado explícitamente por una pantalla.
+  // Si no hay uno, conserva el comportamiento habitual del equipo de ventanilla.
+  const autorizacionExplicita = Boolean(config.headers?.Authorization || config.headers?.authorization);
+  const tokenEquipo = localStorage.getItem("equipo_token");
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  if (!autorizacionExplicita && tokenEquipo) {
+    config.headers.Authorization = `Bearer ${tokenEquipo}`;
   }
 
   return config;

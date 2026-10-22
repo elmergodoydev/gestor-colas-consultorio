@@ -1,0 +1,35 @@
+{
+  "establecimiento": {
+    "codigo_renipress": "00005644",
+    "nombre_ipress": "C.M.I. RÍMAC",
+    "consultorios": [
+      {
+        "codigo": "CONS-MED-01",
+        "nombre": "Consultorio Medicina 01",
+        "codigo_ambiente": "AMB-01",
+        "nombre_ambiente": "Consulta Externa",
+        "piso_ambiente": "1",
+        "codigo_servicio": "SERV-01",
+        "nombre_servicio": "Consulta externa"
+      },
+      {
+        "codigo": "CONS-MED-02",
+        "nombre": "Consultorio Medicina 02",
+        "codigo_ambiente": "AMB-01",
+        "nombre_ambiente": "Consulta Externa",
+        "piso_ambiente": "1",
+        "codigo_servicio": "SERV-01",
+        "nombre_servicio": "Consulta externa"
+      },
+      {
+        "codigo": "CONS-ODO-01",
+        "nombre": "Consultorio Odontología 01",
+        "codigo_ambiente": "AMB-02",
+        "nombre_ambiente": "Odontología",
+        "piso_ambiente": "1",
+        "codigo_servicio": "SERV-02",
+        "nombre_servicio": "Odontología"
+      }
+    ]
+  }
+}

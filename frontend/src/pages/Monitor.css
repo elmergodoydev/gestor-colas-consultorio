@@ -1,932 +1,434 @@
-
-.monitor {
-  --monitor-navy: #123b67;
-  --monitor-blue: #1d5c98;
-  --monitor-ink: #172b43;
-  --monitor-muted: #64758b;
-  --monitor-border: #dce5ef;
-  --monitor-bg: #f3f6fa;
-  --monitor-green: #16805d;
-
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  padding: clamp(12px, 1.35vw, 24px);
-  overflow: hidden;
-  background: var(--monitor-bg);
-  color: var(--monitor-ink);
-  font-family: "Segoe UI", Arial, sans-serif;
-  box-sizing: border-box;
-}
-
-.monitor *,
-.monitor *::before,
-.monitor *::after {
-  box-sizing: border-box;
+:root {
+  --monitor-navy: #113765;
+  --monitor-blue: #1765a8;
+  --monitor-cyan: #dff4ff;
+  --monitor-ink: #15283f;
+  --monitor-muted: #61748a;
+  --monitor-green: #117647;
 }
 
 html.monitor-active,
-body.monitor-active {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
+body.monitor-active,
 body.monitor-active #root {
   width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
+  min-width: 320px;
+  min-height: 100%;
   margin: 0;
-  padding: 0;
+  background: #edf3f8;
 }
 
-/* ENCABEZADO */
+body.monitor-active { overflow-x: hidden; }
 
-.monitor .monitor-header {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: space-between;
-  gap: 22px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--monitor-border);
-}
-
-.monitor .monitor-brand {
-  display: flex;
-  align-items: center;
-  gap: clamp(12px, 1.3vw, 22px);
-  min-width: 0;
-}
-
-.monitor .monitor-logo {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
-  width: clamp(75px, 8vw, 135px);
-  height: clamp(46px, 6vh, 68px);
-}
-
-.monitor .monitor-logo img {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.monitor .monitor-brand-text {
-  min-width: 0;
-}
-
-.monitor .monitor-eyebrow,
-.monitor .monitor-section-kicker {
-  color: var(--monitor-blue);
-  font-size: clamp(11px, 0.8vw, 15px);
-  font-weight: 800;
-  letter-spacing: 0.12em;
-}
-
-.monitor .monitor-brand-text h1 {
-  margin: 5px 0;
-  font-size: clamp(24px, 2vw, 38px);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 1.15;
-}
-
-.monitor .monitor-brand-text p {
-  margin: 0;
-  color: var(--monitor-muted);
-  font-size: clamp(13px, 0.95vw, 18px);
-}
-
-.monitor .monitor-header-right {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: flex-end;
-  gap: clamp(10px, 1.1vw, 20px);
-}
-
-.monitor .monitor-date {
-  display: grid;
-  gap: 6px;
-  text-align: right;
-  text-transform: capitalize;
-}
-
-.monitor .monitor-date strong {
-  font-size: clamp(13px, 1vw, 19px);
-}
-
-.monitor .monitor-date span {
-  color: var(--monitor-muted);
-  font-size: clamp(11px, 0.78vw, 15px);
-}
-
-.monitor .monitor-sound-button {
-  display: inline-flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 clamp(12px, 1.2vw, 21px);
-  border: 1px solid #cbd8e8;
-  border-radius: 11px;
-  background: white;
-  color: var(--monitor-navy);
-  font-size: clamp(12px, 0.85vw, 16px);
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.monitor .monitor-sound-button:hover,
-.monitor .monitor-sound-button.is-active {
-  border-color: #a6d7bc;
-  background: #e6f5ed;
-}
-
-.monitor .monitor-sound-button > span {
-  font-size: 22px;
-}
-
-.monitor .monitor-error {
-  flex: 0 0 auto;
-  margin-top: 8px;
-  padding: 9px 13px;
-  border: 1px solid #f2d1d1;
-  border-radius: 9px;
-  background: #fff0f0;
-  color: #9d3131;
-  font-size: 13px;
-}
-
-/* LLAMADOS ACTIVOS */
-
-.monitor .monitor-section {
-  display: flex;
-  flex: 1 1 0;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 0;
-  margin-top: clamp(10px, 1.25vh, 18px);
-}
-
-.monitor .monitor-section-heading {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-bottom: clamp(9px, 1.1vh, 15px);
-}
-
-.monitor .monitor-section-heading h2 {
-  margin: 5px 0 0;
-  font-size: clamp(26px, 2.2vw, 41px);
-  letter-spacing: -0.025em;
-  line-height: 1.15;
-}
-
-.monitor .monitor-live {
-  display: inline-flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 13px;
-  border-radius: 999px;
-  background: #e7f6ed;
-  color: #176d49;
-  font-size: clamp(11px, 0.8vw, 15px);
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.monitor .monitor-live-dot,
-.monitor .monitor-footer-dot {
-  width: 8px;
-  height: 8px;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: #20a56c;
-}
-
-.monitor .monitor-live-dot {
-  animation: monitor-pulse 1.8s infinite;
-}
-
-.monitor .monitor-calls-grid {
-  display: grid;
-  flex: 1 1 0;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-auto-rows: minmax(0, 1fr);
-  align-content: stretch;
-  gap: clamp(9px, 1vw, 18px);
-  min-width: 0;
-  min-height: 0;
-}
-
-.monitor .monitor-calls-grid.grid-one {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.monitor .monitor-calls-grid.grid-two {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.monitor .monitor-calls-grid.grid-three {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.monitor .monitor-calls-grid.grid-four {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.monitor .monitor-calls-grid.grid-five {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-
-.monitor .monitor-call-card {
-  position: relative;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  min-width: 0;
-  min-height: 0;
-  padding: clamp(13px, 1.5vw, 28px);
-  overflow: hidden;
-  border: 1px solid var(--monitor-border);
-  border-radius: 16px;
-  background: white;
-  box-shadow: 0 4px 15px #17375b09;
-  animation: monitor-card-in 400ms ease both;
-}
-
-.monitor .monitor-call-card::before {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 5px;
-  background: var(--monitor-blue);
-  content: "";
-}
-
-.monitor .monitor-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 7px;
-  min-width: 0;
-}
-
-.monitor .monitor-call-label {
-  color: var(--monitor-muted);
-  font-size: clamp(11px, 0.85vw, 17px);
-  font-weight: 800;
-  letter-spacing: 0.05em;
-}
-
-.monitor .monitor-call-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--monitor-green);
-  font-size: clamp(11px, 0.85vw, 17px);
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.monitor .monitor-speaker {
-  display: inline-flex;
-  flex: 0 0 auto;
-  animation: monitor-speaker-motion 1.1s ease-in-out infinite;
-  transform-origin: center;
-}
-
-.monitor .monitor-speaker-svg {
-  display: block;
-  width: clamp(20px, 1.7vw, 31px);
-  height: clamp(20px, 1.7vw, 31px);
-}
-
-.monitor .monitor-card-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-width: 0;
-  min-height: 0;
-  padding: 7px 0;
-  text-align: center;
-}
-
-.monitor .monitor-consultorio {
-  max-width: 100%;
-  margin: 0;
-  color: var(--monitor-blue);
-  font-size: clamp(20px, 1.9vw, 35px);
-  font-weight: 800;
-  line-height: 1.18;
-  overflow-wrap: anywhere;
-}
-
-.monitor .monitor-servicio {
-  max-width: 100%;
-  margin-top: 5px;
-  color: var(--monitor-muted);
-  font-size: clamp(11px, 0.9vw, 16px);
-  line-height: 1.25;
-  overflow-wrap: anywhere;
-}
-
-.monitor .monitor-patient {
-  max-width: 100%;
-  margin: clamp(8px, 1.2vh, 16px) 0 0;
-  font-size: clamp(28px, 2.8vw, 51px);
-  font-weight: 850;
-  letter-spacing: -0.035em;
-  line-height: 1.12;
-  overflow-wrap: anywhere;
-}
-
-.monitor .monitor-card-bottom {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  min-width: 0;
-  padding-top: clamp(8px, 1.1vh, 15px);
-  border-top: 1px solid #e9eef4;
-}
-
-.monitor .monitor-card-bottom > span:first-child {
-  color: var(--monitor-muted);
-  font-size: clamp(13px, 0.95vw, 18px);
-}
-
-.monitor .monitor-card-bottom strong {
-  color: var(--monitor-navy);
-  font-size: clamp(20px, 1.5vw, 28px);
-  letter-spacing: 0.05em;
-}
-
-.monitor .monitor-calls-grid.grid-one .monitor-call-card {
-  padding: clamp(20px, 2.5vw, 44px);
-}
-
-.monitor .monitor-calls-grid.grid-one .monitor-call-label,
-.monitor .monitor-calls-grid.grid-one .monitor-call-status {
-  font-size: clamp(14px, 1.15vw, 22px);
-}
-
-.monitor .monitor-calls-grid.grid-one .monitor-consultorio {
-  font-size: clamp(28px, 2.7vw, 48px);
-}
-
-.monitor .monitor-calls-grid.grid-one .monitor-patient {
-  font-size: clamp(38px, 4vw, 72px);
-}
-
-.monitor .monitor-calls-grid.grid-dense .monitor-call-label,
-.monitor .monitor-calls-grid.grid-dense .monitor-call-status {
-  font-size: clamp(10px, 0.72vw, 14px);
-}
-
-.monitor .monitor-calls-grid.grid-dense .monitor-consultorio {
-  font-size: clamp(17px, 1.35vw, 25px);
-}
-
-.monitor .monitor-calls-grid.grid-dense .monitor-servicio {
-  font-size: clamp(10px, 0.72vw, 13px);
-}
-
-.monitor .monitor-calls-grid.grid-dense .monitor-patient {
-  font-size: clamp(22px, 1.8vw, 34px);
-}
-
-.monitor .monitor-calls-grid.grid-dense .monitor-card-bottom strong {
-  font-size: clamp(17px, 1.25vw, 23px);
-}
-
-/* VACÍO Y CARGA */
-
-.monitor .monitor-empty {
-  display: flex;
-  flex: 1 1 0;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 0;
-  padding: 20px;
-  border: 1px dashed #cbd7e5;
-  border-radius: 16px;
-  background: white;
-  text-align: center;
-}
-
-.monitor .monitor-empty-icon {
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: #e8f6ee;
-  color: var(--monitor-green);
-  font-size: 28px;
-}
-
-.monitor .monitor-empty h3 {
-  margin: 13px 0 5px;
-  font-size: clamp(20px, 1.7vw, 31px);
-}
-
-.monitor .monitor-empty p,
-.monitor .monitor-muted {
-  color: var(--monitor-muted);
-  font-size: clamp(13px, 0.95vw, 17px);
-}
-
-.monitor .monitor-loader {
-  width: 35px;
-  height: 35px;
-  border: 4px solid #dce7f4;
-  border-top-color: var(--monitor-blue);
-  border-radius: 50%;
-  animation: monitor-spin 800ms linear infinite;
-}
-
-/* PANELES INFERIORES */
-
-.monitor .monitor-bottom {
-  display: grid;
-  flex: 0 1 clamp(260px, 34vh, 365px);
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
-  gap: clamp(10px, 1.1vw, 20px);
-  min-width: 0;
-  min-height: 0;
-  margin-top: clamp(10px, 1.3vh, 18px);
-}
-
-.monitor .monitor-panel {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 0;
-  padding: clamp(12px, 1.3vw, 23px);
-  overflow: hidden;
-  border: 1px solid var(--monitor-border);
-  border-radius: 16px;
-  background: white;
-}
-
-.monitor .monitor-panel-heading {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: clamp(8px, 1vh, 14px);
-}
-
-.monitor .monitor-panel-icon {
-  display: grid;
-  flex: 0 0 auto;
-  place-items: center;
-  width: clamp(38px, 3.3vw, 53px);
-  height: clamp(38px, 3.3vw, 53px);
-  border-radius: 12px;
-  background: #e8f6ee;
-  color: var(--monitor-green);
-  font-size: clamp(22px, 1.8vw, 31px);
-}
-
-.monitor .monitor-panel-icon.history-icon {
-  background: #eaf2fb;
-  color: var(--monitor-blue);
-}
-
-.monitor .monitor-panel-heading h2 {
-  margin: 0 0 4px;
-  font-size: clamp(19px, 1.45vw, 27px);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.monitor .monitor-panel-heading p {
-  margin: 0;
-  color: var(--monitor-muted);
-  font-size: clamp(12px, 0.9vw, 17px);
-}
-
-/* ATENDIDOS: HASTA 10, EN DOS COLUMNAS CUANDO SUPERAN 5 */
-
-.monitor .monitor-attended-columns {
-  display: grid;
-  flex: 1 1 auto;
-  grid-template-columns: minmax(0, 1fr);
-  align-content: start;
-  gap: clamp(10px, 1.2vw, 20px);
-  min-width: 0;
-  min-height: 0;
-}
-
-.monitor .monitor-attended-columns.has-two-columns {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.monitor .monitor-attended-list {
-  display: grid;
-  align-content: start;
-  grid-auto-rows: minmax(0, 1fr);
-  min-width: 0;
-  min-height: 0;
-}
-
-.monitor .monitor-attended-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  min-width: 0;
-  padding: clamp(5px, 0.8vh, 11px) 0;
-  border-top: 1px solid #edf1f6;
-  font-size: clamp(12px, 0.95vw, 18px);
-}
-
-.monitor .monitor-attended-row span {
-  min-width: 0;
-  line-height: 1.2;
-  overflow-wrap: anywhere;
-}
-
-.monitor .monitor-attended-row strong {
-  display: grid;
-  flex: 0 0 auto;
-  min-width: clamp(28px, 2.3vw, 38px);
-  height: clamp(27px, 2.3vw, 38px);
-  place-items: center;
-  border-radius: 8px;
-  background: #edf7f1;
-  color: var(--monitor-green);
-  font-size: clamp(13px, 0.9vw, 17px);
-}
-
-/* ÚLTIMOS 10 LLAMADOS: 5 COLUMNAS POR DOS FILAS */
-
-.monitor .monitor-history-grid {
-  display: grid;
-  flex: 1 1 auto;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  grid-auto-rows: minmax(0, 1fr);
-  align-content: stretch;
-  gap: 8px;
-  min-width: 0;
-  min-height: 0;
-}
-
-.monitor .monitor-history-row {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 5px;
-  min-width: 0;
-  min-height: 0;
-  padding: 8px 10px;
-  overflow: hidden;
-  border: 1px solid #e8eef5;
-  border-radius: 10px;
-  background: #fbfcfe;
-}
-
-.monitor .monitor-history-time {
-  color: var(--monitor-muted);
-  font-size: clamp(11px, 0.78vw, 15px);
-  font-variant-numeric: tabular-nums;
-}
-
-.monitor .monitor-history-patient {
-  max-width: 100%;
+.monitor, .monitor * { box-sizing: border-box; }
+.monitor {
+  min-height: 100vh;
+  padding: clamp(14px, 1.35vw, 28px) clamp(14px, 1.55vw, 32px) 14px;
   color: var(--monitor-ink);
-  font-size: clamp(12px, 0.95vw, 18px);
-  font-weight: 800;
-  line-height: 1.15;
-  overflow-wrap: anywhere;
+  background: linear-gradient(135deg, #f0f6fb 0%, #e5eef7 100%);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
-.monitor .monitor-history-consultorio {
-  max-width: 100%;
-  color: var(--monitor-muted);
-  font-size: clamp(10px, 0.75vw, 14px);
-  line-height: 1.15;
-  overflow-wrap: anywhere;
-}
-
-/* PIE */
-
-.monitor .monitor-footer {
+.monitor-header {
   display: flex;
-  flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-top: auto;
-  padding-top: clamp(8px, 1vh, 14px);
-  color: var(--monitor-muted);
-  font-size: clamp(10px, 0.75vw, 14px);
+  gap: 24px;
+  padding: clamp(14px, 1.2vw, 24px) clamp(18px, 1.6vw, 32px);
+  color: #fff;
+  background: linear-gradient(112deg, #113765 0%, #145a92 66%, #1974ad 100%);
+  border-radius: 19px;
+  box-shadow: 0 12px 32px rgba(18, 58, 98, .18);
 }
+.monitor-brand { display: flex; align-items: center; gap: 20px; min-width: 0; }
+.monitor-logo { display: flex; align-items: center; justify-content: center; width: clamp(72px, 5vw, 102px); height: clamp(72px, 5vw, 102px); padding: 9px; border-radius: 15px; background: #fff; flex-shrink: 0; }
+.monitor-logo img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
+.monitor-brand-text { min-width: 0; }
+.monitor-eyebrow { display: block; margin-bottom: 6px; color: #bde7ff; font-size: clamp(12px, .8vw, 16px); font-weight: 800; letter-spacing: .105em; }
+.monitor-brand-text h1 { margin: 0; font-size: clamp(24px, 2vw, 40px); line-height: 1.12; letter-spacing: -.025em; color: #fff; }
+.monitor-brand-text p { margin: 8px 0 0; color: #e0f2ff; font-size: clamp(15px, 1vw, 21px); font-weight: 600; }
+.monitor-header-right { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
+.monitor-date { display: flex; flex-direction: column; align-items: flex-end; gap: 7px; margin-right: 9px; text-align: right; }
+.monitor-date strong { color: #fff; font-size: clamp(15px, 1vw, 20px); text-transform: capitalize; }
+.monitor-date span { color: #cde7f8; font-size: clamp(12px, .76vw, 15px); }
+.monitor-sound-button { display: flex; align-items: center; gap: 10px; min-height: 58px; padding: 10px 17px; border: 2px solid transparent; border-radius: 13px; cursor: pointer; color: #fff; transition: transform .15s ease, background .15s ease; }
+.monitor-sound-button:hover, .monitor-change-button:hover { transform: translateY(-1px); }
+.monitor-sound-button.is-active { background: #087f52; border-color: #65e2ad; }
+.monitor-sound-button.is-muted { background: #7d3040; border-color: #ff9fad; }
+.monitor-sound-icon { display: flex; align-items: center; }
+.sound-button-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; white-space: nowrap; }
+.sound-button-copy strong { font-size: clamp(13px, .82vw, 16px); }
+.sound-button-copy small { font-size: clamp(11px, .7vw, 14px); font-weight: 900; letter-spacing: .07em; }
+.monitor-change-button { min-height: 48px; padding: 10px 14px; border: 1px solid rgba(255,255,255,.5); border-radius: 11px; color: #fff; background: rgba(255,255,255,.10); cursor: pointer; font-size: 13px; font-weight: 700; }
 
-.monitor .monitor-footer > span:first-child {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.monitor-error { margin: 15px 0; padding: 13px 17px; color: #7e1f2c; background: #fff0f1; border: 1px solid #f4a6ad; border-left: 6px solid #d92d42; border-radius: 10px; font-weight: 650; }
+.monitor-stage { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(310px, .78fr); gap: clamp(16px, 1.35vw, 28px); align-items: stretch; margin-top: clamp(16px, 1.3vw, 26px); }
+.monitor-calls-section, .monitor-video-section { min-width: 0; }
+.monitor-section-heading { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin: 0 0 14px; }
+.monitor-section-kicker { display: block; margin-bottom: 4px; color: #1771af; font-size: clamp(11px, .7vw, 14px); font-weight: 900; letter-spacing: .11em; }
+.monitor-section-heading h2 { margin: 0; color: #173452; font-size: clamp(25px, 1.7vw, 36px); font-weight: 850; letter-spacing: -.025em; }
+.monitor-live { display: inline-flex; align-items: center; gap: 8px; padding: 9px 13px; border-radius: 999px; color: #076b42; background: #d6f8e5; font-size: clamp(11px, .73vw, 14px); font-weight: 900; letter-spacing: .08em; white-space: nowrap; }
+.monitor-live-dot, .monitor-footer-dot, .video-ready-dot { width: 9px; height: 9px; border-radius: 50%; background: #10b46b; box-shadow: 0 0 0 4px rgba(16,180,107,.14); }
+.monitor-calls-grid { display: grid; gap: clamp(12px, 1vw, 20px); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.monitor-calls-grid.grid-one { grid-template-columns: minmax(0, 1fr); }
+.monitor-calls-grid.grid-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.monitor-calls-grid.grid-three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.monitor-calls-grid.grid-three .monitor-call-card:first-child { grid-column: 1 / -1; }
+.monitor-calls-grid.grid-four, .monitor-calls-grid.grid-dense { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.monitor-call-card { --call-accent: #1b67b0; display: flex; flex-direction: column; min-width: 0; min-height: clamp(240px, 18vw, 355px); padding: clamp(16px, 1.2vw, 25px); overflow: hidden; border: 2px solid var(--call-accent); border-top: 9px solid var(--call-accent); border-radius: 18px; box-shadow: 0 8px 22px rgba(25, 59, 91, .1); }
+.monitor-call-card.call-color-0 { --call-accent: #1466b3; background: #e0f1ff; }
+.monitor-call-card.call-color-1 { --call-accent: #18804d; background: #ddf8e9; }
+.monitor-call-card.call-color-2 { --call-accent: #b65a0d; background: #fff0d8; }
+.monitor-call-card.call-color-3 { --call-accent: #7543b6; background: #efe6ff; }
+.monitor-call-card.call-color-4 { --call-accent: #bd3452; background: #ffe5eb; }
+.monitor-card-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.monitor-call-label { color: var(--call-accent); font-size: clamp(12px, .82vw, 16px); font-weight: 950; letter-spacing: .09em; }
+.monitor-call-status { display: inline-flex; align-items: center; gap: 6px; padding: 8px 11px; border-radius: 999px; color: #fff; background: var(--call-accent); font-size: clamp(11px, .74vw, 15px); font-weight: 900; letter-spacing: .025em; white-space: nowrap; }
+.monitor-speaker { display: flex; align-items: center; }
+.monitor-speaker-svg { width: clamp(22px, 1.8vw, 34px); height: clamp(22px, 1.8vw, 34px); }
+.monitor-card-main { display: flex; flex: 1; flex-direction: column; justify-content: center; padding: 14px 0 12px; text-align: center; }
+.monitor-consultorio { color: #173452; font-size: clamp(25px, 2.1vw, 44px); line-height: 1.1; font-weight: 950; overflow-wrap: anywhere; letter-spacing: -.035em; }
+.monitor-servicio { margin-top: 8px; color: #465f78; font-size: clamp(14px, .95vw, 20px); font-weight: 700; }
+.monitor-patient { margin-top: clamp(12px, 1vw, 20px); color: #102b47; font-size: clamp(34px, 2.75vw, 58px); line-height: 1.03; font-weight: 950; letter-spacing: -.045em; overflow-wrap: anywhere; text-shadow: 0 1px rgba(255,255,255,.65); }
+.monitor-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: auto; padding: 12px 15px; border-radius: 12px; color: #fff; background: var(--call-accent); }
+.monitor-card-bottom span { font-size: clamp(12px, .84vw, 17px); font-weight: 900; letter-spacing: .12em; }
+.monitor-card-bottom strong { font-size: clamp(23px, 1.8vw, 37px); font-weight: 950; letter-spacing: .06em; }
+.monitor-empty { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 300px; padding: 28px; border: 2px dashed #a6bfd4; border-radius: 18px; text-align: center; color: #597087; background: rgba(255,255,255,.8); }
+.monitor-empty-main { min-height: clamp(370px, 31vw, 590px); height: calc(100% - 57px); }
+.monitor-empty h3 { margin: 16px 0 0; color: #183b5e; font-size: clamp(25px, 1.7vw, 36px); }
+.monitor-empty p { max-width: 520px; margin: 9px 0 0; font-size: clamp(15px, 1vw, 21px); line-height: 1.5; }
+.monitor-empty-icon { display: grid; place-items: center; width: 86px; height: 86px; border-radius: 50%; color: #fff; background: #1c9b63; font-size: 48px; font-weight: 800; box-shadow: 0 0 0 12px #d8f7e7; }
+.monitor-loader { width: 38px; height: 38px; border: 4px solid #cfdeea; border-top-color: #1676ba; border-radius: 50%; animation: monitor-spin .8s linear infinite; }
+@keyframes monitor-spin { to { transform: rotate(360deg); } }
+
+.monitor-video-section { display: flex; flex-direction: column; min-height: 100%; padding: clamp(14px, 1vw, 20px); border: 1px solid #cfdae5; border-radius: 19px; background: #fff; box-shadow: 0 9px 28px rgba(27, 58, 86, .09); }
+.monitor-video-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: #294763; font-size: clamp(12px, .8vw, 16px); font-weight: 900; letter-spacing: .08em; }
+.video-ready-dot { background: #b6c8d7; box-shadow: none; }
+.monitor-video-placeholder { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; min-height: clamp(360px, 31vw, 590px); margin-top: 14px; padding: 25px; border: 2px dashed #aac1d4; border-radius: 15px; color: #6b8397; text-align: center; background: repeating-linear-gradient(135deg, #f2f7fb 0, #f2f7fb 14px, #ebf2f8 14px, #ebf2f8 28px); }
+.monitor-video-icon { display: grid; place-items: center; width: 140px; height: 140px; color: #fff; border-radius: 31px; background: #d2e2ef; }
+.monitor-video-placeholder h2 { margin: 22px 0 0; color: #31516e; font-size: clamp(24px, 1.8vw, 38px); font-weight: 900; }
+.monitor-video-placeholder p { margin: 9px 0 0; color: #6a8094; font-size: clamp(14px, .93vw, 19px); line-height: 1.45; }
+.monitor-video-footnote { margin-top: 12px; color: #7a8fa2; font-size: clamp(11px, .72vw, 14px); text-align: center; }
+
+.monitor-bottom { display: grid; grid-template-columns: minmax(300px, .9fr) minmax(0, 1.3fr); gap: clamp(16px, 1.35vw, 28px); margin-top: clamp(16px, 1.3vw, 26px); }
+.monitor-panel { min-width: 0; padding: clamp(15px, 1.15vw, 23px); border: 1px solid #d5e0e9; border-radius: 17px; background: #fff; box-shadow: 0 7px 21px rgba(27, 58, 86, .07); }
+.monitor-panel-heading { display: flex; align-items: center; gap: 13px; margin-bottom: 14px; }
+.monitor-panel-icon { display: grid; flex-shrink: 0; place-items: center; width: 50px; height: 50px; border-radius: 13px; color: #fff; background: #118455; font-size: 30px; font-weight: 800; }
+.monitor-panel-icon.history-icon { background: #216bb0; }
+.monitor-panel-heading h2 { margin: 0; color: #193a59; font-size: clamp(19px, 1.25vw, 27px); font-weight: 900; }
+.monitor-panel-heading p { margin: 4px 0 0; color: #6b7e91; font-size: clamp(12px, .79vw, 16px); }
+.monitor-attended-columns { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.monitor-attended-columns.has-two-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.monitor-attended-list { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.monitor-attended-row { display: flex; align-items: center; justify-content: space-between; gap: 9px; padding: 10px 12px; border-radius: 10px; background: #eaf7f0; color: #245542; }
+.monitor-attended-row span { overflow-wrap: anywhere; font-size: clamp(13px, .85vw, 17px); font-weight: 650; }
+.monitor-attended-row strong { display: grid; flex-shrink: 0; place-items: center; min-width: 38px; height: 38px; border-radius: 10px; color: #fff; background: #168454; font-size: clamp(17px, 1.08vw, 22px); }
+.monitor-muted { margin: 0; color: #7b8d9d; font-size: clamp(13px, .85vw, 17px); }
+.monitor-history-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.monitor-history-row { display: grid; grid-template-columns: auto minmax(70px, .75fr) minmax(100px, 1.1fr); align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: #284762; background: #eaf3fb; }
+.monitor-history-time { color: #185e9e; font-size: clamp(12px, .8vw, 16px); font-weight: 850; font-variant-numeric: tabular-nums; }
+.monitor-history-patient { color: #183753; font-size: clamp(13px, .83vw, 17px); font-weight: 850; }
+.monitor-history-consultorio { color: #537087; font-size: clamp(11px, .7vw, 14px); line-height: 1.25; overflow-wrap: anywhere; }
+.monitor-footer { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding: 16px 5px 4px; color: #61778b; font-size: clamp(12px, .78vw, 16px); }
+.monitor-footer > span:first-child { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+.monitor-footer-dot { display: inline-block; width: 8px; height: 8px; }
+
+.monitor-activation-screen, .monitor-loading-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; background: radial-gradient(circle at top right, #d6ecfb 0, transparent 42%), linear-gradient(140deg, #e9f2fa 0%, #f5f8fb 75%); font-family: Inter, "Segoe UI", Arial, sans-serif; }
+.monitor-activation-card { width: min(100%, 600px); padding: clamp(28px, 4vw, 48px); border: 1px solid #d1dfeb; border-radius: 24px; background: #fff; box-shadow: 0 22px 70px rgba(20, 60, 94, .15); }
+.activation-logo-wrap { display: flex; align-items: center; justify-content: center; width: 95px; height: 95px; margin: 0 auto 18px; padding: 8px; border-radius: 18px; background: #f0f6fb; }
+.activation-logo-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.activation-eyebrow { margin: 0; color: #2377b3; text-align: center; font-size: 13px; font-weight: 950; letter-spacing: .15em; }
+.monitor-activation-card h1 { margin: 12px 0 0; color: #143857; text-align: center; font-size: clamp(28px, 3vw, 40px); font-weight: 950; letter-spacing: -.035em; }
+.activation-description { max-width: 460px; margin: 13px auto 27px; color: #63788c; font-size: 16px; line-height: 1.6; text-align: center; }
+.monitor-activation-form { display: flex; flex-direction: column; gap: 10px; }
+.monitor-activation-form label { margin-top: 5px; color: #294863; font-size: 14px; font-weight: 850; }
+.monitor-activation-form input { width: 100%; min-height: 54px; padding: 13px 15px; border: 1.5px solid #bfd0df; border-radius: 11px; outline: none; color: #183652; background: #fbfdff; font: inherit; font-size: 17px; }
+.monitor-activation-form input:focus { border-color: #1680c1; box-shadow: 0 0 0 4px rgba(22,128,193,.12); }
+#codigo-activacion { letter-spacing: .15em; text-align: center; text-transform: uppercase; font-weight: 900; font-size: 24px; }
+.monitor-activate-button { min-height: 57px; margin-top: 12px; border: 0; border-radius: 12px; color: #fff; background: linear-gradient(110deg, #135b98, #187fbd); cursor: pointer; font-size: 17px; font-weight: 900; box-shadow: 0 8px 18px rgba(24, 105, 166, .22); }
+.monitor-activate-button:disabled { opacity: .65; cursor: wait; }
+.monitor-activation-error, .monitor-activation-success { padding: 12px 13px; border-radius: 10px; font-size: 14px; line-height: 1.45; }
+.monitor-activation-error { color: #8d2734; border: 1px solid #f0b6bc; background: #fff0f1; }
+.monitor-activation-success { color: #10653d; border: 1px solid #a9e5c1; background: #e9fbef; }
+.activation-footnote { margin-top: 20px; color: #7a8da0; text-align: center; font-size: 13px; }
+.monitor-loading-screen { flex-direction: column; text-align: center; }
+.monitor-loader-large { width: 54px; height: 54px; border: 5px solid #c9ddea; border-top-color: #1778b7; border-radius: 50%; animation: monitor-spin .8s linear infinite; }
+.monitor-loading-screen h1 { margin: 22px 0 0; color: #143857; font-size: clamp(26px, 3vw, 40px); }
+.monitor-loading-screen p { color: #62788c; font-size: 17px; }
+
+@media (max-width: 1250px) {
+  .monitor-header { align-items: flex-start; }
+  .monitor-header-right { max-width: 440px; }
+  .monitor-date { display: none; }
+  .monitor-stage { grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); }
+  .monitor-call-card { min-height: 250px; }
+  .monitor-patient { font-size: clamp(31px, 3vw, 46px); }
 }
-
-/* ANIMACIONES */
-
-@keyframes monitor-card-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes monitor-speaker-motion {
-  0%,
-  100% {
-    transform: rotate(0) scale(1);
-  }
-
-  25% {
-    transform: rotate(-8deg) scale(1.08);
-  }
-
-  75% {
-    transform: rotate(8deg) scale(1.08);
-  }
-}
-
-@keyframes monitor-pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.5;
-    transform: scale(1.15);
-  }
-}
-
-@keyframes monitor-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* AJUSTE PARA MONITORES DE ANCHO MEDIO */
-
-@media (min-width: 901px) and (max-width: 1200px) {
-  .monitor .monitor-calls-grid.grid-four,
-  .monitor .monitor-calls-grid.grid-five {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .monitor .monitor-bottom {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  }
-
-  .monitor .monitor-history-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .monitor .monitor-attended-columns.has-two-columns {
-    gap: 8px;
-  }
-}
-
-/* TELEVISORES CON POCA ALTURA */
-
-@media (min-width: 901px) and (max-height: 850px) {
-  .monitor {
-    padding: 10px 20px;
-  }
-
-  .monitor .monitor-header {
-    padding-bottom: 9px;
-  }
-
-  .monitor .monitor-logo {
-    height: 45px;
-  }
-
-  .monitor .monitor-brand-text h1 {
-    font-size: clamp(22px, 1.8vw, 31px);
-  }
-
-  .monitor .monitor-section {
-    margin-top: 9px;
-  }
-
-  .monitor .monitor-section-heading {
-    margin-bottom: 7px;
-  }
-
-  .monitor .monitor-section-heading h2 {
-    font-size: clamp(24px, 1.8vw, 33px);
-  }
-
-  .monitor .monitor-call-card {
-    padding: 12px 16px;
-  }
-
-  .monitor .monitor-card-main {
-    padding: 4px 0;
-  }
-
-  .monitor .monitor-consultorio {
-    font-size: clamp(18px, 1.5vw, 27px);
-  }
-
-  .monitor .monitor-patient {
-    margin: 7px 0 0;
-    font-size: clamp(26px, 2.2vw, 41px);
-  }
-
-  .monitor .monitor-card-bottom {
-    padding-top: 7px;
-  }
-
-  .monitor .monitor-bottom {
-    flex-basis: clamp(245px, 35vh, 310px);
-    margin-top: 9px;
-  }
-
-  .monitor .monitor-panel {
-    padding: 10px 14px;
-  }
-
-  .monitor .monitor-panel-heading {
-    margin-bottom: 7px;
-  }
-
-  .monitor .monitor-panel-heading h2 {
-    font-size: clamp(18px, 1.3vw, 24px);
-  }
-
-  .monitor .monitor-attended-row {
-    padding: 4px 0;
-  }
-
-  .monitor .monitor-attended-row strong {
-    min-width: 27px;
-    height: 27px;
-  }
-
-  .monitor .monitor-history-grid {
-    gap: 5px;
-  }
-
-  .monitor .monitor-history-row {
-    gap: 4px;
-    padding: 5px;
-  }
-
-  .monitor .monitor-footer {
-    padding-top: 6px;
-  }
-}
-
-/* PANTALLAS ESTRECHAS */
-
 @media (max-width: 900px) {
+  .monitor-header { flex-direction: column; }
+  .monitor-header-right { justify-content: flex-start; max-width: none; width: 100%; }
+  .monitor-stage, .monitor-bottom { grid-template-columns: minmax(0, 1fr); }
+  .monitor-video-placeholder { min-height: 300px; }
+  .monitor-empty-main { min-height: 300px; }
+  .monitor-history-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  .monitor { padding: 10px; }
+  .monitor-header { padding: 15px; border-radius: 14px; }
+  .monitor-brand { align-items: flex-start; gap: 12px; }
+  .monitor-logo { width: 60px; height: 60px; }
+  .monitor-brand-text h1 { font-size: 22px; }
+  .monitor-header-right { gap: 8px; }
+  .monitor-sound-button { flex: 1; min-width: 185px; }
+  .monitor-change-button { flex: 1; }
+  .monitor-calls-grid, .monitor-calls-grid.grid-two, .monitor-calls-grid.grid-three, .monitor-calls-grid.grid-four, .monitor-calls-grid.grid-dense { grid-template-columns: minmax(0, 1fr); }
+  .monitor-calls-grid.grid-three .monitor-call-card:first-child { grid-column: auto; }
+  .monitor-call-card { min-height: 240px; }
+  .monitor-consultorio { font-size: 28px; }
+  .monitor-patient { font-size: 39px; }
+  .monitor-bottom { grid-template-columns: minmax(0, 1fr); }
+  .monitor-attended-columns.has-two-columns { grid-template-columns: minmax(0, 1fr); }
+  .monitor-history-row { grid-template-columns: auto minmax(80px, .75fr) minmax(95px, 1.2fr); gap: 7px; }
+  .monitor-footer { flex-direction: column; align-items: flex-start; }
+  .monitor-activation-card { padding: 25px 20px; }
+}
+
+
+/* Ajuste de monitor para TV/desktop: ocupar el viewport completo sin scroll de página. */
+@media (min-width: 901px) and (min-height: 620px) {
   html.monitor-active,
   body.monitor-active,
   body.monitor-active #root {
-    height: auto;
-    min-height: 100%;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
   }
 
+  .monitor {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) minmax(132px, .42fr) auto;
+    gap: clamp(8px, 1.25vh, 14px);
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    padding: clamp(10px, 1.2vh, 15px) clamp(12px, 1.15vw, 22px) 8px;
+  }
+
+  .monitor-header {
+    min-height: 0;
+    padding: clamp(10px, 1.2vh, 15px) clamp(14px, 1.5vw, 28px);
+    border-radius: 15px;
+    gap: 14px;
+  }
+
+  .monitor-logo {
+    width: clamp(58px, 7.2vh, 78px);
+    height: clamp(58px, 7.2vh, 78px);
+    border-radius: 12px;
+  }
+
+  .monitor-brand { gap: clamp(10px, 1vw, 18px); }
+  .monitor-brand-text h1 { font-size: clamp(23px, min(1.85vw, 3.5vh), 36px); }
+  .monitor-brand-text p { margin-top: 4px; font-size: clamp(13px, min(.95vw, 1.9vh), 19px); }
+  .monitor-eyebrow { margin-bottom: 3px; font-size: clamp(10px, min(.72vw, 1.4vh), 14px); }
+  .monitor-header-right { flex-wrap: nowrap; gap: clamp(7px, .7vw, 12px); }
+  .monitor-date { gap: 4px; margin-right: 0; }
+  .monitor-date strong { font-size: clamp(12px, min(.82vw, 1.6vh), 17px); }
+  .monitor-date span { font-size: clamp(10px, min(.8vw, 1.5vh), 13px); }
+  .monitor-sound-button { min-height: 46px; padding: 7px 11px; border-radius: 10px; }
+  .sound-button-copy strong { font-size: clamp(11px, min(.72vw, 1.35vh), 14px); }
+  .sound-button-copy small { font-size: clamp(10px, min(.62vw, 1.15vh), 12px); }
+  .monitor-speaker-svg { width: clamp(20px, 2.7vh, 28px); height: clamp(20px, 2.7vh, 28px); }
+  .monitor-change-button { min-height: 40px; padding: 7px 10px; font-size: clamp(10px, min(.66vw, 1.2vh), 13px); }
+  .monitor-fullscreen-button {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: clamp(38px, 4.5vh, 48px);
+    height: clamp(38px, 4.5vh, 48px);
+    padding: 0;
+    border: 1px solid rgba(255,255,255,.42);
+    border-radius: 10px;
+    color: #fff;
+    background: rgba(255,255,255,.12);
+    cursor: pointer;
+  }
+  .monitor-fullscreen-button:hover { background: rgba(255,255,255,.23); }
+  .monitor-fullscreen-button:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+  .monitor-error { margin: 0; padding: 8px 12px; font-size: 13px; }
+  .monitor-stage {
+    grid-template-columns: minmax(0, 1.9fr) minmax(265px, .92fr);
+    min-height: 0;
+    height: 100%;
+    margin-top: 0;
+    gap: clamp(10px, 1.1vw, 18px);
+  }
+  .monitor-calls-section { display: flex; flex-direction: column; min-height: 0; }
+  .monitor-section-heading { flex: 0 0 auto; margin-bottom: clamp(7px, .9vh, 11px); }
+  .monitor-section-heading h2 { font-size: clamp(22px, min(1.55vw, 2.9vh), 31px); }
+  .monitor-section-kicker { font-size: clamp(10px, min(.68vw, 1.3vh), 13px); }
+  .monitor-live { padding: 6px 10px; font-size: clamp(10px, min(.62vw, 1.2vh), 12px); }
+  .monitor-calls-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    grid-auto-rows: minmax(0, 1fr);
+    gap: clamp(7px, .9vh, 12px);
+    overflow: hidden;
+  }
+  .monitor-call-card {
+    min-height: 0;
+    padding: clamp(10px, 1vw, 18px);
+    border-radius: 14px;
+    border-top-width: 7px;
+  }
+  .monitor-card-top { gap: 6px; }
+  .monitor-call-label { font-size: clamp(10px, min(.68vw, 1.2vh), 13px); }
+  .monitor-call-status { gap: 4px; padding: 5px 8px; font-size: clamp(9px, min(.6vw, 1.1vh), 12px); }
+  .monitor-card-main { padding: 8px 0; }
+  .monitor-consultorio { font-size: clamp(20px, min(1.8vw, 3.4vh), 36px); }
+  .monitor-servicio { margin-top: 4px; font-size: clamp(11px, min(.78vw, 1.4vh), 16px); }
+  .monitor-patient { margin-top: clamp(7px, .9vh, 13px); font-size: clamp(25px, min(2.3vw, 4.3vh), 48px); }
+  .monitor-card-bottom { padding: 7px 10px; border-radius: 9px; }
+  .monitor-card-bottom span { font-size: clamp(10px, min(.68vw, 1.2vh), 13px); }
+  .monitor-card-bottom strong { font-size: clamp(18px, min(1.45vw, 2.7vh), 28px); }
+  .monitor-empty { min-height: 0; padding: 12px; border-radius: 14px; }
+  .monitor-empty-main { flex: 1 1 auto; height: auto; min-height: 0 !important; }
+  .monitor-empty-icon { width: clamp(54px, 7vh, 76px); height: clamp(54px, 7vh, 76px); font-size: clamp(30px, 4vh, 42px); box-shadow: 0 0 0 8px #d8f7e7; }
+  .monitor-empty h3 { margin-top: 11px; font-size: clamp(20px, min(1.4vw, 2.6vh), 29px); }
+  .monitor-empty p { margin-top: 6px; font-size: clamp(12px, min(.85vw, 1.6vh), 17px); }
+  .monitor-video-section { min-height: 0; height: 100%; padding: clamp(10px, .9vw, 16px); border-radius: 15px; overflow: hidden; }
+  .monitor-video-heading { flex: 0 0 auto; font-size: clamp(10px, min(.68vw, 1.2vh), 13px); }
+  .monitor-video-placeholder { min-height: 0; height: 100%; margin-top: 8px; padding: 12px; border-radius: 12px; }
+  .monitor-video-icon { width: clamp(64px, 9vh, 95px); height: clamp(64px, 9vh, 95px); border-radius: 20px; }
+  .monitor-video-icon svg { width: 58px; height: 58px; }
+  .monitor-video-placeholder h2 { margin-top: 12px; font-size: clamp(19px, min(1.55vw, 2.8vh), 31px); }
+  .monitor-video-placeholder p { margin-top: 6px; font-size: clamp(11px, min(.8vw, 1.45vh), 15px); }
+  .monitor-video-footnote { flex: 0 0 auto; margin-top: 7px; font-size: clamp(9px, min(.58vw, 1.05vh), 12px); }
+
+  .monitor-bottom {
+    grid-template-columns: minmax(0, .95fr) minmax(0, 1.35fr);
+    min-height: 0;
+    height: 100%;
+    margin-top: 0;
+    gap: clamp(10px, 1.1vw, 18px);
+  }
+  .monitor-panel {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    padding: clamp(9px, .8vw, 15px);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .monitor-panel-heading { flex: 0 0 auto; gap: 9px; margin-bottom: clamp(6px, .7vh, 9px); }
+  .monitor-panel-icon { width: clamp(34px, 4.6vh, 45px); height: clamp(34px, 4.6vh, 45px); border-radius: 10px; font-size: clamp(22px, 2.8vh, 28px); }
+  .monitor-panel-heading h2 { font-size: clamp(16px, min(1.18vw, 2.15vh), 23px); }
+  .monitor-panel-heading p { margin-top: 2px; font-size: clamp(11px, min(.72vw, 1.3vh), 14px); }
+
+  /* Hasta 8 consultorios: una columna hasta 4; luego dos columnas de 4. */
+  .monitor-attended-columns {
+    display: grid;
+    flex: 1 1 auto;
+    min-height: 0;
+    align-content: stretch;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(5px, .6vh, 8px);
+  }
+  .monitor-attended-columns.has-two-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .monitor-attended-list { display: flex; flex-direction: column; justify-content: flex-start; gap: clamp(4px, .55vh, 7px); min-width: 0; min-height: 0; }
+  .monitor-attended-row { display: flex; flex: 0 1 auto; align-items: center; justify-content: space-between; gap: 7px; min-height: clamp(30px, 3.8vh, 42px); padding: clamp(4px, .55vh, 7px) clamp(6px, .65vw, 11px); border-radius: 8px; }
+  .monitor-attended-row span { min-width: 0; font-size: clamp(11px, min(.99vw, 1.7vh), 16px); line-height: 1.2; overflow-wrap: anywhere; }
+  .monitor-attended-row strong { display: grid; flex-shrink: 0; place-items: center; min-width: clamp(26px, 2.1vw, 34px); height: clamp(26px, 3.2vh, 34px); padding: 0 5px; border-radius: 7px; font-size: clamp(13px, min(.95vw, 1.65vh), 19px); }
+  .monitor-muted { font-size: clamp(12px, min(.76vw, 1.35vh), 15px); }
+
+  /* Últimos 8 llamados en dos columnas, 4 filas por columna, sin recortar filas. */
+  .monitor-history-grid {
+    display: grid;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    align-content: stretch;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    gap: clamp(5px, .6vh, 8px);
+  }
+  .monitor-history-row { display: grid; min-width: 0; min-height: 0; grid-template-columns: auto minmax(0, .85fr) minmax(0, 1.1fr); align-items: center; gap: clamp(5px, .55vw, 9px); padding: clamp(5px, .6vh, 8px) clamp(6px, .65vw, 10px); border-radius: 8px; overflow: hidden; }
+  .monitor-history-time { color: #185e9e; font-size: clamp(10px, min(.76vw, 1.35vh), 15px); font-weight: 850; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .monitor-history-patient { min-width: 0; color: #183753; font-size: clamp(11px, min(.82vw, 1.45vh), 16px); font-weight: 850; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .monitor-history-consultorio { min-width: 0; color: #537087; font-size: clamp(10px, min(.7vw, 1.2vh), 14px); line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .monitor-footer { min-height: 0; padding: 0 3px; font-size: clamp(10px, min(.65vw, 1.15vh), 13px); }
+}
+
+/* En pantallas bajas el contenido fluye en vertical para mantener legibilidad. */
+@media (min-width: 901px) and (max-height: 619px) {
+  .monitor { padding: 8px 12px; }
+  .monitor-header { padding: 8px 12px; }
+  .monitor-stage { margin-top: 10px; }
+  .monitor-bottom { margin-top: 10px; }
+  .monitor-call-card { min-height: 190px; }
+  .monitor-empty-main { min-height: 240px; }
+  .monitor-video-placeholder { min-height: 240px; }
+}
+
+/* En móviles/tablets estrechas se permite desplazamiento natural: no se comprime el texto. */
+@media (max-width: 900px) {
   html.monitor-active,
-  body.monitor-active {
-    overflow: auto;
-  }
-
-  .monitor {
-    height: auto;
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow: visible;
-  }
-
-  .monitor .monitor-header {
-    flex-wrap: wrap;
-  }
-
-  .monitor .monitor-header-right {
-    flex-wrap: wrap;
-  }
-
-  .monitor .monitor-section {
-    flex: 0 0 auto;
-    min-height: 300px;
-  }
-
-  .monitor .monitor-calls-grid {
-    flex: 0 0 auto;
-    grid-auto-rows: minmax(190px, auto);
-  }
-
-  .monitor .monitor-calls-grid.grid-three,
-  .monitor .monitor-calls-grid.grid-four,
-  .monitor .monitor-calls-grid.grid-five,
-  .monitor .monitor-calls-grid.grid-one,
-  .monitor .monitor-calls-grid.grid-two {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .monitor .monitor-bottom {
-    flex: 0 0 auto;
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .monitor .monitor-panel {
-    min-height: 230px;
-    overflow: visible;
-  }
-
-  .monitor .monitor-history-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-rows: minmax(100px, auto);
-  }
-
-  .monitor .monitor-footer {
-    margin-top: 20px;
-  }
+  body.monitor-active,
+  body.monitor-active #root { height: auto; min-height: 100%; overflow-x: hidden; overflow-y: auto; }
+  .monitor { display: block; height: auto; min-height: 100dvh; overflow: visible; }
+  .monitor-fullscreen-button { display: grid; flex: 0 0 auto; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid rgba(255,255,255,.42); border-radius: 10px; color: #fff; background: rgba(255,255,255,.12); cursor: pointer; }
+  .monitor-stage, .monitor-bottom { margin-top: 14px; }
 }
 
-@media (max-width: 520px) {
-  .monitor {
-    padding: 12px;
-  }
-
-  .monitor .monitor-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .monitor .monitor-header-right {
-    justify-content: space-between;
-  }
-
-  .monitor .monitor-date {
-    text-align: left;
-  }
-
-  .monitor .monitor-calls-grid,
-  .monitor .monitor-calls-grid.grid-one,
-  .monitor .monitor-calls-grid.grid-two,
-  .monitor .monitor-calls-grid.grid-three,
-  .monitor .monitor-calls-grid.grid-four,
-  .monitor .monitor-calls-grid.grid-five {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .monitor .monitor-call-card {
-    min-height: 205px;
-  }
-
-  .monitor .monitor-attended-columns.has-two-columns {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .monitor .monitor-history-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .monitor .monitor-footer {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+.monitor-history-consultorio {
+  font-size: clamp(10px, 0.8vw, 18px);
+  font-weight: 700;
+  line-height: 1.3;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
-/* ACCESIBILIDAD */
+.monitor-call-card {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-bottom: clamp(8px, 1vh, 14px);
+}
 
-@media (prefers-reduced-motion: reduce) {
-  .monitor *,
-  .monitor *::before,
-  .monitor *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+.monitor-card-main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.monitor-card-bottom {
+  position: relative;
+  bottom: auto;
+  flex-shrink: 0;
+  margin-top: auto;
+  margin-bottom: clamp(4px, 0.6vh, 8px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.monitor-servicio {
+  font-size: clamp(12px, 0.8vw, 20px);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 4px;
+}
+
+.monitor-date strong {
+  font-size: clamp(15px, 1.05vw, 22px);
+  font-weight: 700;
+}
+
+.monitor-date span {
+  font-size: clamp(12px, 0.75vw, 16px);
 }

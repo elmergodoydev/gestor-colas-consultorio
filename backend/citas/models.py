@@ -2,6 +2,7 @@
 from django.db import models
 import hashlib
 import secrets
+import uuid
 
 
 class Establecimiento(models.Model):
@@ -317,3 +318,190 @@ class EquipoActivado(models.Model):
             f"{self.identificador_equipo}"
         )
 
+class Monitor(models.Model):
+    establecimiento = models.ForeignKey(
+        Establecimiento,
+        on_delete=models.PROTECT,
+        related_name="monitores",
+    )
+
+    nombre = models.CharField(max_length=120)
+
+    consultorios = models.ManyToManyField(
+        "Consultorio",
+        through="MonitorConsultorio",
+        related_name="monitores",
+        blank=True,
+    )
+
+    videos = models.ManyToManyField(
+        "Video",
+        through="MonitorVideo",
+        related_name="monitores",
+        blank=True,
+    )
+
+    voz_activa = models.BooleanField(default=True)
+    mostrar_videos = models.BooleanField(default=True)
+    mostrar_atendidos = models.BooleanField(default=False)
+    activo = models.BooleanField(default=True)
+
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["establecimiento__nombre_ipress", "nombre"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["establecimiento", "nombre"],
+                name="uq_monitor_ipress_nombre",
+            ),
+        ]
+        verbose_name = "Monitor"
+        verbose_name_plural = "Monitores"
+
+    def __str__(self):
+        return f"{self.establecimiento.nombre_ipress} - {self.nombre}"
+
+
+class MonitorConsultorio(models.Model):
+    monitor = models.ForeignKey(
+        Monitor,
+        on_delete=models.CASCADE,
+        related_name="consultorios_asignados",
+    )
+
+    consultorio = models.ForeignKey(
+        Consultorio,
+        on_delete=models.PROTECT,
+        related_name="asignaciones_monitor",
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["monitor", "consultorio"],
+                name="uq_mon_consultorio",
+            ),
+        ]
+        verbose_name = "Consultorio del monitor"
+        verbose_name_plural = "Consultorios del monitor"
+
+    def __str__(self):
+        return f"{self.monitor.nombre} - {self.consultorio.nombre}"
+
+
+class Video(models.Model):
+    nombre = models.CharField(max_length=200)
+    descripcion = models.TextField(blank=True)
+
+    archivo = models.FileField(upload_to="videos/")
+
+    activo = models.BooleanField(default=True)
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Video"
+        verbose_name_plural = "Biblioteca de videos"
+
+    def __str__(self):
+        return self.nombre
+
+
+class MonitorVideo(models.Model):
+    monitor = models.ForeignKey(
+        Monitor,
+        on_delete=models.CASCADE,
+        related_name="videos_asignados",
+    )
+
+    video = models.ForeignKey(
+        Video,
+        on_delete=models.PROTECT,
+        related_name="asignaciones_monitor",
+    )
+
+    orden = models.PositiveIntegerField(default=0)
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["orden", "id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["monitor", "video"],
+                name="uq_monitor_video",
+            ),
+        ]
+        verbose_name = "Video del monitor"
+        verbose_name_plural = "Videos del monitor"
+
+    def __str__(self):
+        return f"{self.monitor.nombre} - {self.video.nombre}"
+
+
+class CodigoActivacionMonitor(models.Model):
+    monitor = models.ForeignKey(
+        Monitor,
+        on_delete=models.PROTECT,
+        related_name="codigos_activacion",
+    )
+
+    codigo_hash = models.CharField(max_length=64, unique=True)
+    expira_en = models.DateTimeField()
+    utilizado_en = models.DateTimeField(null=True, blank=True)
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-creado_en"]
+        verbose_name = "Código de activación de monitor"
+        verbose_name_plural = "Códigos de activación de monitores"
+
+    @staticmethod
+    def generar_codigo():
+        caracteres = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+
+        codigo = "".join(
+            secrets.choice(caracteres)
+            for _ in range(8)
+        )
+
+        return f"{codigo[:4]}-{codigo[4:]}"
+
+    @staticmethod
+    def calcular_hash(codigo):
+        return hashlib.sha256(
+            codigo.strip().upper().encode("utf-8")
+        ).hexdigest()
+
+    def __str__(self):
+        return f"{self.monitor.nombre} - {self.creado_en:%Y-%m-%d %H:%M}"
+
+
+class MonitorActivado(models.Model):
+    monitor = models.OneToOneField(
+        Monitor,
+        on_delete=models.PROTECT,
+        related_name="equipo_activado",
+    )
+
+    identificador_equipo = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+    )
+
+    token_hash = models.CharField(max_length=64, unique=True)
+    nombre_equipo = models.CharField(max_length=100, blank=True)
+
+    activo = models.BooleanField(default=True)
+    activado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Monitor activado"
+        verbose_name_plural = "Monitores activados"
+
+    def __str__(self):
+        return f"{self.monitor.nombre} - {self.identificador_equipo}"
