@@ -97,6 +97,17 @@ function credenciales(token) {
   return { headers: { Authorization: `Bearer ${token}` } };
 }
 
+function resolverUrlVideo(url) {
+  if (!url) return "";
+  try {
+    const baseAPI = api.defaults?.baseURL || window.location.origin;
+    const origenAPI = new URL(baseAPI, window.location.origin).origin;
+    return new URL(url, origenAPI).href;
+  } catch {
+    return url;
+  }
+}
+
 export default function Monitor() {
   const [monitorToken, setMonitorToken] = useState(() => localStorage.getItem("monitor_token") || "");
   const [codigo, setCodigo] = useState("");
@@ -109,6 +120,12 @@ export default function Monitor() {
   const [ultimaActualizacion, setUltimaActualizacion] = useState("");
   const [sonidoActivo, setSonidoActivo] = useState(true);
   const [pantallaCompleta, setPantallaCompleta] = useState(Boolean(document.fullscreenElement));
+  const [indiceVideo, setIndiceVideo] = useState(0);
+  const clavePlaylist = (datos?.videos_reproduccion || []).map((video) => video.id).join("|");
+
+  useEffect(() => {
+    setIndiceVideo(0);
+  }, [clavePlaylist]);
 
   const cursorRef = useRef(null);
   const colaVozRef = useRef([]);
@@ -372,6 +389,8 @@ export default function Monitor() {
   const nombreMonitor = datos?.monitor?.nombre || "Monitor de atención";
   const nombreIPRESS = datos?.establecimiento?.nombre_ipress || "Establecimiento de salud";
   const renipress = datos?.establecimiento?.codigo_renipress || "";
+  const videosReproduccion = datos?.videos_reproduccion || [];
+  const videoActual = videosReproduccion[indiceVideo] || videosReproduccion[0] || null;
 
   if (!monitorToken) {
     return (
@@ -473,9 +492,37 @@ export default function Monitor() {
           )}
         </div>
 
-        <aside className="monitor-video-section" aria-label="Espacio reservado para video">
-          <div className="monitor-video-heading"><span>INFORMACIÓN PARA EL PACIENTE</span><span className="video-ready-dot" /></div>
-          <div className="monitor-video-placeholder"><div className="monitor-video-icon"><IconoTV /></div><h2>Aquí irá el video</h2><p>Espacio reservado para contenido institucional</p></div>
+        <aside className="monitor-video-section" aria-label="Contenido institucional">
+          <div className="monitor-video-heading">
+            <span>{videoActual ? "CONTENIDO INSTITUCIONAL" : "INFORMACIÓN PARA EL PACIENTE"}</span>
+            <span className={`video-ready-dot ${videoActual ? "is-ready" : ""}`} />
+          </div>
+          {videoActual?.url ? (
+            <div className="monitor-video-playback">
+              <video
+                key={videoActual.id}
+                className="monitor-video-player"
+                src={resolverUrlVideo(videoActual.url)}
+                autoPlay
+                muted
+                playsInline
+                preload="auto"
+                loop={videosReproduccion.length === 1}
+                onEnded={() => setIndiceVideo((actual) => (actual + 1) % videosReproduccion.length)}
+                aria-label={`Video institucional: ${videoActual.titulo}`}
+              >
+                Tu navegador no puede reproducir este formato de video.
+              </video>
+              <div className="monitor-video-caption">
+                <strong>{videoActual.titulo}</strong>
+                {videosReproduccion.length > 1 && <span>{indiceVideo + 1} / {videosReproduccion.length}</span>}
+              </div>
+            </div>
+          ) : videoActual ? (
+            <div className="monitor-video-placeholder"><div className="monitor-video-icon"><IconoTV /></div><h2>Video no disponible</h2><p>Comprueba el archivo multimedia asignado a este monitor.</p></div>
+          ) : (
+            <div className="monitor-video-placeholder"><div className="monitor-video-icon"><IconoTV /></div><h2>Aquí irá el video</h2><p>Selecciona videos desde la administración del monitor para reproducirlos en bucle.</p></div>
+          )}
         </aside>
       </section>
 

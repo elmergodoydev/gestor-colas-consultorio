@@ -43,6 +43,18 @@ function fechaVisible(fecha) {
   return Number.isNaN(valor.getTime()) ? "—" : valor.toLocaleString("es-PE", { dateStyle: "medium", timeStyle: "short" });
 }
 
+function formatoBytesMonitor(bytes = 0) {
+  if (!Number.isFinite(Number(bytes)) || Number(bytes) <= 0) return "Tamaño desconocido";
+  const unidades = ["B", "KB", "MB", "GB"];
+  let valor = Number(bytes);
+  let indice = 0;
+  while (valor >= 1024 && indice < unidades.length - 1) {
+    valor /= 1024;
+    indice += 1;
+  }
+  return `${valor.toLocaleString("es-PE", { maximumFractionDigits: 1 })} ${unidades[indice]}`;
+}
+
 export default function MonitoresAdmin() {
   const { id } = useParams();
   const [establecimiento, setEstablecimiento] = useState(null);
@@ -59,6 +71,16 @@ export default function MonitoresAdmin() {
   const [mensaje, setMensaje] = useState("");
   const [codigoGenerado, setCodigoGenerado] = useState(null);
   const [copiado, setCopiado] = useState(false);
+  const [videosDisponibles, setVideosDisponibles] = useState([]);
+  const [videoIdsSeleccionados, setVideoIdsSeleccionados] = useState([]);
+  const [errorVideos, setErrorVideos] = useState("");
+
+  const videosSeleccionados = useMemo(
+    () => videoIdsSeleccionados
+      .map((videoId) => videosDisponibles.find((video) => String(video.id) === String(videoId)))
+      .filter(Boolean),
+    [videoIdsSeleccionados, videosDisponibles]
+  );
 
   const seleccionValida = useMemo(
     () => codigosSeleccionados.filter((codigo) => catalogo.some((item) => item.codigo === codigo)),
@@ -74,6 +96,14 @@ export default function MonitoresAdmin() {
       setCatalogo(respuesta.data?.catalogo_consultorios ?? []);
       setFuenteCatalogo(respuesta.data?.fuente_catalogo ?? "proveedor");
       setMonitores(respuesta.data?.monitores ?? []);
+      try {
+        const respuestaVideos = await api.get("videos/");
+        setVideosDisponibles(respuestaVideos.data?.videos ?? []);
+        setErrorVideos("");
+      } catch (errorVideo) {
+        setVideosDisponibles([]);
+        setErrorVideos(obtenerMensajeError(errorVideo, "No se pudo cargar la biblioteca de videos."));
+      }
     } catch (err) {
       setError(obtenerMensajeError(err, "No se pudo cargar la información de los monitores."));
     } finally {
@@ -86,6 +116,7 @@ export default function MonitoresAdmin() {
   function limpiarFormulario() {
     setNombre("");
     setCodigosSeleccionados([]);
+    setVideoIdsSeleccionados([]);
     setMonitorEditando(null);
     setCodigoGenerado(null);
     setCopiado(false);
@@ -95,6 +126,23 @@ export default function MonitoresAdmin() {
     setCodigosSeleccionados((actuales) =>
       marcado ? [...new Set([...actuales, codigo])] : actuales.filter((actual) => actual !== codigo)
     );
+  }
+
+  function alternarVideo(videoId, marcado) {
+    setVideoIdsSeleccionados((actuales) => {
+      if (marcado) return [...actuales.filter((id) => String(id) !== String(videoId)), videoId];
+      return actuales.filter((id) => String(id) !== String(videoId));
+    });
+  }
+
+  function moverVideo(indice, direccion) {
+    setVideoIdsSeleccionados((actuales) => {
+      const destino = indice + direccion;
+      if (destino < 0 || destino >= actuales.length) return actuales;
+      const siguiente = [...actuales];
+      [siguiente[indice], siguiente[destino]] = [siguiente[destino], siguiente[indice]];
+      return siguiente;
+    });
   }
 
   async function guardarMonitor(event) {
@@ -113,7 +161,7 @@ export default function MonitoresAdmin() {
     setMensaje("");
     setCodigoGenerado(null);
     try {
-      const datos = { nombre: nombre.trim(), codigos_consultorios: seleccionValida };
+      const datos = { nombre: nombre.trim(), codigos_consultorios: seleccionValida, video_ids: videoIdsSeleccionados.map(Number) };
       if (monitorEditando) {
         await api.patch(`ipress/${id}/monitores/${monitorEditando}/`, datos);
         setMensaje("Monitor actualizado correctamente.");
@@ -134,6 +182,7 @@ export default function MonitoresAdmin() {
     setMonitorEditando(monitor.id);
     setNombre(monitor.nombre);
     setCodigosSeleccionados(monitor.consultorios.map((item) => item.codigo));
+    setVideoIdsSeleccionados((monitor.videos || []).map((item) => item.id));
     setCodigoGenerado(null);
     setCopiado(false);
     setMensaje("");
@@ -207,7 +256,7 @@ export default function MonitoresAdmin() {
               <Button variant="outlined" startIcon={<ContentCopyOutlinedIcon />} onClick={copiarCodigo} sx={{ textTransform: "none" }}>{copiado ? "Código copiado" : "Copiar código"}</Button>
               <Button variant="text" onClick={() => setCodigoGenerado(null)} sx={{ textTransform: "none" }}>Cerrar</Button>
             </Stack>
-            <Alert severity="info" sx={{ width: "100%" }}>El código vence en 30 minutos y solo puede utilizarse una vez. En el siguiente paso conectaremos su canje y la visualización filtrada en la ruta /monitor.</Alert>
+            <Alert severity="info" sx={{ width: "100%" }}>El código vence en 30 minutos y solo puede utilizarse una vez. Al activarlo, el monitor cargará sus consultorios y reproducirá los videos seleccionados en bucle.</Alert>
           </Stack>
         </Paper>}
 
@@ -237,6 +286,63 @@ export default function MonitoresAdmin() {
                 </Box>}
                 <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 1 }}>Catálogo obtenido desde el proveedor: {fuenteCatalogo || "API"}. Las asignaciones elegidas se guardan en PostgreSQL.</Typography>
               </Box>
+
+              <Paper variant="outlined" sx={{ p: { xs: 1.5, md: 2 }, borderRadius: 2.5, borderColor: "#e2e8f0", bgcolor: "#fbfdff" }}>
+                <Stack direction="row" spacing={1.25} alignItems="center" sx={{ mb: 1.5 }}>
+                  <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: "#f1eaff", color: "#6840a8", display: "grid", placeItems: "center", flexShrink: 0, fontSize: 21, fontWeight: 900 }}>▶</Box>
+                  <Box sx={{ minWidth: 0, flex: 1 }}>
+                    <Typography fontWeight={800}>Videos para reproducir</Typography>
+                    <Typography variant="body2" color="text.secondary">Selecciona los videos que verá esta pantalla. Puedes ordenar la reproducción debajo.</Typography>
+                  </Box>
+                  <Chip size="small" label={`${videoIdsSeleccionados.length} seleccionados`} variant="outlined" />
+                </Stack>
+
+                {errorVideos && <Alert severity="warning" sx={{ mb: 1.5 }}>{errorVideos}</Alert>}
+                {!errorVideos && videosDisponibles.length === 0 ? (
+                  <Alert severity="info">La biblioteca todavía no tiene videos. Puedes guardar el monitor sin videos y añadirlos después.</Alert>
+                ) : (
+                  <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "repeat(2, minmax(0, 1fr))" }, gap: 1 }}>
+                    {videosDisponibles.map((video) => {
+                      const marcado = videoIdsSeleccionados.some((videoId) => String(videoId) === String(video.id));
+                      const posicion = videoIdsSeleccionados.findIndex((videoId) => String(videoId) === String(video.id));
+                      return (
+                        <Paper key={video.id} variant="outlined" sx={{ p: 1, minWidth: 0, borderRadius: 2, borderColor: marcado ? "#8b6dcc" : "#e2e8f0", bgcolor: marcado ? "#faf7ff" : "#fff" }}>
+                          <FormControlLabel
+                            sx={{ m: 0, width: "100%", alignItems: "flex-start" }}
+                            control={<Checkbox size="small" checked={marcado} onChange={(event) => alternarVideo(video.id, event.target.checked)} />}
+                            label={<Box sx={{ pt: 0.4, minWidth: 0 }}>
+                              <Typography fontWeight={750} sx={{ lineHeight: 1.25, overflowWrap: "anywhere" }}>{video.titulo}</Typography>
+                              <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 0.25, overflowWrap: "anywhere" }}>{video.nombre_archivo} · {formatoBytesMonitor(video.tamano_bytes)}</Typography>
+                              {marcado && <Chip size="small" color="secondary" variant="outlined" label={`En la lista: ${posicion + 1}`} sx={{ mt: 0.5, height: 22 }} />}
+                            </Box>}
+                          />
+                        </Paper>
+                      );
+                    })}
+                  </Box>
+                )}
+
+                {videosSeleccionados.length > 0 && (
+                  <Box sx={{ mt: 2 }}>
+                    <Divider sx={{ mb: 1.5 }} />
+                    <Typography variant="subtitle2" fontWeight={800} sx={{ mb: 1 }}>Orden de reproducción</Typography>
+                    <Stack spacing={0.75}>
+                      {videosSeleccionados.map((video, indice) => (
+                        <Paper key={video.id} variant="outlined" sx={{ display: "flex", alignItems: "center", gap: 1, p: 1, borderRadius: 2, minWidth: 0 }}>
+                          <Chip size="small" label={indice + 1} color="secondary" />
+                          <Box sx={{ flex: 1, minWidth: 0 }}>
+                            <Typography variant="body2" fontWeight={750} sx={{ overflowWrap: "anywhere" }}>{video.titulo}</Typography>
+                            <Typography variant="caption" color="text.secondary">{video.nombre_archivo}</Typography>
+                          </Box>
+                          <Button type="button" size="small" variant="outlined" onClick={() => moverVideo(indice, -1)} disabled={indice === 0} aria-label={`Mover ${video.titulo} arriba`} sx={{ minWidth: 35, px: 1, textTransform: "none" }}>↑</Button>
+                          <Button type="button" size="small" variant="outlined" onClick={() => moverVideo(indice, 1)} disabled={indice === videosSeleccionados.length - 1} aria-label={`Mover ${video.titulo} abajo`} sx={{ minWidth: 35, px: 1, textTransform: "none" }}>↓</Button>
+                        </Paper>
+                      ))}
+                    </Stack>
+                  </Box>
+                )}
+              </Paper>
+
               <Divider />
               <Stack direction={{ xs: "column", sm: "row" }} spacing={1.25}>
                 <Button type="submit" variant="contained" startIcon={guardando ? <CircularProgress size={18} color="inherit" /> : monitorEditando ? <EditOutlinedIcon /> : undefined} disabled={guardando || catalogo.length === 0} sx={{ minHeight: 44, borderRadius: 2, textTransform: "none", boxShadow: "none" }}>{guardando ? "Guardando..." : monitorEditando ? "Guardar cambios" : "Registrar monitor"}</Button>
@@ -264,12 +370,20 @@ export default function MonitoresAdmin() {
                     <Box sx={{ width: 42, height: 42, flexShrink: 0, borderRadius: 2, bgcolor: "#f1f5f9", display: "grid", placeItems: "center", color: "#475569" }}><TvOutlinedIcon /></Box>
                     <Box sx={{ flex: 1, minWidth: 0 }}>
                       <Typography fontWeight={800} sx={{ overflowWrap: "anywhere" }}>{monitor.nombre}</Typography>
-                      <Typography variant="body2" color="text.secondary">{monitor.cantidad_consultorios} consultorio(s) asignado(s)</Typography>
+                      <Typography variant="body2" color="text.secondary">{monitor.cantidad_consultorios} consultorio(s) asignado(s) · {(monitor.videos || []).length} video(s)</Typography>
                     </Box>
                   </Stack>
                   <Stack direction="row" spacing={0.75} sx={{ flexWrap: "wrap" }} useFlexGap>
                     {monitor.consultorios.map((consultorio) => <Chip key={consultorio.codigo} size="small" icon={<MedicalServicesOutlinedIcon />} label={`${consultorio.nombre} (${consultorio.codigo})`} variant="outlined" sx={{ maxWidth: "100%" }} />)}
                   </Stack>
+                  {(monitor.videos || []).length > 0 && (
+                    <Box>
+                      <Typography variant="caption" color="text.secondary" fontWeight={800}>LISTA DE REPRODUCCIÓN</Typography>
+                      <Stack direction="row" spacing={0.75} sx={{ mt: 0.6, flexWrap: "wrap" }} useFlexGap>
+                        {(monitor.videos || []).map((video, indice) => <Chip key={video.id} size="small" label={`${indice + 1}. ${video.titulo}`} variant="outlined" sx={{ maxWidth: "100%" }} />)}
+                      </Stack>
+                    </Box>
+                  )}
                   <Divider />
                   <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ flexWrap: "wrap" }} useFlexGap>
                     <Button size="small" variant="outlined" startIcon={<KeyOutlinedIcon />} onClick={() => generarCodigo(monitor)} sx={{ textTransform: "none" }}>Generar código</Button>

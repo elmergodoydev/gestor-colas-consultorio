@@ -23,6 +23,7 @@ from citas.models import (
     MonitorActivado,
     Turno,
 )
+from citas.video_playlist import serializar_playlist_monitor
 
 
 def hash_token(token):
@@ -219,6 +220,7 @@ class MonitorDatosActivadosAPIView(APIView):
             "cantidad_llamados_activos": len(llamados_activos),
             "ultimos_llamados": ultimos_llamados,
             "atendidos_por_consultorio": atendidos_por_consultorio,
+            "videos_reproduccion": serializar_playlist_monitor(monitor),
         })
 
 

@@ -17,6 +17,11 @@ from citas.models import (
     Establecimiento,
     Monitor,
 )
+from citas.video_playlist import (
+    establecer_playlist_monitor,
+    serializar_playlist_monitor,
+    validar_video_ids,
+)
 from citas.providers.ipress_provider import obtener_ipress
 
 
@@ -104,11 +109,14 @@ def serializar_monitor(monitor):
         }
         for consultorio in monitor.consultorios.all().order_by("nombre")
     ]
+    videos = serializar_playlist_monitor(monitor)
     return {
         "id": monitor.id,
         "nombre": monitor.nombre,
         "consultorios": consultorios,
         "cantidad_consultorios": len(consultorios),
+        "videos": videos,
+        "cantidad_videos": len(videos),
     }
 
 
@@ -141,7 +149,8 @@ def validar_datos_monitor(request_data, catalogo):
                 + ". Actualiza la selección."
             )
         })
-    return nombre, codigos
+    video_ids = validar_video_ids(request_data.get("video_ids") if "video_ids" in request_data else None)
+    return nombre, codigos, video_ids
 
 
 class MonitoresIPRESSAPIView(APIView):
@@ -173,7 +182,7 @@ class MonitoresIPRESSAPIView(APIView):
             Establecimiento.objects.select_for_update(), pk=pk
         )
         catalogo, _ = obtener_catalogo_api(establecimiento)
-        nombre, codigos = validar_datos_monitor(request.data, catalogo)
+        nombre, codigos, video_ids = validar_datos_monitor(request.data, catalogo)
 
         if Monitor.objects.filter(
             establecimiento=establecimiento, nombre__iexact=nombre
@@ -190,6 +199,7 @@ class MonitoresIPRESSAPIView(APIView):
             nombre=nombre,
         )
         monitor.consultorios.set([consultorios_guardados[codigo] for codigo in codigos])
+        establecer_playlist_monitor(monitor, video_ids)
 
         return Response({
             "mensaje": "Monitor registrado correctamente.",
@@ -209,7 +219,7 @@ class MonitorDetalleIPRESSAPIView(APIView):
             pk=monitor_id,
         )
         catalogo, _ = obtener_catalogo_api(establecimiento)
-        nombre, codigos = validar_datos_monitor(request.data, catalogo)
+        nombre, codigos, video_ids = validar_datos_monitor(request.data, catalogo)
 
         if Monitor.objects.filter(
             establecimiento=establecimiento,
@@ -225,6 +235,7 @@ class MonitorDetalleIPRESSAPIView(APIView):
         monitor.nombre = nombre
         monitor.save(update_fields=["nombre"])
         monitor.consultorios.set([consultorios_guardados[codigo] for codigo in codigos])
+        establecer_playlist_monitor(monitor, video_ids)
 
         return Response({
             "mensaje": "Monitor actualizado correctamente.",

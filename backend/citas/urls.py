@@ -31,10 +31,10 @@ from citas.views import (
     IPRESSDestroyAPIView,
     SincronizarConsultoriosIPRESSAPIView,
     EquiposActivadosIPRESSAPIView,
-    DesactivarEquipoAPIView
-
+    DesactivarEquipoAPIView,
 )
 
+from citas.video_views import BibliotecaVideosAPIView, BibliotecaVideoDetalleAPIView
 
 urlpatterns = [
     path(
@@ -147,5 +147,15 @@ urlpatterns = [
         GenerarCodigoActivacionMonitorAPIView.as_view(),
         name="generar-codigo-activacion-monitor",
     ),
+    path(
+        "videos/",
+        BibliotecaVideosAPIView.as_view(),
+        name="biblioteca-videos"
+    ),
+    path(
+        "videos/<int:video_id>/",
+         BibliotecaVideoDetalleAPIView.as_view(),
+        name="biblioteca-video-detalle"
+        ),
 
 ]

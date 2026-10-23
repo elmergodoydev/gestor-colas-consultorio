@@ -84,7 +84,7 @@ docker compose up -d backend frontend
 ## 6. Configuración inicial y datos de prueba
 
 1. Abrir `http://IP_SERVIDOR:8088` desde un equipo de la red.
-2. En la sección **IPRESS**, registrar el establecimiento de prueba con RENIPRESS `00005644` y nombre `C.M.I. RÍMAC`.
+2. En la sección **IPRESS**, registrar el establecimiento de prueba con RENIPRESS `00005933` y nombre `C.S. ALFA Y OMEGA`.
 3. Entrar en la sección de consultorios de esa IPRESS y sincronizar el catálogo de prueba.
 4. Importar las citas ficticias:
 
