@@ -111,7 +111,3 @@ docker compose run --rm backend python manage.py reiniciar_datos_prueba --confir
 ```
 
 Este comando elimina datos operativos y activaciones, por lo que será necesario activar nuevamente los equipos y monitores. No ejecutar `docker compose down -v` si se desea conservar el volumen de PostgreSQL.
-
-## Acceso y seguridad
-
-Acceder a `http://IP_SERVIDOR:8088` desde la red autorizada. Permitir el puerto configurado en el firewall solo a los equipos que deban usar la aplicación. No exponer el servicio directamente a Internet sin HTTPS y los controles de seguridad correspondientes.
