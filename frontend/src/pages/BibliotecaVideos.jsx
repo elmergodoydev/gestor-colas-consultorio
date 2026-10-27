@@ -47,6 +47,43 @@ function fechaVisible(fecha) {
     : valor.toLocaleDateString("es-PE", { day: "2-digit", month: "short", year: "numeric" });
 }
 
+function resolverUrlVideo(url) {
+  if (!url) return "";
+
+  let ruta = url;
+
+  // Si el backend devuelve una URL absoluta,
+  // extraemos la ruta del archivo.
+  if (/^https?:\/\//i.test(url)) {
+    try {
+      ruta = new URL(url).pathname;
+    } catch {
+      return url;
+    }
+  }
+
+  if (!ruta.startsWith("/")) {
+    ruta = `/${ruta}`;
+  }
+
+  // En desarrollo, los videos se sirven desde Django.
+  if (import.meta.env.DEV) {
+    const apiBase =
+      import.meta.env.VITE_API_URL ||
+      "http://127.0.0.1:8000/api/";
+
+    const apiOrigin = new URL(
+      apiBase,
+      window.location.origin
+    ).origin;
+
+    return `${apiOrigin}${ruta}`;
+  }
+
+  // En producción, Nginx sirve los videos desde /media/.
+  return ruta;
+}
+
 export default function BibliotecaVideos() {
   const inputRef = useRef(null);
   const [videos, setVideos] = useState([]);
@@ -208,7 +245,7 @@ export default function BibliotecaVideos() {
             <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(2, minmax(0, 1fr))", xl: "repeat(3, minmax(0, 1fr))" }, gap: 1.75 }}>
               {videosFiltrados.map((video) => (
                 <Card key={video.id} variant="outlined" sx={{ minWidth: 0, overflow: "hidden", borderRadius: 3, borderColor: "#e2e8f0", boxShadow: "none", bgcolor: "#fff" }}>
-                  {video.url ? <Box sx={{ bgcolor: "#0f172a", aspectRatio: "16 / 9", display: "grid", placeItems: "center" }}><video src={video.url} controls preload="metadata" style={{ width: "100%", height: "100%", maxHeight: 220, objectFit: "contain" }}>Tu navegador no puede reproducir este formato de video.</video></Box> : <Box sx={{ bgcolor: "#f1f5f9", aspectRatio: "16 / 9", display: "grid", placeItems: "center", color: "#94a3b8" }}><Typography sx={{ fontSize: 42 }}>▶</Typography></Box>}
+                  {video.url ? <Box sx={{ bgcolor: "#0f172a", aspectRatio: "16 / 9", display: "grid", placeItems: "center" }}><video src={resolverUrlVideo(video.url)} controls preload="metadata" style={{ width: "100%", height: "100%", maxHeight: 220, objectFit: "contain" }} onError={(event) => console.error("Error al reproducir el video:", resolverUrlVideo(video.url), event.currentTarget.error)}>Tu navegador no puede reproducir este formato de video.</video></Box> : <Box sx={{ bgcolor: "#f1f5f9", aspectRatio: "16 / 9", display: "grid", placeItems: "center", color: "#94a3b8" }}><Typography sx={{ fontSize: 42 }}>▶</Typography></Box>}
                   <CardContent sx={{ p: 1.75, "&:last-child": { pb: 1.75 } }}>
                     <Stack direction="row" spacing={1} alignItems="flex-start">
                       <Box sx={{ flex: 1, minWidth: 0 }}>
