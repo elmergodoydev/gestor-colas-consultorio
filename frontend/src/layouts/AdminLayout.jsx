@@ -213,8 +213,13 @@ export default function AdminLayout() {
 
               <ListItemText
                 primary="Todas las IPRESS"
-                primaryTypographyProps={{ fontSize: 13 }}
+                slotProps={{
+                  primary: {
+                    sx: { fontSize: 13 }
+                  }
+                }}
               />
+
             </ListItemButton>
 
             <Typography
@@ -279,13 +284,18 @@ export default function AdminLayout() {
                   {opcion.icono}
                 </ListItemIcon>
 
-                <ListItemText
-                  primary={opcion.texto}
-                  primaryTypographyProps={{
-                    fontSize: 13.5,
-                    fontWeight: 500,
-                  }}
-                />
+              <ListItemText
+                primary={opcion.texto}
+                slotProps={{
+                  primary: {
+                    sx: {
+                      fontSize: 13.5,
+                      fontWeight: 500,
+                    },
+                  },
+                }}
+              />
+  
               </ListItemButton>
             ))}
           </List>

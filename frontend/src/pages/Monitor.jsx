@@ -534,7 +534,6 @@ export default function Monitor() {
         <section className="monitor-call-section" aria-label="Llamados activos">
           <div className="monitor-call-list-heading">
             <div>
-              <span className="monitor-section-eyebrow">ATENCIÓN DE PACIENTES</span>
               <h2>Llamados actuales</h2>
             </div>
             <span className="monitor-live"><span className="monitor-live-dot" /> EN VIVO</span>

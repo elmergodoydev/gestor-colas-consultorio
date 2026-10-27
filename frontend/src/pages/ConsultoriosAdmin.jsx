@@ -351,15 +351,6 @@ export default function ConsultoriosAdmin() {
           {/* Encabezado de la IPRESS */}
           <Box>
             <Typography
-              variant="overline"
-              color="primary.main"
-              fontWeight={700}
-              letterSpacing={1}
-            >
-              ADMINISTRACIÓN · IPRESS
-            </Typography>
-
-            <Typography
               variant="h4"
               fontWeight={700}
               sx={{
@@ -374,8 +365,10 @@ export default function ConsultoriosAdmin() {
             <Stack
               direction={{ xs: "column", sm: "row" }}
               spacing={1}
-              alignItems={{ xs: "flex-start", sm: "center" }}
-              sx={{ mt: 1 }}
+              sx={{ 
+                alignItems: { xs: "flex-start", sm: "center" },
+                mt: 1
+               }}
             >
               <BusinessOutlinedIcon
                 sx={{ color: "#64748b", fontSize: 20 }}
@@ -430,10 +423,12 @@ export default function ConsultoriosAdmin() {
               <Stack
                 direction={{ xs: "column", sm: "row" }}
                 spacing={2}
-                alignItems={{ xs: "stretch", sm: "center" }}
-                justifyContent="space-between"
+                sx={{
+                  alignItems: { xs: "stretch", sm: "center" },
+                  justifyContent: "space-between",
+                }}
               >
-                <Stack direction="row" spacing={1.5} alignItems="center">
+                <Stack direction="row" spacing={1.5} sx={{alignItems: "center"}}>
                   <Box
                     sx={{
                       width: 44,
@@ -482,14 +477,6 @@ export default function ConsultoriosAdmin() {
                     : "Actualizar consultorios"}
                 </Button>
               </Stack>
-
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ mt: 2, lineHeight: 1.7 }}
-              >
-                Este catálogo muestra los consultorios devueltos por la API.
-              </Typography>
             </CardContent>
           </Card>
 
@@ -636,21 +623,7 @@ export default function ConsultoriosAdmin() {
                     }}
                   >
                     <Stack spacing={2} alignItems="flex-start">
-                      <Chip
-                        color="success"
-                        size="small"
-                        icon={<CheckCircleOutlinedIcon />}
-                        label="Código generado"
-                      />
-
                       <Box>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                        >
-                          Código para ingresar en el puesto de atención
-                        </Typography>
-
                         <Typography
                           variant="h3"
                           fontWeight={800}
@@ -670,22 +643,6 @@ export default function ConsultoriosAdmin() {
                         {codigoGenerado.consultorio?.nombre}
                       </Typography>
 
-                      <Typography variant="body2" color="text.secondary">
-                        Vence: {formatoFecha(codigoGenerado.expira_en)}
-                      </Typography>
-
-                      <Button
-                        variant="outlined"
-                        startIcon={<ContentCopyIcon />}
-                        onClick={copiarCodigo}
-                        sx={{
-                          borderRadius: 2,
-                          textTransform: "none",
-                        }}
-                      >
-                        Copiar código
-                      </Button>
-
                       {mensajeCodigo && (
                         <Alert
                           severity={
@@ -701,8 +658,7 @@ export default function ConsultoriosAdmin() {
 
                       <Alert severity="info" sx={{ width: "100%" }}>
                         Ingresa este código en la computadora del
-                        consultorio mediante la ruta /consultorio.
-                        El código vence a los 30 minutos y solo puede
+                        consultorio. El código vence a los 30 minutos y solo puede
                         utilizarse una vez.
                       </Alert>
                     </Stack>
@@ -731,20 +687,14 @@ export default function ConsultoriosAdmin() {
               <Stack
                 direction={{ xs: "column", sm: "row" }}
                 spacing={2}
-                alignItems={{ xs: "stretch", sm: "center" }}
-                justifyContent="space-between"
+                sx={{
+                    alignItems: { xs: "stretch", sm: "center" },
+                    justifyContent: "space-between",
+                    }}
               >
                 <Box>
                   <Typography variant="h6" fontWeight={700}>
-                    Puestos de atención activados
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mt: 0.5 }}
-                  >
-                    Equipos vinculados a los consultorios de esta IPRESS.
+                    Consultorios activados
                   </Typography>
                 </Box>
 
@@ -807,10 +757,6 @@ export default function ConsultoriosAdmin() {
                       </TableCell>
 
                       <TableCell sx={{ fontWeight: 700 }}>
-                        Equipo
-                      </TableCell>
-
-                      <TableCell sx={{ fontWeight: 700 }}>
                         Fecha de activación
                       </TableCell>
 
@@ -838,11 +784,6 @@ export default function ConsultoriosAdmin() {
 
                         <TableCell>
                           {equipo.consultorio?.codigo ?? "—"}
-                        </TableCell>
-
-                        <TableCell>
-                          {equipo.nombre_equipo?.trim() ||
-                            "Equipo sin nombre"}
                         </TableCell>
 
                         <TableCell>

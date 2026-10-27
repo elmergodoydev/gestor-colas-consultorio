@@ -234,7 +234,6 @@ export default function MonitoresAdmin() {
     <Box sx={{ width: "100%", minWidth: 0, minHeight: "100vh", bgcolor: "#f8fafc", px: { xs: 2, sm: 3, lg: 4 }, py: { xs: 3, md: 4 } }}>
       <Stack spacing={3}>
         <Box>
-          <Typography variant="overline" color="primary.main" fontWeight={700} letterSpacing={1}>ADMINISTRACIÓN · IPRESS</Typography>
           <Typography variant="h4" fontWeight={700} sx={{ mt: 0.5, color: "#0f172a", fontSize: { xs: 27, md: 32 } }}>Registrar monitores</Typography>
           {establecimiento && <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ mt: 1, alignItems: { xs: "flex-start", sm: "center" } }}>
             <BusinessOutlinedIcon sx={{ color: "#64748b", fontSize: 20 }} />
@@ -251,12 +250,7 @@ export default function MonitoresAdmin() {
             <Chip color="success" size="small" label="Código de activación generado" />
             <Typography variant="h6" fontWeight={700}>{codigoGenerado.monitor?.nombre}</Typography>
             <Typography variant="h3" fontWeight={800} sx={{ color: "#0f172a", letterSpacing: { xs: 2, sm: 5 }, overflowWrap: "anywhere", fontSize: { xs: 32, sm: 40 } }}>{codigoGenerado.codigo}</Typography>
-            <Typography variant="body2" color="text.secondary">Vence: {fechaVisible(codigoGenerado.expira_en)}</Typography>
-            <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap" }}>
-              <Button variant="outlined" startIcon={<ContentCopyOutlinedIcon />} onClick={copiarCodigo} sx={{ textTransform: "none" }}>{copiado ? "Código copiado" : "Copiar código"}</Button>
-              <Button variant="text" onClick={() => setCodigoGenerado(null)} sx={{ textTransform: "none" }}>Cerrar</Button>
-            </Stack>
-            <Alert severity="info" sx={{ width: "100%" }}>El código vence en 30 minutos y solo puede utilizarse una vez. Al activarlo, el monitor cargará sus consultorios y reproducirá los videos seleccionados en bucle.</Alert>
+            <Alert severity="info" sx={{ width: "100%" }}>El código vence en 30 minutos y solo puede utilizarse una vez. </Alert>
           </Stack>
         </Paper>}
 
@@ -280,11 +274,10 @@ export default function MonitoresAdmin() {
                   {catalogo.map((consultorio) => {
                     const marcado = codigosSeleccionados.includes(consultorio.codigo);
                     return <Paper key={consultorio.codigo} variant="outlined" sx={{ borderRadius: 2, p: 1.25, borderColor: marcado ? "primary.main" : "#e2e8f0", bgcolor: marcado ? "#f5f9ff" : "#fff" }}>
-                      <FormControlLabel sx={{ display: "flex", alignItems: "flex-start", m: 0, width: "100%" }} control={<Checkbox checked={marcado} onChange={(event) => alternarConsultorio(consultorio.codigo, event.target.checked)} />} label={<Box sx={{ pt: 0.5 }}><Typography fontWeight={700}>{consultorio.nombre}</Typography><Typography variant="caption" color="text.secondary">{consultorio.codigo}</Typography><Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>{consultorio.nombre_ambiente || "Ambiente no registrado"} · {consultorio.nombre_servicio || "Servicio no registrado"}</Typography></Box>} />
+                      <FormControlLabel sx={{ display: "flex", alignItems: "flex-start", m: 0, width: "100%" }} control={<Checkbox checked={marcado} onChange={(event) => alternarConsultorio(consultorio.codigo, event.target.checked)} />} label={<Box sx={{ pt: 0.5 }}><Typography fontWeight={700}>{consultorio.nombre}</Typography></Box>} />
                     </Paper>;
                   })}
                 </Box>}
-                <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 1 }}>Catálogo obtenido desde el proveedor: {fuenteCatalogo || "API"}. Las asignaciones elegidas se guardan en PostgreSQL.</Typography>
               </Box>
 
               <Paper variant="outlined" sx={{ p: { xs: 1.5, md: 2 }, borderRadius: 2.5, borderColor: "#e2e8f0", bgcolor: "#fbfdff" }}>
@@ -292,7 +285,7 @@ export default function MonitoresAdmin() {
                   <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: "#f1eaff", color: "#6840a8", display: "grid", placeItems: "center", flexShrink: 0, fontSize: 21, fontWeight: 900 }}>▶</Box>
                   <Box sx={{ minWidth: 0, flex: 1 }}>
                     <Typography fontWeight={800}>Videos para reproducir</Typography>
-                    <Typography variant="body2" color="text.secondary">Selecciona los videos que verá esta pantalla. Puedes ordenar la reproducción debajo.</Typography>
+                    <Typography variant="body2" color="text.secondary">Selecciona los videos que verá esta pantalla.</Typography>
                   </Box>
                   <Chip size="small" label={`${videoIdsSeleccionados.length} seleccionados`} variant="outlined" />
                 </Stack>
@@ -310,9 +303,8 @@ export default function MonitoresAdmin() {
                           <FormControlLabel
                             sx={{ m: 0, width: "100%", alignItems: "flex-start" }}
                             control={<Checkbox size="small" checked={marcado} onChange={(event) => alternarVideo(video.id, event.target.checked)} />}
-                            label={<Box sx={{ pt: 0.4, minWidth: 0 }}>
+                            label={<Box sx={{ pt: 1, minWidth: 0 }}>
                               <Typography fontWeight={750} sx={{ lineHeight: 1.25, overflowWrap: "anywhere" }}>{video.titulo}</Typography>
-                              <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 0.25, overflowWrap: "anywhere" }}>{video.nombre_archivo} · {formatoBytesMonitor(video.tamano_bytes)}</Typography>
                               {marcado && <Chip size="small" color="secondary" variant="outlined" label={`En la lista: ${posicion + 1}`} sx={{ mt: 0.5, height: 22 }} />}
                             </Box>}
                           />
@@ -374,7 +366,7 @@ export default function MonitoresAdmin() {
                     </Box>
                   </Stack>
                   <Stack direction="row" spacing={0.75} sx={{ flexWrap: "wrap" }} useFlexGap>
-                    {monitor.consultorios.map((consultorio) => <Chip key={consultorio.codigo} size="small" icon={<MedicalServicesOutlinedIcon />} label={`${consultorio.nombre} (${consultorio.codigo})`} variant="outlined" sx={{ maxWidth: "100%" }} />)}
+                    {monitor.consultorios.map((consultorio) => <Chip key={consultorio.codigo} size="small" icon={<MedicalServicesOutlinedIcon />} label={`${consultorio.nombre}`} variant="outlined" sx={{ maxWidth: "100%" }} />)}
                   </Stack>
                   {(monitor.videos || []).length > 0 && (
                     <Box>

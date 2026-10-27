@@ -90,7 +90,7 @@
 
 .ipress-card:hover {
   transform: translateY(-4px);
-  border-color: #93c5fd !important;
+  border-color: #bbd7f7 !important;
   box-shadow: 0 12px 26px rgb(15 23 42 / 8%);
 }
 

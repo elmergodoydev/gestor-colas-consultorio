@@ -730,9 +730,6 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
               />
 
               <Box>
-                <Typography fontWeight={700}>
-                  Gestor de Colas
-                </Typography>
                 <Typography variant="body2" sx={{ opacity: 0.8 }}>
                   {establecimiento?.nombre_ipress || "Establecimiento"}
                 </Typography>
@@ -753,7 +750,7 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                 }}
               >
                 <Typography fontWeight={700}>
-                  Consultorio — {consultorio?.nombre || "Sin asignar"}
+                  {consultorio?.nombre || "Sin asignar"}
                 </Typography>
               </Box>
               <Button
@@ -803,9 +800,6 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                 Pacientes del consultorio
               </Typography>
 
-              <Typography color="text.secondary" sx={{ mt: 0.5 }}>
-                Gestión de pacientes y estado de atención
-              </Typography>
             </Box>
 
             <Box
@@ -985,12 +979,14 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                   placeholder="Buscar paciente por nombre..."
                   value={busqueda}
                   onChange={(event) => setBusqueda(event.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon color="action" />
-                      </InputAdornment>
-                    ),
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon color="action" />
+                        </InputAdornment>
+                      ),
+                    },
                   }}
                 />
               </Box>

@@ -195,9 +195,9 @@ export default function BibliotecaVideos() {
       <Stack spacing={2.5}>
         <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "stretch", sm: "center" }} justifyContent="space-between">
           <Box sx={{ minWidth: 0 }}>
-            <Typography variant="overline" color="primary.main" fontWeight={800} letterSpacing={1}>GESTOR DE COLAS · ADMINISTRACIÓN</Typography>
+            
             <Typography variant="h4" fontWeight={800} sx={{ mt: 0.25, color: "#0f172a", fontSize: { xs: 26, md: 31 } }}>Biblioteca de videos</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>Carga y administra el contenido institucional disponible para los monitores.</Typography>
+            
           </Box>
           <Stack direction="row" spacing={1} alignItems="center">
             <Chip label={`${videos.length} video${videos.length === 1 ? "" : "s"}`} variant="outlined" sx={{ bgcolor: "#fff" }} />
@@ -230,7 +230,6 @@ export default function BibliotecaVideos() {
           <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} justifyContent="space-between" alignItems={{ xs: "stretch", sm: "center" }} sx={{ mb: 1.5 }}>
             <Box>
               <Typography variant="h6" fontWeight={800} color="#0f172a">Videos disponibles</Typography>
-              <Typography variant="body2" color="text.secondary">Los videos se guardan en el servidor y quedan disponibles para asignarlos a monitores.</Typography>
             </Box>
             <TextField size="small" placeholder="Buscar video…" value={busqueda} onChange={(event) => setBusqueda(event.target.value)} sx={{ width: { xs: "100%", sm: 270 }, bgcolor: "#fff" }}  />
           </Stack>
@@ -268,7 +267,7 @@ export default function BibliotecaVideos() {
           )}
         </Box>
         <Divider />
-        <Typography variant="caption" color="text.secondary">Nota: esta sección administra la biblioteca. La selección de videos para cada monitor se configura en la ficha del monitor y se mostrará en bucle en la pantalla de atención.</Typography>
+        <Typography variant="caption" color="text.secondary">Nota: La selección de videos para cada monitor se configura desde la opción "Registrar Monitores" y se mostrará en la pantalla de atención.</Typography>
       </Stack>
     </Box>
   );
