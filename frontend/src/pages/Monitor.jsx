@@ -3,15 +3,22 @@ import api from "../services/api";
 import "./Monitor.css";
 
 const INTERVALO = 3000;
-const MAX_HISTORIAL = 6;
-const MAX_CONSULTORIOS = 6;
 
-function obtenerNombrePaciente(nombreCompleto = "", nombresSeparados = "", apellidoPaternoSeparado = "") {
-  const nombres = (nombresSeparados || nombreCompleto).trim().split(/\s+/).filter(Boolean);
+function obtenerNombrePaciente(
+  nombreCompleto = "",
+  nombresSeparados = "",
+  apellidoPaternoSeparado = ""
+) {
+  const nombres = (nombresSeparados || nombreCompleto)
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
   if (!nombres.length) return { visible: "Paciente", voz: "Paciente" };
 
   const primerNombre = nombres[0];
   let apellidoPaterno = (apellidoPaternoSeparado || "").trim();
+
   if (!apellidoPaterno) {
     const partes = nombreCompleto.trim().split(/\s+/).filter(Boolean);
     apellidoPaterno = partes.length >= 3 ? partes[partes.length - 2] : partes[1] || "";
@@ -25,29 +32,20 @@ function obtenerNombrePaciente(nombreCompleto = "", nombresSeparados = "", apell
 
 function horaActual() {
   return new Intl.DateTimeFormat("es-PE", {
-    hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
   }).format(new Date());
-}
-
-function horaEvento(fecha) {
-  if (!fecha) return "--:--";
-  const valor = new Date(fecha);
-  if (Number.isNaN(valor.getTime())) return "--:--";
-  return valor.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit", hour12: false });
 }
 
 function fechaActual() {
   return new Intl.DateTimeFormat("es-PE", {
-    weekday: "long", day: "2-digit", month: "long", year: "numeric",
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
   }).format(new Date());
-}
-
-function claseCuadricula(cantidad) {
-  if (cantidad <= 1) return "grid-one";
-  if (cantidad === 2) return "grid-two";
-  if (cantidad === 3) return "grid-three";
-  if (cantidad <= 4) return "grid-four";
-  return "grid-dense";
 }
 
 function obtenerMensajeError(error, predeterminado) {
@@ -62,9 +60,20 @@ function obtenerMensajeError(error, predeterminado) {
   return predeterminado;
 }
 
-function IconoAltavoz() {
+function IconoAltavoz({ className = "" }) {
   return (
-    <svg className="monitor-speaker-svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      width="32"
+      height="32"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <path d="M4 10v4h4l5 4V6l-5 4H4Z" />
       <path d="M16 9a5 5 0 0 1 0 6" />
       <path d="M18.5 6.5a9 9 0 0 1 0 11" />
@@ -72,22 +81,33 @@ function IconoAltavoz() {
   );
 }
 
-function IconoTV() {
+function IconoOjo({ controlesVisibles }) {
   return (
-    <svg viewBox="0 0 64 64" width="88" height="88" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="7" y="12" width="50" height="35" rx="4" />
-      <path d="m22 55 10-8 10 8M23 24l7 6-7 6M36 36h7" />
+    <svg
+      viewBox="0 0 24 24"
+      width="27"
+      height="27"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M2.2 12s3.5-7 9.8-7 9.8 7 9.8 7-3.5 7-9.8 7-9.8-7-9.8-7Z" />
+      <circle cx="12" cy="12" r="3.2" />
+      {controlesVisibles && <path d="m4 4 16 16" />}
     </svg>
   );
 }
 
 function IconoPantallaCompleta({ activo = false }) {
   return activo ? (
-    <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M8 3v5H3M16 3v5h5M8 21v-5H3M16 21v-5h5" />
     </svg>
   ) : (
-    <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" />
     </svg>
   );
@@ -114,18 +134,14 @@ export default function Monitor() {
   const [activando, setActivando] = useState(false);
   const [cargandoSesion, setCargandoSesion] = useState(Boolean(localStorage.getItem("monitor_token")));
   const [datos, setDatos] = useState(null);
-  const [eventos, setEventos] = useState([]);
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
-  const [ultimaActualizacion, setUltimaActualizacion] = useState("");
   const [sonidoActivo, setSonidoActivo] = useState(true);
   const [pantallaCompleta, setPantallaCompleta] = useState(Boolean(document.fullscreenElement));
+  const [controlesVisibles, setControlesVisibles] = useState(false);
   const [indiceVideo, setIndiceVideo] = useState(0);
+  const [horaReloj, setHoraReloj] = useState(horaActual);
   const clavePlaylist = (datos?.videos_reproduccion || []).map((video) => video.id).join("|");
-
-  useEffect(() => {
-    setIndiceVideo(0);
-  }, [clavePlaylist]);
 
   const cursorRef = useRef(null);
   const colaVozRef = useRef([]);
@@ -135,6 +151,15 @@ export default function Monitor() {
   const montadoRef = useRef(false);
   const anunciadosRef = useRef(new Set());
   const temporizadorVozRef = useRef(null);
+
+  useEffect(() => {
+    setIndiceVideo(0);
+  }, [clavePlaylist]);
+
+  useEffect(() => {
+    const temporizador = window.setInterval(() => setHoraReloj(horaActual()), 1000);
+    return () => window.clearInterval(temporizador);
+  }, []);
 
   useEffect(() => {
     document.documentElement.classList.add("monitor-active");
@@ -161,7 +186,7 @@ export default function Monitor() {
       } else {
         setError("Este navegador no permite activar la pantalla completa desde la página. Usa F11.");
       }
-    } catch (err) {
+    } catch {
       setError("No se pudo activar la pantalla completa. Prueba con F11 en el teclado.");
     }
   }
@@ -171,7 +196,6 @@ export default function Monitor() {
     localStorage.removeItem("monitor_nombre_equipo");
     setMonitorToken("");
     setDatos(null);
-    setEventos([]);
     setError(mensajeUsuario);
     setCargandoSesion(false);
     cursorRef.current = null;
@@ -193,9 +217,7 @@ export default function Monitor() {
     setError("");
     setMensaje("");
     try {
-      const respuesta = await api.post("monitor/activar/", {
-        codigo: codigoLimpio,
-      });
+      const respuesta = await api.post("monitor/activar/", { codigo: codigoLimpio });
       const token = respuesta.data?.token;
       if (!token) throw new Error("El servidor no devolvió el token de activación.");
 
@@ -205,10 +227,10 @@ export default function Monitor() {
       anunciadosRef.current = new Set();
       setCodigo("");
       setDatos(null);
-      setEventos([]);
       setMonitorToken(token);
       setSonidoActivo(true);
       sonidoActivoRef.current = true;
+      setControlesVisibles(false);
       setMensaje("Monitor activado correctamente.");
     } catch (err) {
       setError(err.message && !err.response ? err.message : obtenerMensajeError(err, "No se pudo activar el monitor. Verifica el código e inténtalo nuevamente."));
@@ -223,7 +245,6 @@ export default function Monitor() {
       if (!montadoRef.current) return;
       setDatos(respuesta.data);
       setError("");
-      setUltimaActualizacion(horaActual());
       setCargandoSesion(false);
     } catch (err) {
       if (!montadoRef.current) return;
@@ -277,7 +298,6 @@ export default function Monitor() {
     sonidoActivoRef.current = nuevoEstado;
     setSonidoActivo(nuevoEstado);
     if (nuevoEstado) {
-      // Un clic habilita el sintetizador de voz en navegadores con restricciones de reproducción.
       procesarVoz();
     } else {
       colaVozRef.current = [];
@@ -304,7 +324,6 @@ export default function Monitor() {
 
       cursorRef.current = respuesta.data?.ultimo_evento_id ?? cursorRef.current;
       if (nuevosEventos.length) {
-        setEventos((anteriores) => [...nuevosEventos.slice().reverse(), ...anteriores].slice(0, MAX_HISTORIAL));
         for (const evento of nuevosEventos) {
           if (anunciadosRef.current.has(evento.id)) continue;
           anunciadosRef.current.add(evento.id);
@@ -328,7 +347,6 @@ export default function Monitor() {
   useEffect(() => {
     if (!monitorToken) {
       setDatos(null);
-      setEventos([]);
       setCargandoSesion(false);
       return undefined;
     }
@@ -340,7 +358,6 @@ export default function Monitor() {
     procesandoEventosRef.current = false;
     anunciadosRef.current = new Set();
     setDatos(null);
-    setEventos([]);
 
     const cargar = async () => {
       if (cancelado) return;
@@ -348,6 +365,7 @@ export default function Monitor() {
       if (cancelado) return;
       await obtenerEventos(monitorToken);
     };
+
     cargar();
     const intervalo = window.setInterval(cargar, INTERVALO);
 
@@ -371,21 +389,12 @@ export default function Monitor() {
     try {
       await api.post("monitor/desactivar/", {}, credenciales(monitorToken));
     } catch (err) {
-      // Una sesión inválida no debe impedir borrar las credenciales locales.
       console.warn("No se pudo cerrar la activación en el servidor:", err);
     }
     limpiarSesionLocal("Monitor desactivado. Ingresa un nuevo código para activarlo.");
   }
 
   const llamados = datos?.llamados_activos || [];
-  const atendidos = (datos?.atendidos_por_consultorio || []).slice(0, MAX_CONSULTORIOS);
-  const gruposAtendidos = atendidos.length > 3 ? [atendidos.slice(0, 3), atendidos.slice(3, 6)] : [atendidos];
-  const historial = datos
-    ? [...(datos.ultimos_llamados || []), ...eventos]
-      .filter((evento, indice, lista) => lista.findIndex((otro) => String(otro.evento_id ?? otro.id) === String(evento.evento_id ?? evento.id)) === indice)
-      .sort((a, b) => new Date(b.fecha_evento) - new Date(a.fecha_evento))
-      .slice(0, MAX_HISTORIAL)
-    : [];
   const nombreMonitor = datos?.monitor?.nombre || "Monitor de atención";
   const nombreIPRESS = datos?.establecimiento?.nombre_ipress || "Establecimiento de salud";
   const renipress = datos?.establecimiento?.codigo_renipress || "";
@@ -426,7 +435,14 @@ export default function Monitor() {
   }
 
   if (cargandoSesion && !datos) {
-    return <main className="monitor-loading-screen"><div className="monitor-loader-large" /><h1>Conectando con el monitor…</h1><p>Verificando la activación y cargando los consultorios asignados.</p>{error && <div className="monitor-error">{error}</div>}</main>;
+    return (
+      <main className="monitor-loading-screen">
+        <div className="monitor-loader-large" />
+        <h1>Conectando con el monitor…</h1>
+        <p>Verificando la activación y cargando los consultorios asignados.</p>
+        {error && <div className="monitor-error">{error}</div>}
+      </main>
+    );
   }
 
   return (
@@ -435,68 +451,52 @@ export default function Monitor() {
         <div className="monitor-brand">
           <div className="monitor-logo"><img src="/minsa-logo.png" alt="Logo del MINSA" /></div>
           <div className="monitor-brand-text">
-            <span className="monitor-eyebrow">MINISTERIO DE SALUD · {renipress || "IPRESS"}</span>
+            <span className="monitor-renipress">{renipress || "RENIPRESS"}</span>
             <h1>{nombreIPRESS}</h1>
             <p>{nombreMonitor}</p>
           </div>
         </div>
+
         <div className="monitor-header-right">
-          <div className="monitor-date"><strong>{fechaActual()}</strong><span>{ultimaActualizacion ? `Actualizado a las ${ultimaActualizacion}` : "Conectando con el servidor…"}</span></div>
-          <button
-            className="monitor-fullscreen-button"
-            type="button"
-            onClick={alternarPantallaCompleta}
-            aria-label={pantallaCompleta ? "Salir de pantalla completa" : "Activar pantalla completa"}
-            title={pantallaCompleta ? "Salir de pantalla completa" : "Pantalla completa"}
-          >
-            <IconoPantallaCompleta activo={pantallaCompleta} />
-          </button>
-          <button className={`monitor-sound-button ${sonidoActivo ? "is-active" : "is-muted"}`} onClick={alternarSonido} type="button" aria-pressed={sonidoActivo}>
-            <span className="monitor-sound-icon"><IconoAltavoz /></span>
-            <span className="sound-button-copy"><strong>Llamado por voz</strong><small>{sonidoActivo ? "ACTIVADO" : "DESACTIVADO"}</small></span>
-          </button>
-          <button className="monitor-change-button" onClick={cambiarMonitor} type="button">Cambiar monitor</button>
+          <div className="monitor-date">
+            <strong>{fechaActual()}</strong>
+          </div>
+          <div className="monitor-clock" aria-label={`Hora actual ${horaReloj}`}>{horaReloj.slice(0, 5)}</div>
+          <div className="monitor-tools-wrap">
+            <button
+              className={`monitor-eye-button ${controlesVisibles ? "is-open" : ""}`}
+              type="button"
+              onClick={() => setControlesVisibles((actual) => !actual)}
+              aria-label={controlesVisibles ? "Ocultar controles del monitor" : "Mostrar controles del monitor"}
+              aria-expanded={controlesVisibles}
+              title={controlesVisibles ? "Ocultar controles" : "Mostrar controles"}
+            >
+              <IconoOjo controlesVisibles={controlesVisibles} />
+            </button>
+            {controlesVisibles && (
+              <div className="monitor-controls-popover" role="group" aria-label="Controles del monitor">
+                <button className="monitor-tool-button" type="button" onClick={alternarPantallaCompleta}>
+                  <IconoPantallaCompleta activo={pantallaCompleta} />
+                  <span>{pantallaCompleta ? "Salir de pantalla completa" : "Pantalla completa"}</span>
+                </button>
+                <button className={`monitor-tool-button monitor-tool-sound ${sonidoActivo ? "is-active" : "is-muted"}`} type="button" onClick={alternarSonido} aria-pressed={sonidoActivo}>
+                  <IconoAltavoz />
+                  <span>Llamado por voz: {sonidoActivo ? "activado" : "desactivado"}</span>
+                </button>
+                <button className="monitor-tool-button" type="button" onClick={cambiarMonitor}>
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2" /><path d="M8 21h8m-4-4v4M8 10h8" /></svg>
+                  <span>Cambiar monitor</span>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
       {error && <div className="monitor-error" role="status">{error}</div>}
 
-      <section className="monitor-stage">
-        <div className="monitor-calls-section">
-          <div className="monitor-section-heading">
-            <div><h2>Llamados actuales</h2></div>
-            <div className="monitor-live"><span className="monitor-live-dot" /> EN VIVO</div>
-          </div>
-
-          {!datos ? (
-            <div className="monitor-empty monitor-empty-main"><div className="monitor-loader" /><h3>Conectando con los consultorios…</h3></div>
-          ) : llamados.length === 0 ? (
-            <div className="monitor-empty monitor-empty-main"><div className="monitor-empty-icon">✓</div><h3>No hay llamados activos</h3><p>Los nuevos llamados aparecerán automáticamente aquí.</p></div>
-          ) : (
-            <div className={`monitor-calls-grid ${claseCuadricula(llamados.length)}`}>
-              {llamados.map((llamado, indice) => {
-                const paciente = obtenerNombrePaciente(llamado.nombre_paciente, llamado.nombres_paciente, llamado.apellido_paterno_paciente);
-                return (
-                  <article className={`monitor-call-card call-color-${indice % 5}`} key={llamado.id}>
-                    <div className="monitor-card-top"><span className="monitor-call-label">LLAMADO ACTIVO</span><span className="monitor-call-status"><span className="monitor-speaker"><IconoAltavoz /></span>ACÉRQUESE</span></div>
-                    <div className="monitor-card-main">
-                      <div className="monitor-consultorio">{llamado.nombre_consultorio}</div>
-                      {llamado.nombre_servicio && <div className="monitor-servicio">{llamado.nombre_servicio}</div>}
-                      <div className="monitor-patient">{paciente.visible}</div>
-                    </div>
-                    <div className="monitor-card-bottom"><span>TURNO</span><strong>{llamado.codigo}</strong></div>
-                  </article>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
+      <section className="monitor-screen-grid" aria-label="Panel de atención">
         <aside className="monitor-video-section" aria-label="Contenido institucional">
-          <div className="monitor-video-heading">
-            <span>{videoActual ? "CONTENIDO INSTITUCIONAL" : "INFORMACIÓN PARA EL PACIENTE"}</span>
-            <span className={`video-ready-dot ${videoActual ? "is-ready" : ""}`} />
-          </div>
           {videoActual?.url ? (
             <div className="monitor-video-playback">
               <video
@@ -508,45 +508,64 @@ export default function Monitor() {
                 playsInline
                 preload="auto"
                 loop={videosReproduccion.length === 1}
-                onEnded={() => setIndiceVideo((actual) => (actual + 1) % videosReproduccion.length)}
-                aria-label={`Video institucional: ${videoActual.titulo}`}
+                onEnded={() => {
+                  if (videosReproduccion.length > 1) setIndiceVideo((actual) => (actual + 1) % videosReproduccion.length);
+                }}
+                onError={() => setError("No se pudo reproducir un video institucional. Verifica el archivo y la ruta multimedia asignada.")}
+                aria-label={`Video institucional: ${videoActual.titulo || "Contenido institucional"}`}
               >
                 Tu navegador no puede reproducir este formato de video.
               </video>
-              <div className="monitor-video-caption">
-                <strong>{videoActual.titulo}</strong>
-                {videosReproduccion.length > 1 && <span>{indiceVideo + 1} / {videosReproduccion.length}</span>}
+              <div className="monitor-video-overlay">
+                <span>MINISTERIO DE SALUD</span>
+                <strong>{videoActual.titulo || "Contenido institucional"}</strong>
+                {videosReproduccion.length > 1 && <small>{indiceVideo + 1} / {videosReproduccion.length}</small>}
               </div>
             </div>
-          ) : videoActual ? (
-            <div className="monitor-video-placeholder"><div className="monitor-video-icon"><IconoTV /></div><h2>Video no disponible</h2><p>Comprueba el archivo multimedia asignado a este monitor.</p></div>
           ) : (
-            <div className="monitor-video-placeholder"><div className="monitor-video-icon"><IconoTV /></div><h2>Aquí irá el video</h2><p>Selecciona videos desde la administración del monitor para reproducirlos en bucle.</p></div>
-          )}
-        </aside>
-      </section>
-
-      <section className="monitor-bottom">
-        <div className="monitor-panel monitor-attended-panel">
-          <div className="monitor-panel-heading"><div className="monitor-panel-icon">✓</div><div><h2>Atendidos hoy</h2></div></div>
-          {atendidos.length === 0 ? <p className="monitor-muted">Sin datos de atención.</p> : (
-            <div className={`monitor-attended-columns ${atendidos.length > 3 ? "has-two-columns" : ""}`}>
-              {gruposAtendidos.map((grupo, indice) => <div className="monitor-attended-list" key={indice}>{grupo.map((item) => <div className="monitor-attended-row" key={item.codigo_consultorio}><span>{item.nombre_consultorio}</span><strong>{item.cantidad}</strong></div>)}</div>)}
+            <div className="monitor-video-placeholder">
+              <div className="monitor-video-placeholder-mark">MINSA</div>
+              <h2>Contenido institucional</h2>
+              <p>Los videos asignados a este monitor se mostrarán aquí.</p>
             </div>
           )}
-        </div>
+        </aside>
 
-        <div className="monitor-panel monitor-history-panel">
-          <div className="monitor-panel-heading"><div className="monitor-panel-icon history-icon">↗</div><div><h2>Últimos llamados</h2></div></div>
-          {historial.length > 0 && (
-            <div className="monitor-history-grid">{historial.map((evento, indice) => {
-              const paciente = obtenerNombrePaciente(evento.nombre_paciente, evento.nombres_paciente, evento.apellido_paterno_paciente);
-              return <div className="monitor-history-row" key={`${evento.evento_id ?? evento.id}-${indice}`}><span className="monitor-history-time">{horaEvento(evento.fecha_evento)}</span><span className="monitor-history-patient">{paciente.visible}</span><span className="monitor-history-consultorio">{evento.nombre_consultorio}</span></div>;
-            })}</div>
+        <section className="monitor-call-section" aria-label="Llamados activos">
+          <div className="monitor-call-list-heading">
+            <div>
+              <span className="monitor-section-eyebrow">ATENCIÓN DE PACIENTES</span>
+              <h2>Llamados actuales</h2>
+            </div>
+            <span className="monitor-live"><span className="monitor-live-dot" /> EN VIVO</span>
+          </div>
+
+          {!datos ? (
+            <div className="monitor-empty-call-list"><div className="monitor-loader" /><h3>Conectando con los consultorios…</h3></div>
+          ) : llamados.length === 0 ? (
+            <div className="monitor-empty-call-list">
+              <div className="monitor-empty-icon">✓</div>
+              <h3>No hay llamados activos</h3>
+              <p>Los nuevos llamados aparecerán automáticamente aquí.</p>
+            </div>
+          ) : (
+            <div className="monitor-call-list">
+              {llamados.map((llamado) => {
+                const paciente = obtenerNombrePaciente(llamado.nombre_paciente, llamado.nombres_paciente, llamado.apellido_paterno_paciente);
+                return (
+                  <article className="monitor-call-row" key={llamado.id}>
+                    <div className="monitor-call-speaker"><IconoAltavoz /></div>
+                    <div className="monitor-call-consultorio" title={llamado.nombre_consultorio}>{llamado.nombre_consultorio || "Consultorio"}</div>
+                    <div className="monitor-call-divider" aria-hidden="true" />
+                    <div className="monitor-call-patient" title={paciente.visible}>{paciente.visible}</div>
+                  </article>
+                );
+              })}
+            </div>
           )}
-        </div>
+          {llamados.length > 8 && <div className="monitor-more-calls">Hay {llamados.length} llamados activos · desliza para ver todos</div>}
+        </section>
       </section>
-
     </main>
   );
 }
