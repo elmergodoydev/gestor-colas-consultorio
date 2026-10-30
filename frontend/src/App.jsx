@@ -67,7 +67,7 @@ export default function App() {
         />
 
         <Route
-          path="/monitor"
+          path="/pantalla"
           element={<Monitor />}
         />
 

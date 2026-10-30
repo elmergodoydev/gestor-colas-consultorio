@@ -64,7 +64,7 @@ Configurar estos valores según el servidor:
 APP_BIND_IP=0.0.0.0
 APP_PORT=8088
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,IP_SERVIDOR
-DJANGO_CSRF_TRUSTED_ORIGINS=http://IP_SERVIDOR:8088
+DJANGO_CSRF_TRUSTED_ORIGINS=http://IP_SERVIDOR:8091
 ```
 
 Reemplazar `IP_SERVIDOR` por la IP real del servidor. Configurar también las credenciales de PostgreSQL y `DJANGO_SECRET_KEY`. `POSTGRES_DB`, `POSTGRES_USER` y `POSTGRES_PASSWORD` deben coincidir con `DB_NAME`, `DB_USER` y `DB_PASSWORD`; ambos campos de contraseña de PostgreSQL deben tener exactamente el mismo valor. Usar contraseñas fuertes y una clave secreta única. No subir ni compartir el archivo `.env`.
@@ -83,7 +83,7 @@ docker compose up -d backend frontend
 
 ## 6. Configuración inicial y datos de prueba
 
-1. Abrir `http://IP_SERVIDOR:8088` desde un equipo de la red.
+1. Abrir `http://IP_SERVIDOR:8091` desde un equipo de la red.
 2. En la sección **IPRESS**, registrar el establecimiento de prueba con RENIPRESS `00005933` y nombre `C.S. ALFA Y OMEGA`.
 3. Entrar en la sección de consultorios de esa IPRESS y sincronizar el catálogo de prueba.
 4. Importar las citas ficticias:
@@ -96,11 +96,11 @@ docker compose up -d backend frontend
 
    **a. Activar la computadora de consultorio**
    - En la administración de consultorios, generar un código de activación para el equipo.
-   - En esa computadora, abrir `http://IP_SERVIDOR:8088/consultorio` e introducir el código.
+   - En esa computadora, abrir `http://IP_SERVIDOR:8091/consultorio` e introducir el código.
 
    **b. Registrar y activar el monitor de TV**
    - En la administración de monitores, registrar el monitor, asignarle los consultorios correspondientes y generar su código de activación.
-   - En la pantalla de TV, abrir `http://IP_SERVIDOR:8088/monitor` e introducir el código.
+   - En la pantalla de TV, abrir `http://IP_SERVIDOR:8091/pantalla` e introducir el código.
 
-El archivo `backend/data/citas_sihce_prueba.json` contiene citas ficticias del 22 al 30 de octubre de 2026: seis por consultorio por día para tres consultorios (162 citas). Las vistas operativas muestran las citas según la fecha actual; fuera del intervalo de prueba pueden no aparecer.
+El archivo `backend/data/citas_sihce_prueba.json` contiene citas ficticias.
 
