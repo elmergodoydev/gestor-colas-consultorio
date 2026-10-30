@@ -5,7 +5,7 @@ from urllib.parse import parse_qs
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
-from citas.models import MonitorActivado
+from citas.models import MonitorActivado, MonitorConsultorio
 
 
 @database_sync_to_async
@@ -33,16 +33,48 @@ def obtener_monitor_por_token(token):
 
     monitor = activacion.monitor
 
-    # Verifica que el monitor tenga consultorios asignados
-    # pertenecientes a su propia IPRESS.
-    tiene_consultorios = monitor.consultorios.filter(
-        establecimiento_id=monitor.establecimiento_id
+    tiene_consultorios = MonitorConsultorio.objects.filter(
+        monitor=monitor,
+        consultorio__establecimiento_id=monitor.establecimiento_id,
     ).exists()
 
     if not tiene_consultorios:
         return None
 
-    return monitor.id
+    return {
+        "activacion_id": activacion.id,
+        "monitor_id": monitor.id,
+    }
+
+
+@database_sync_to_async
+def validar_acceso_monitor(
+    activacion_id,
+    monitor_id,
+    establecimiento_id,
+    consultorio_id,
+):
+    """
+    Revalida la activación y la asignación del consultorio
+    antes de entregar cada notificación.
+    """
+    activacion_valida = MonitorActivado.objects.filter(
+        pk=activacion_id,
+        monitor_id=monitor_id,
+        activo=True,
+        monitor__activo=True,
+        monitor__establecimiento_id=establecimiento_id,
+    ).exists()
+
+    if not activacion_valida:
+        return False
+
+    return MonitorConsultorio.objects.filter(
+        monitor_id=monitor_id,
+        monitor__establecimiento_id=establecimiento_id,
+        consultorio_id=consultorio_id,
+        consultorio__establecimiento_id=establecimiento_id,
+    ).exists()
 
 
 class MonitorConsumer(AsyncJsonWebsocketConsumer):
@@ -55,14 +87,15 @@ class MonitorConsumer(AsyncJsonWebsocketConsumer):
         parametros = parse_qs(query_string)
         token = parametros.get("token", [None])[0]
 
-        monitor_id = await obtener_monitor_por_token(token)
+        datos_monitor = await obtener_monitor_por_token(token)
 
-        if monitor_id is None:
+        if datos_monitor is None:
             await self.close(code=4401)
             return
 
-        self.monitor_id = monitor_id
-        self.grupo_monitor = f"monitor_{monitor_id}"
+        self.activacion_id = datos_monitor["activacion_id"]
+        self.monitor_id = datos_monitor["monitor_id"]
+        self.grupo_monitor = f"monitor_{self.monitor_id}"
 
         await self.channel_layer.group_add(
             self.grupo_monitor,
@@ -71,10 +104,9 @@ class MonitorConsumer(AsyncJsonWebsocketConsumer):
 
         await self.accept()
 
-        # Confirma la conexión, sin enviar datos de pacientes.
         await self.send_json({
             "tipo": "conexion_establecida",
-            "monitor_id": monitor_id,
+            "monitor_id": self.monitor_id,
         })
 
     async def disconnect(self, close_code):
@@ -89,10 +121,20 @@ class MonitorConsumer(AsyncJsonWebsocketConsumer):
             )
 
     async def notificacion_llamado(self, event):
-        # Reenvía solo el contenido autorizado que publique
-        # el backend en el grupo de este monitor.
+        autorizado = await validar_acceso_monitor(
+            activacion_id=self.activacion_id,
+            monitor_id=self.monitor_id,
+            establecimiento_id=event.get("establecimiento_id"),
+            consultorio_id=event.get("consultorio_id"),
+        )
+
+        if not autorizado:
+            await self.close(code=4403)
+            return
+
         await self.send_json({
             "tipo": "actualizar_monitor",
             "evento_id": event.get("evento_id"),
             "accion": event.get("accion"),
+            "turno_id": event.get("turno_id"),
         })

@@ -1,7 +1,10 @@
 
 from datetime import date, datetime
-
+import logging
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.db import transaction
+
 from django.shortcuts import get_object_or_404
 from citas.providers.ipress_provider import obtener_ipress
 from citas.serializers import ValidarRENIPRESSSerializer
@@ -36,6 +39,7 @@ from citas.models import (
     Monitor,
     Sincronizacion,
     Turno,
+    MonitorConsultorio,
 )
 
 from citas.serializers import (
@@ -47,6 +51,62 @@ from citas.serializers import (
 )
 
 from django.db.models.deletion import ProtectedError
+
+logger = logging.getLogger(__name__)
+
+
+def notificar_monitores_turno(
+    turno_id,
+    establecimiento_id,
+    consultorio_id,
+    evento_id,
+    accion,
+):
+    """
+    Notifica a los monitores activos que tienen asignado
+    el consultorio del turno dentro de la misma IPRESS.
+    """
+    channel_layer = get_channel_layer()
+
+    if channel_layer is None:
+        logger.error("No hay una capa de canales configurada.")
+        return
+
+    monitor_ids = (
+        MonitorConsultorio.objects
+        .filter(
+            consultorio_id=consultorio_id,
+            consultorio__establecimiento_id=establecimiento_id,
+            monitor__establecimiento_id=establecimiento_id,
+            monitor__activo=True,
+            monitor__equipo_activado__activo=True,
+        )
+        .values_list("monitor_id", flat=True)
+        .distinct()
+    )
+
+    for monitor_id in monitor_ids:
+        try:
+            async_to_sync(channel_layer.group_send)(
+                f"monitor_{monitor_id}",
+                {
+                    "type": "notificacion_llamado",
+                    "evento_id": evento_id,
+                    "accion": accion,
+                    "turno_id": turno_id,
+                    "establecimiento_id": establecimiento_id,
+                    "consultorio_id": consultorio_id,
+
+                },
+            )
+        except Exception:
+            # El turno ya puede estar guardado en la base de datos.
+            # Un fallo de Redis no debe convertir la acción en un error HTTP.
+            logger.exception(
+                "No se pudo notificar al monitor %s sobre el evento %s.",
+                monitor_id,
+                evento_id,
+            )
 
 
 def obtener_establecimiento(request):
@@ -506,10 +566,26 @@ class TurnoAccionAPIView(APIView):
         turno.estado = configuracion["nuevo_estado"]
         turno.save(update_fields=["estado"])
 
-        EventoLlamado.objects.create(
+        evento = EventoLlamado.objects.create(
             turno=turno,
             tipo=configuracion["evento"],
         )
+
+        transaction.on_commit(
+            lambda turno_id=turno.id,
+                establecimiento_id=turno.establecimiento_id,
+                consultorio_id=turno.consultorio_id,
+                evento_id=evento.id,
+                accion=accion: notificar_monitores_turno(
+                    turno_id=turno_id,
+                    establecimiento_id=establecimiento_id,
+                    consultorio_id=consultorio_id,
+                    evento_id=evento_id,
+                    accion=accion,
+                ),
+            robust=True,
+        )
+
 
         turno = Turno.objects.select_related(
             "cita",

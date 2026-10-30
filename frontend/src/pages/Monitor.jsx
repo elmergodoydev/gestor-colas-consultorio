@@ -2,7 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import api from "../services/api";
 import "./Monitor.css";
 
-const INTERVALO = 3000;
+const RETRASO_RECONEXION_INICIAL = 2000;
+const RETRASO_RECONEXION_MAXIMO = 15000;
 
 function obtenerNombrePaciente(
   nombreCompleto = "",
@@ -137,6 +138,7 @@ export default function Monitor() {
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [sonidoActivo, setSonidoActivo] = useState(true);
+  const [audioHabilitado, setAudioHabilitado] = useState(false);
   const [pantallaCompleta, setPantallaCompleta] = useState(Boolean(document.fullscreenElement));
   const [controlesVisibles, setControlesVisibles] = useState(false);
   const [indiceVideo, setIndiceVideo] = useState(0);
@@ -147,6 +149,7 @@ export default function Monitor() {
   const colaVozRef = useRef([]);
   const reproduciendoRef = useRef(false);
   const sonidoActivoRef = useRef(true);
+  const audioHabilitadoRef = useRef(false);
   const procesandoEventosRef = useRef(false);
   const montadoRef = useRef(false);
   const anunciadosRef = useRef(new Set());
@@ -196,6 +199,8 @@ export default function Monitor() {
     localStorage.removeItem("monitor_nombre_equipo");
     setMonitorToken("");
     setDatos(null);
+    audioHabilitadoRef.current = false;
+    setAudioHabilitado(false);
     setError(mensajeUsuario);
     setCargandoSesion(false);
     cursorRef.current = null;
@@ -230,6 +235,8 @@ export default function Monitor() {
       setMonitorToken(token);
       setSonidoActivo(true);
       sonidoActivoRef.current = true;
+      audioHabilitadoRef.current = false;
+      setAudioHabilitado(false);
       setControlesVisibles(false);
       setMensaje("Monitor activado correctamente.");
     } catch (err) {
@@ -258,7 +265,9 @@ export default function Monitor() {
   }, [limpiarSesionLocal]);
 
   const procesarVoz = useCallback(() => {
-    if (!sonidoActivoRef.current || reproduciendoRef.current || colaVozRef.current.length === 0 || !("speechSynthesis" in window)) return;
+    // Chrome exige una interacción real del usuario antes de permitir
+    // SpeechSynthesis.speak(). La cola se conserva hasta habilitar el audio.
+    if (!audioHabilitadoRef.current || !sonidoActivoRef.current || reproduciendoRef.current || colaVozRef.current.length === 0 || !("speechSynthesis" in window)) return;
     const anuncio = colaVozRef.current.shift();
     if (!anuncio?.nombre || !anuncio?.consultorio) {
       temporizadorVozRef.current = window.setTimeout(() => procesarVoz(), 0);
@@ -293,7 +302,62 @@ export default function Monitor() {
     hablar(1);
   }, []);
 
+  // Se ejecuta directamente desde el clic del usuario. Esto habilita
+  // SpeechSynthesis para el resto de la sesión de esta página.
+  const habilitarAudio = useCallback(() => {
+    if (!("speechSynthesis" in window)) {
+      setError("Este navegador no admite los anuncios de voz.");
+      return;
+    }
+
+    const sintesis = window.speechSynthesis;
+    sintesis.cancel();
+
+    audioHabilitadoRef.current = true;
+    sonidoActivoRef.current = true;
+    setAudioHabilitado(true);
+    setSonidoActivo(true);
+    setError("");
+
+    // La primera locución debe iniciarse dentro del propio evento click.
+    const confirmacion = new SpeechSynthesisUtterance("Audio de llamados habilitado.");
+    confirmacion.lang = "es-PE";
+    confirmacion.rate = 0.9;
+    confirmacion.pitch = 1;
+    confirmacion.volume = 0;
+
+    reproduciendoRef.current = true;
+
+    confirmacion.onend = () => {
+      reproduciendoRef.current = false;
+      procesarVoz();
+    };
+
+    confirmacion.onerror = (evento) => {
+      console.error("No se pudo iniciar la voz de confirmación:", evento.error);
+      reproduciendoRef.current = false;
+      audioHabilitadoRef.current = false;
+      setAudioHabilitado(false);
+      setError("No se pudo habilitar el audio. Verifica el volumen y los permisos de sonido del navegador e inténtalo nuevamente.");
+    };
+
+    try {
+      sintesis.speak(confirmacion);
+    } catch (error) {
+      console.error("Error al habilitar SpeechSynthesis:", error);
+      reproduciendoRef.current = false;
+      audioHabilitadoRef.current = false;
+      setAudioHabilitado(false);
+      setError("El navegador no pudo habilitar el audio. Inténtalo nuevamente.");
+    }
+  }, [procesarVoz]);
+
   function alternarSonido() {
+    if (!audioHabilitadoRef.current) {
+      habilitarAudio();
+      return;
+    }
+
     const nuevoEstado = !sonidoActivoRef.current;
     sonidoActivoRef.current = nuevoEstado;
     setSonidoActivo(nuevoEstado);
@@ -352,6 +416,13 @@ export default function Monitor() {
     }
 
     let cancelado = false;
+    let socket = null;
+    let temporizadorInicio = null;
+    let temporizadorReconexion = null;
+    let retrasoReconexion = RETRASO_RECONEXION_INICIAL;
+    let sincronizacionEnCurso = false;
+    let sincronizacionPendiente = false;
+
     montadoRef.current = true;
     setCargandoSesion(true);
     cursorRef.current = null;
@@ -359,29 +430,189 @@ export default function Monitor() {
     anunciadosRef.current = new Set();
     setDatos(null);
 
+    // La API REST se utiliza para obtener los datos completos, pero solo al iniciar
+    // y cuando llega una notificación WebSocket. No existe polling periódico.
     const cargar = async () => {
       if (cancelado) return;
-      await obtenerDatos(monitorToken);
-      if (cancelado) return;
-      await obtenerEventos(monitorToken);
+
+      if (sincronizacionEnCurso) {
+        sincronizacionPendiente = true;
+        return;
+      }
+
+      sincronizacionEnCurso = true;
+
+      try {
+        do {
+          sincronizacionPendiente = false;
+
+          await obtenerDatos(monitorToken);
+          if (cancelado || !localStorage.getItem("monitor_token")) return;
+
+          await obtenerEventos(monitorToken);
+        } while (sincronizacionPendiente && !cancelado);
+      } finally {
+        sincronizacionEnCurso = false;
+      }
     };
 
-    cargar();
-    const intervalo = window.setInterval(cargar, INTERVALO);
+    const programarReconexion = () => {
+      if (cancelado || temporizadorReconexion !== null) return;
+
+      const demora = retrasoReconexion;
+      temporizadorReconexion = window.setTimeout(() => {
+        temporizadorReconexion = null;
+        conectarWebSocket();
+      }, demora);
+
+      retrasoReconexion = Math.min(
+        retrasoReconexion * 2,
+        RETRASO_RECONEXION_MAXIMO
+      );
+    };
+
+    const conectarWebSocket = () => {
+      if (cancelado) return;
+
+      if (
+        socket &&
+        (socket.readyState === WebSocket.CONNECTING ||
+          socket.readyState === WebSocket.OPEN)
+      ) {
+        return;
+      }
+
+      try {
+        const baseAPI = api.defaults?.baseURL || window.location.origin;
+        const urlAPI = new URL(baseAPI, window.location.origin);
+        const protocoloWebSocket =
+          urlAPI.protocol === "https:" ? "wss:" : "ws:";
+
+        const urlWebSocket = new URL("/ws/monitor/", urlAPI.origin);
+        urlWebSocket.protocol = protocoloWebSocket;
+        urlWebSocket.searchParams.set("token", monitorToken);
+
+        const nuevaConexion = new WebSocket(urlWebSocket.toString());
+        socket = nuevaConexion;
+
+        nuevaConexion.onopen = () => {
+          if (cancelado || socket !== nuevaConexion) {
+            nuevaConexion.close();
+            return;
+          }
+
+          console.info("WebSocket del monitor conectado.");
+          retrasoReconexion = RETRASO_RECONEXION_INICIAL;
+
+          // Recupera cambios que hayan ocurrido mientras la conexión estuvo caída.
+          void cargar();
+        };
+
+        nuevaConexion.onmessage = (event) => {
+          if (cancelado || socket !== nuevaConexion) return;
+
+          try {
+            const mensajeWebSocket = JSON.parse(event.data);
+
+            if (mensajeWebSocket.tipo === "actualizar_monitor") {
+              console.info(
+                "Notificación recibida por WebSocket:",
+                mensajeWebSocket
+              );
+
+              // El WebSocket avisa del cambio; la API devuelve los datos completos.
+              void cargar();
+            }
+          } catch (error) {
+            console.error(
+              "No se pudo procesar el mensaje del WebSocket:",
+              error
+            );
+          }
+        };
+
+        nuevaConexion.onerror = (error) => {
+          if (cancelado) return;
+          console.error("Error en la conexión WebSocket del monitor:", error);
+          // El evento close se encarga de programar la reconexión.
+        };
+
+        nuevaConexion.onclose = (event) => {
+          if (socket === nuevaConexion) socket = null;
+          if (cancelado) return;
+
+          console.warn(
+            `WebSocket desconectado (código ${event.code}). Se intentará reconectar.`
+          );
+
+          // Estos códigos indican que la activación dejó de ser válida
+          // o que el monitor ya no tiene autorización.
+          if (event.code === 4401 || event.code === 4403) {
+            limpiarSesionLocal(
+              "La activación del monitor ya no es válida o no tiene acceso. Ingresa un nuevo código."
+            );
+            return;
+          }
+
+          programarReconexion();
+        };
+      } catch (error) {
+        console.error("No se pudo crear la conexión WebSocket:", error);
+        socket = null;
+        programarReconexion();
+      }
+    };
+
+    // Carga inicial: establece el estado y el cursor de eventos existentes.
+    void cargar();
+
+    // Se difiere la conexión un ciclo para evitar abrir y cerrar un socket
+    // innecesariamente durante el montaje de comprobación de React StrictMode.
+    temporizadorInicio = window.setTimeout(() => {
+      temporizadorInicio = null;
+      conectarWebSocket();
+    }, 0);
 
     return () => {
       cancelado = true;
       montadoRef.current = false;
-      window.clearInterval(intervalo);
+
+      if (temporizadorInicio !== null) {
+        window.clearTimeout(temporizadorInicio);
+        temporizadorInicio = null;
+      }
+
+      if (temporizadorReconexion !== null) {
+        window.clearTimeout(temporizadorReconexion);
+        temporizadorReconexion = null;
+      }
+
+      if (socket) {
+        // Evita que el cierre provocado por el desmontaje active una reconexión.
+        const conexionAnterior = socket;
+        socket = null;
+        conexionAnterior.onopen = null;
+        conexionAnterior.onmessage = null;
+        conexionAnterior.onerror = null;
+        conexionAnterior.onclose = null;
+        if (
+          conexionAnterior.readyState === WebSocket.CONNECTING ||
+          conexionAnterior.readyState === WebSocket.OPEN
+        ) {
+          conexionAnterior.close();
+        }
+      }
+
       if (temporizadorVozRef.current) {
         window.clearTimeout(temporizadorVozRef.current);
         temporizadorVozRef.current = null;
       }
+
       if ("speechSynthesis" in window) window.speechSynthesis.cancel();
       colaVozRef.current = [];
       reproduciendoRef.current = false;
     };
-  }, [monitorToken, obtenerDatos, obtenerEventos]);
+  }, [monitorToken, obtenerDatos, obtenerEventos, limpiarSesionLocal]);
 
   async function cambiarMonitor() {
     const confirmar = window.confirm("¿Deseas desactivar este monitor en este equipo? Para volver a usarlo necesitarás otro código de activación.");
@@ -492,6 +723,64 @@ export default function Monitor() {
           </div>
         </div>
       </header>
+
+      {!audioHabilitado && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="monitor-audio-title"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 10000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "24px",
+            background: "rgba(10, 25, 45, 0.58)",
+            backdropFilter: "blur(5px)",
+          }}
+        >
+          <section
+            style={{
+              width: "min(460px, 100%)",
+              padding: "32px",
+              borderRadius: "18px",
+              background: "#ffffff",
+              color: "#18324b",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.25)",
+              textAlign: "center",
+            }}
+          >
+            <div style={{ color: "#1479b8", marginBottom: "12px" }}>
+              <IconoAltavoz />
+            </div>
+            <h2 id="monitor-audio-title" style={{ margin: "0 0 12px", fontSize: "24px" }}>
+              Activar llamados por voz
+            </h2>
+            <p style={{ margin: "0 0 24px", color: "#5b6b7b", lineHeight: 1.5 }}>
+              Para escuchar los nombres de los pacientes, habilita el audio de este monitor. Solo necesitas hacerlo una vez al abrir esta pantalla.
+            </p>
+            <button
+              type="button"
+              onClick={habilitarAudio}
+              style={{
+                width: "100%",
+                minHeight: "48px",
+                border: 0,
+                borderRadius: "10px",
+                background: "#0879bd",
+                color: "#ffffff",
+                fontSize: "16px",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              Habilitar audio
+            </button>
+          </section>
+        </div>
+      )}
 
       {error && <div className="monitor-error" role="status">{error}</div>}
 

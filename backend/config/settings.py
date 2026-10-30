@@ -155,7 +155,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "America/Lima"
 
 USE_I18N = True
 
@@ -181,13 +181,24 @@ MAILERS = {
     },
 }
 
+REDIS_URL = os.getenv(
+    "REDIS_URL",
+    "redis://127.0.0.1:6379"
+)
+
 ASGI_APPLICATION = "config.asgi.application"
 
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("redis", 6379)],
-       },
-   },
+            "hosts": [
+                {
+                    "address": REDIS_URL,
+                    "socket_timeout": 30,
+                    "socket_connect_timeout": 10,
+                }
+            ],
+        },
+    },
 }

@@ -61,7 +61,7 @@ nano .env
 Configurar estos valores según el servidor:
 
 ```dotenv
-APP_BIND_IP=IP_SERVIDOR
+APP_BIND_IP=0.0.0.0
 APP_PORT=8088
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,IP_SERVIDOR
 DJANGO_CSRF_TRUSTED_ORIGINS=http://IP_SERVIDOR:8088
@@ -75,7 +75,7 @@ Ejecutar desde `~/apps/gestor-colas-sihce`:
 
 ```bash
 docker compose build
-docker compose up -d db
+docker compose up -d db redis
 docker compose run --rm backend python manage.py migrate
 docker compose run --rm backend python manage.py collectstatic --noinput
 docker compose up -d backend frontend
@@ -104,10 +104,3 @@ docker compose up -d backend frontend
 
 El archivo `backend/data/citas_sihce_prueba.json` contiene citas ficticias del 22 al 30 de octubre de 2026: seis por consultorio por día para tres consultorios (162 citas). Las vistas operativas muestran las citas según la fecha actual; fuera del intervalo de prueba pueden no aparecer.
 
-Para reiniciar los datos operativos de prueba y volver a importar las citas, ejecutar solo en un entorno de pruebas:
-
-```bash
-docker compose run --rm backend python manage.py reiniciar_datos_prueba --confirmar
-```
-
-Este comando elimina datos operativos y activaciones, por lo que será necesario activar nuevamente los equipos y monitores. No ejecutar `docker compose down -v` si se desea conservar el volumen de PostgreSQL.
