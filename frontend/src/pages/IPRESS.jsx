@@ -444,7 +444,7 @@ export default function IPRESS() {
                 setErrorFormulario("");
               }}
               inputProps={{ maxLength: 20 }}
-              placeholder="Ej. 00005644"
+              placeholder="Ej. 00005933"
               fullWidth
               autoFocus
               disabled={validando || guardando}
