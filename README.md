@@ -62,7 +62,7 @@ Configurar estos valores según el servidor:
 
 ```dotenv
 APP_BIND_IP=0.0.0.0
-APP_PORT=8088
+APP_PORT=8091
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,IP_SERVIDOR
 DJANGO_CSRF_TRUSTED_ORIGINS=http://IP_SERVIDOR:8091
 ```
