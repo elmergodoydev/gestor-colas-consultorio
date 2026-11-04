@@ -62,7 +62,9 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_URL: /api/
+        APP_BASE_PATH: ${APP_BASE_PATH:-}
+    environment:
+      APP_BASE_PATH: ${APP_BASE_PATH:-}
     restart: unless-stopped
     ports:
       - "${APP_BIND_IP}:${APP_PORT}:80"

@@ -710,7 +710,7 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
               >
                 <Box
                   component="img"
-                  src="/minsa-logo.png"
+                  src={`${import.meta.env.BASE_URL}minsa-logo.png`}
                   alt="Ministerio de Salud del Perú"
                   sx={{
                     display: "block",

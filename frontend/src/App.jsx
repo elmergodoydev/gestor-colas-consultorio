@@ -14,20 +14,10 @@ import Configuracion from "./pages/Configuracion";
 import Consultorio from "./pages/Consultorio";
 import Monitor from "./pages/Monitor";
 
-function ModuloEnDesarrollo({ titulo }) {
-  return (
-    <div style={{ padding: 32 }}>
-      <h1>{titulo}</h1>
-      <p style={{ color: "#64748b" }}>
-        Este módulo está pendiente de implementación.
-      </p>
-    </div>
-  );
-}
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/+$/, "") || "/"}>
       <Routes>
         <Route
           path="/"

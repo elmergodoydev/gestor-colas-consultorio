@@ -120,10 +120,27 @@ function credenciales(token) {
 
 function resolverUrlVideo(url) {
   if (!url) return "";
+
   try {
-    const baseAPI = api.defaults?.baseURL || window.location.origin;
-    const origenAPI = new URL(baseAPI, window.location.origin).origin;
-    return new URL(url, origenAPI).href;
+    const baseFrontend = new URL(
+      import.meta.env.BASE_URL,
+      window.location.origin
+    );
+    const urlResuelta = new URL(url, baseFrontend);
+
+    // Admite respuestas antiguas que devuelvan /media/ sin el subdirectorio.
+    // No duplica el prefijo cuando Django ya devuelve /gestor-colas/media/.
+    const esRecursoLocal =
+      urlResuelta.origin === window.location.origin &&
+      (urlResuelta.pathname.startsWith("/media/") ||
+        urlResuelta.pathname.startsWith("/static/"));
+
+    if (esRecursoLocal && baseFrontend.pathname !== "/") {
+      const prefijo = baseFrontend.pathname.replace(/\/$/, "");
+      urlResuelta.pathname = `${prefijo}${urlResuelta.pathname}`;
+    }
+
+    return urlResuelta.href;
   } catch {
     return url;
   }
@@ -483,13 +500,16 @@ export default function Monitor() {
       }
 
       try {
-        const baseAPI = api.defaults?.baseURL || window.location.origin;
-        const urlAPI = new URL(baseAPI, window.location.origin);
-        const protocoloWebSocket =
-          urlAPI.protocol === "https:" ? "wss:" : "ws:";
+        // Usa la misma base pública de Vite que React Router y Axios.
+        // Ejemplo: /gestor-colas/ws/monitor/ o /ws/monitor/ en la raíz.
+        const baseFrontend = new URL(
+          import.meta.env.BASE_URL,
+          window.location.origin
+        );
+        const urlWebSocket = new URL("ws/monitor/", baseFrontend);
 
-        const urlWebSocket = new URL("/ws/monitor/", urlAPI.origin);
-        urlWebSocket.protocol = protocoloWebSocket;
+        urlWebSocket.protocol =
+          window.location.protocol === "https:" ? "wss:" : "ws:";
         urlWebSocket.searchParams.set("token", monitorToken);
 
         const nuevaConexion = new WebSocket(urlWebSocket.toString());
@@ -636,7 +656,7 @@ export default function Monitor() {
     return (
       <main className="monitor-activation-screen">
         <section className="monitor-activation-card">
-          <div className="activation-logo-wrap"><img src="/minsa-logo.png" alt="Logo del MINSA" /></div>
+          <div className="activation-logo-wrap"><img src={`${import.meta.env.BASE_URL}minsa-logo.png`} alt="Logo del MINSA" /></div>
           <h1>Activación del monitor</h1>
           <p className="activation-description">Ingresa el código generado desde la configuración de monitores para cargar los consultorios asignados a esta pantalla.</p>
           <form className="monitor-activation-form" onSubmit={activarMonitor}>
@@ -680,7 +700,7 @@ export default function Monitor() {
     <main className="monitor">
       <header className="monitor-header">
         <div className="monitor-brand">
-          <div className="monitor-logo"><img src="/minsa-logo.png" alt="Logo del MINSA" /></div>
+          <div className="monitor-logo"><img src={`${import.meta.env.BASE_URL}minsa-logo.png`} alt="Logo del MINSA" /></div>
           <div className="monitor-brand-text">
             <span className="monitor-renipress">{renipress || "RENIPRESS"}</span>
             <h1>{nombreIPRESS}</h1>

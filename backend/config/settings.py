@@ -165,12 +165,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
-STATIC_URL = "/static/"
+APP_BASE_PATH = os.getenv("APP_BASE_PATH", "").strip()
+APP_BASE_PATH = (
+    f"/{APP_BASE_PATH.strip('/')}"
+    if APP_BASE_PATH.strip("/")
+    else ""
+)
+
+STATIC_URL = f"{APP_BASE_PATH}/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-MEDIA_URL = "/media/"
+MEDIA_URL = f"{APP_BASE_PATH}/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
@@ -202,3 +208,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
