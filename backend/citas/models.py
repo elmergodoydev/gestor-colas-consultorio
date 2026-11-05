@@ -197,6 +197,8 @@ class EventoLlamado(models.Model):
         ATENDIDO = "ATENDIDO", "Atendido"
         NO_PRESENTADO = "NO_PRESENTADO", "No presentado"
         CANCELADO = "CANCELADO", "Cancelado"
+        RETIRAR_LLAMADO = "RETIRAR_LLAMADO", "Retirar llamado"
+        RESTAURADO = "RESTAURADO", "Restaurado a espera"
 
     turno = models.ForeignKey(
         Turno,

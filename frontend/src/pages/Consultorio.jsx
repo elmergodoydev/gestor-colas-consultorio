@@ -29,7 +29,6 @@ import {
   TextField,
   Typography,
   CircularProgress,
-  Tooltip,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -41,7 +40,6 @@ import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 import ReplayIcon from "@mui/icons-material/Replay";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
-import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import PhoneForwardedOutlinedIcon from "@mui/icons-material/PhoneForwardedOutlined";
 import ComputerOutlinedIcon from "@mui/icons-material/ComputerOutlined";
@@ -350,6 +348,7 @@ function BotonAccion({
 function ConsultorioOperativo({ onCambiarConsultorio }) {
   const [turnos, setTurnos] = useState([]);
   const [turnosAtendidos, setTurnosAtendidos] = useState([]);
+  const [turnosCancelados, setTurnosCancelados] = useState([]);
 
   const [seleccionadoId, setSeleccionadoId] = useState(null);
   const [filtro, setFiltro] = useState("TODOS");
@@ -361,6 +360,7 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
 
   const [error, setError] = useState("");
   const [errorAtendidos, setErrorAtendidos] = useState("");
+  const [errorCancelados, setErrorCancelados] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [ultimaActualizacion, setUltimaActualizacion] = useState(null);
   const [dialogoCambioAbierto, setDialogoCambioAbierto] = useState(false);
@@ -398,9 +398,14 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
       setCargando(true);
     }
 
-    const [resultadoCola, resultadoAtendidos] = await Promise.allSettled([
+    const [
+      resultadoCola,
+      resultadoAtendidos,
+      resultadoCancelados,
+    ] = await Promise.allSettled([
       api.get("turnos/cola/"),
       api.get("turnos/atendidos/"),
+      api.get("turnos/cancelados/"),
     ]);
 
     let colaCorrecta = false;
@@ -413,7 +418,9 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
       setError("");
       
       setSeleccionadoId((actual) => {
-        if (filtro === "ATENDIDOS") {
+        // La actualización periódica de la cola activa no debe cambiar
+        // la selección cuando se consulta alguno de los historiales.
+        if (filtro !== "TODOS") {
           return actual;
         }
 
@@ -460,6 +467,26 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
       }
     }
 
+    if (resultadoCancelados.status === "fulfilled") {
+      setTurnosCancelados(obtenerLista(resultadoCancelados.value));
+      setErrorCancelados("");
+    } else {
+      const err = resultadoCancelados.reason;
+
+      if (
+        err.response?.status === 401 ||
+        err.response?.status === 403
+      ) {
+        setErrorCancelados(
+          "No se pudo validar el acceso al historial de cancelados."
+        );
+      } else {
+        setErrorCancelados(
+          "No se pudo actualizar el historial de cancelados. Se volverá a intentar automáticamente."
+        );
+      }
+    }
+
     if (colaCorrecta) {
       setUltimaActualizacion(new Date());
     }
@@ -499,39 +526,46 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
   ).length;
 
   const cantidadAtendidos = turnosAtendidos.length;
+  const cantidadCancelados = turnosCancelados.length;
 
-  const listaBase = filtro === "ATENDIDOS"
-    ? turnosAtendidos
-    : turnos;
+  const listaBase =
+    filtro === "ATENDIDOS"
+      ? turnosAtendidos
+      : filtro === "CANCELADOS"
+      ? turnosCancelados
+      : turnos;
 
   const turnosFiltrados = useMemo(() => {
     const texto = busqueda.trim().toLocaleLowerCase("es-PE");
 
     return listaBase.filter((turno) => {
-      const coincideEstado =
-        filtro === "TODOS" ||
-        filtro === "ATENDIDOS" ||
-        turno.estado === filtro;
-
       const coincideNombre =
         !texto ||
         nombreVisible(turno).toLocaleLowerCase("es-PE").includes(texto);
 
-      return coincideEstado && coincideNombre;
+      return coincideNombre;
     });
-  }, [listaBase, filtro, busqueda]);
+  }, [listaBase, busqueda]);
 
-  const seleccionado = filtro === "ATENDIDOS"
-    ? null
-    : turnos.find((turno) => turno.id === seleccionadoId);
+  // El profesional puede seleccionar turnos tanto de la cola activa
+  // como de los historiales de atendidos y cancelados.
+  const seleccionado =
+    turnosFiltrados.find((turno) => turno.id === seleccionadoId) ||
+    turnosFiltrados[0] ||
+    null;
 
   async function ejecutarAccion(accion) {
     if (!seleccionado || accionEnCurso) return;
 
     const accionesConConfirmacion = {
-      finalizar: "¿Confirmas que la atención de este paciente ha finalizado?",
-      cancelar: "¿Confirmas la cancelación de este turno?",
-      no_presentado: "¿Confirmas que el paciente no se presentó?",
+      finalizar:
+        "¿Confirmas que deseas marcar como atendido a este paciente?",
+      retirar_llamado:
+        "¿Deseas retirar el llamado y devolver el turno a En espera?",
+      cancelar:
+        "¿Confirmas la cancelación de este turno?",
+      restaurar:
+        "¿Deseas devolver este turno al estado En espera?",
     };
 
     if (accionesConConfirmacion[accion]) {
@@ -553,14 +587,29 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
       const mensajes = {
         llamar: "Paciente llamado correctamente.",
         rellamar: "Llamada repetida correctamente.",
-        finalizar: "Atención finalizada. El paciente figura en Atendidos.",
-        no_presentado: "Turno registrado como no presentado.",
+        retirar_llamado:
+          "Llamado retirado. El paciente volvió a En espera.",
+        finalizar:
+          "Paciente marcado como atendido correctamente.",
         cancelar: "Turno cancelado correctamente.",
+        restaurar:
+          "Turno restaurado. El paciente volvió a En espera.",
       };
 
-      setMensaje(mensajes[accion] || "Acción registrada correctamente.");
+      setMensaje(
+        mensajes[accion] || "Acción registrada correctamente."
+      );
+
+      if (accion === "restaurar") {
+        // Cambiamos a Todos después de devolver el turno a la cola activa.
+        setFiltro("TODOS");
+      }
 
       await cargarTurnos(true);
+
+      if (accion === "restaurar") {
+        setSeleccionadoId(seleccionado.id);
+      }
     } catch (err) {
       const detalle = err.response?.data;
 
@@ -610,12 +659,6 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
             variant: "contained",
           },
           {
-            accion: "no_presentado",
-            texto: "No se presentó",
-            color: "warning",
-            icono: PersonOffOutlinedIcon,
-          },
-          {
             accion: "cancelar",
             texto: "Cancelar turno",
             color: "error",
@@ -633,22 +676,32 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
           },
           {
             accion: "finalizar",
-            texto: "Finalizar atención",
+            texto: "Marcar como atendido",
             color: "success",
             icono: DoneAllIcon,
             variant: "contained",
           },
           {
-            accion: "no_presentado",
-            texto: "No se presentó",
+            accion: "retirar_llamado",
+            texto: "Retirar llamado",
             color: "warning",
-            icono: PersonOffOutlinedIcon,
+            icono: ReplayIcon,
           },
           {
             accion: "cancelar",
             texto: "Cancelar turno",
             color: "error",
             icono: CancelOutlinedIcon,
+          },
+        ]
+      : ["ATENDIDO", "CANCELADO"].includes(seleccionado?.estado)
+      ? [
+          {
+            accion: "restaurar",
+            texto: "Devolver a En espera",
+            color: "primary",
+            icono: ReplayIcon,
+            variant: "contained",
           },
         ]
       : [];
@@ -934,13 +987,13 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                     setFiltro(valor);
                     setBusqueda("");
 
-                    if (valor !== "ATENDIDOS") {
-                      setSeleccionadoId((actual) =>
-                        turnos.some((turno) => turno.id === actual)
-                          ? actual
-                          : turnos[0]?.id ?? null
-                      );
-                    }
+                    const listas = {
+                      TODOS: turnos,
+                      ATENDIDOS: turnosAtendidos,
+                      CANCELADOS: turnosCancelados,
+                    };
+
+                    setSeleccionadoId(listas[valor]?.[0]?.id ?? null);
                   }}
                   variant="scrollable"
                   scrollButtons="auto"
@@ -950,16 +1003,12 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                     label={`Todos (${turnos.length})`}
                   />
                   <Tab
-                    value="EN_ESPERA"
-                    label={`En espera (${cantidadEnEspera})`}
-                  />
-                  <Tab
-                    value="LLAMANDO"
-                    label={`Llamando (${cantidadLlamando})`}
-                  />
-                  <Tab
                     value="ATENDIDOS"
                     label={`Atendidos (${cantidadAtendidos})`}
+                  />
+                  <Tab
+                    value="CANCELADOS"
+                    label={`Cancelados (${cantidadCancelados})`}
                   />
                 </Tabs>
               </Box>
@@ -969,6 +1018,12 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
               {filtro === "ATENDIDOS" && errorAtendidos && (
                 <Alert severity="warning" sx={{ m: 2 }}>
                   {errorAtendidos}
+                </Alert>
+              )}
+
+              {filtro === "CANCELADOS" && errorCancelados && (
+                <Alert severity="warning" sx={{ m: 2 }}>
+                  {errorCancelados}
                 </Alert>
               )}
 
@@ -1013,7 +1068,6 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                   <TableBody>
                     {turnosFiltrados.map((turno, indice) => {
                       const seleccionadoActual =
-                        filtro !== "ATENDIDOS" &&
                         turno.id === seleccionadoId;
 
                       const numero = String(indice + 1).padStart(2, "0");
@@ -1024,14 +1078,9 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                           key={turno.id}
                           hover
                           selected={seleccionadoActual}
-                          onClick={() => {
-                            if (filtro !== "ATENDIDOS") {
-                              setSeleccionadoId(turno.id);
-                            }
-                          }}
+                          onClick={() => setSeleccionadoId(turno.id)}
                           sx={{
-                            cursor:
-                              filtro === "ATENDIDOS" ? "default" : "pointer",
+                            cursor: "pointer",
                             transition: "background-color 180ms ease",
                             "&.Mui-selected": { bgcolor: "#E6F1FF" },
                             "&.Mui-selected:hover": { bgcolor: "#DCEBFF" },
@@ -1134,6 +1183,8 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                                   ? "success"
                                   : turno.estado === "ATENDIDO"
                                   ? "default"
+                                  : turno.estado === "CANCELADO"
+                                  ? "error"
                                   : "info"
                               }
                               icon={
@@ -1169,6 +1220,10 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                               <CheckCircleIcon
                                 sx={{ fontSize: 38, color: "text.disabled" }}
                               />
+                            ) : filtro === "CANCELADOS" ? (
+                              <CancelOutlinedIcon
+                                sx={{ fontSize: 38, color: "text.disabled" }}
+                              />
                             ) : (
                               <NotificationsActiveOutlinedIcon
                                 sx={{ fontSize: 38, color: "text.disabled" }}
@@ -1178,6 +1233,8 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                             <Typography fontWeight={600}>
                               {filtro === "ATENDIDOS"
                                 ? "Todavía no hay pacientes atendidos"
+                                : filtro === "CANCELADOS"
+                                ? "Todavía no hay turnos cancelados"
                                 : "No hay pacientes para mostrar"}
                             </Typography>
 
@@ -1187,7 +1244,9 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                               sx={{ textAlign: "center" }}
                             >
                               {filtro === "ATENDIDOS"
-                                ? "Los pacientes aparecerán aquí cuando finalices su atención."
+                                ? "Los pacientes aparecerán aquí cuando los marques como atendidos."
+                                : filtro === "CANCELADOS"
+                                ? "Los turnos aparecerán aquí cuando sean cancelados."
                                 : "Los nuevos turnos aparecerán cuando estén registrados y asociados a este consultorio."}
                             </Typography>
                           </Stack>
@@ -1291,6 +1350,10 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                         color={
                           seleccionado.estado === "LLAMANDO"
                             ? "success"
+                            : seleccionado.estado === "ATENDIDO"
+                            ? "default"
+                            : seleccionado.estado === "CANCELADO"
+                            ? "error"
                             : "info"
                         }
                       />
@@ -1300,6 +1363,8 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                   <Alert severity="info" sx={{ mt: 2 }}>
                     {filtro === "ATENDIDOS"
                       ? "Estás consultando el historial de pacientes atendidos."
+                      : filtro === "CANCELADOS"
+                      ? "Estás consultando el historial de turnos cancelados."
                       : "Selecciona un paciente de la lista para gestionar su turno."}
                   </Alert>
                 )}
@@ -1313,7 +1378,7 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                   Acciones del turno
                 </Typography>
 
-                {seleccionado && filtro !== "ATENDIDOS" ? (
+                {seleccionado ? (
                   <Stack spacing={1.5} sx={{ mt: 2 }}>
                     {accionesDisponibles.map((item) => (
                       <BotonAccion
@@ -1338,7 +1403,9 @@ function ConsultorioOperativo({ onCambiarConsultorio }) {
                     sx={{ mt: 1 }}
                   >
                     {filtro === "ATENDIDOS"
-                      ? "Los turnos atendidos se muestran como historial y no admiten nuevas acciones."
+                      ? "Selecciona un paciente para devolverlo a En espera."
+                      : filtro === "CANCELADOS"
+                      ? "Selecciona un turno para devolverlo a En espera."
                       : "Selecciona un paciente de la lista para habilitar sus acciones."}
                   </Typography>
                 )}

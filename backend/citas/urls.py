@@ -23,6 +23,7 @@ from citas.views import (
     GenerarCodigoActivacionAPIView,
     CanjearCodigoActivacionAPIView,
     TurnoAtendidosListAPIView,
+    TurnoCanceladosListAPIView,
     MonitorAPIView,
     MonitorEventosAPIView,
     ConfiguracionIPRESSAPIView,
@@ -32,6 +33,7 @@ from citas.views import (
     SincronizarConsultoriosIPRESSAPIView,
     EquiposActivadosIPRESSAPIView,
     DesactivarEquipoAPIView,
+
 )
 
 from citas.video_views import BibliotecaVideosAPIView, BibliotecaVideoDetalleAPIView
@@ -61,6 +63,11 @@ urlpatterns = [
         "turnos/atendidos/",
         TurnoAtendidosListAPIView.as_view(),
         name="turnos-atendidos",
+    ),
+    path(
+        "turnos/cancelados/",
+        TurnoCanceladosListAPIView.as_view(),
+        name="turnos-cancelados",
     ),
     path(
         "turnos/<int:pk>/accion/",

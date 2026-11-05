@@ -508,27 +508,32 @@ class TurnoAccionAPIView(APIView):
         "llamar": {
             "estados_permitidos": ["EN_ESPERA"],
             "nuevo_estado": "LLAMANDO",
-            "evento": "LLAMADO",
+            "evento": EventoLlamado.Tipo.LLAMADO,
         },
         "rellamar": {
             "estados_permitidos": ["LLAMANDO"],
             "nuevo_estado": "LLAMANDO",
-            "evento": "RE_LLAMADO",
+            "evento": EventoLlamado.Tipo.RE_LLAMADO,
+        },
+        "retirar_llamado": {
+            "estados_permitidos": ["LLAMANDO"],
+            "nuevo_estado": "EN_ESPERA",
+            "evento": EventoLlamado.Tipo.RETIRAR_LLAMADO,
         },
         "finalizar": {
             "estados_permitidos": ["LLAMANDO"],
             "nuevo_estado": "ATENDIDO",
-            "evento": "ATENDIDO",
-        },
-        "no_presentado": {
-            "estados_permitidos": ["EN_ESPERA", "LLAMANDO"],
-            "nuevo_estado": "NO_PRESENTADO",
-            "evento": "NO_PRESENTADO",
+            "evento": EventoLlamado.Tipo.ATENDIDO,
         },
         "cancelar": {
             "estados_permitidos": ["EN_ESPERA", "LLAMANDO"],
             "nuevo_estado": "CANCELADO",
-            "evento": "CANCELADO",
+            "evento": EventoLlamado.Tipo.CANCELADO,
+        },
+        "restaurar": {
+            "estados_permitidos": ["ATENDIDO", "CANCELADO"],
+            "nuevo_estado": "EN_ESPERA",
+            "evento": EventoLlamado.Tipo.RESTAURADO,
         },
     }
 
@@ -539,8 +544,8 @@ class TurnoAccionAPIView(APIView):
         if accion not in self.ACCIONES:
             raise ValidationError({
                 "accion": (
-                    "Acción inválida. Usa llamar, rellamar, finalizar, "
-                    "no_presentado o cancelar."
+                    "Acción inválida. Usa llamar, rellamar, retirar_llamado, "
+                    "finalizar, cancelar o restaurar."
                 )
             })
 
@@ -789,6 +794,28 @@ class TurnoAtendidosListAPIView(generics.ListAPIView):
             .select_related("cita", "consultorio")
             .order_by("-actualizado_en", "-id")
         )
+
+
+class TurnoCanceladosListAPIView(generics.ListAPIView):
+    serializer_class = TurnoSerializer
+    authentication_classes = [EquipoTokenAuthentication]
+    permission_classes = [EsEquipoActivado]
+
+    def get_queryset(self):
+        equipo = self.request.user
+        hoy = timezone.localdate()
+
+        return (
+            Turno.objects.filter(
+                establecimiento=equipo.establecimiento,
+                consultorio=equipo.consultorio,
+                fecha=hoy,
+                estado=Turno.Estado.CANCELADO,
+            )
+            .select_related("cita", "consultorio")
+            .order_by("-actualizado_en", "-id")
+        )
+
 
 class ValidarIPRESSAPIView(APIView):
     """
