@@ -192,6 +192,19 @@ REDIS_URL = os.getenv(
     "redis://127.0.0.1:6379"
 )
 
+# Caché Redis para locuciones temporales de monitores.
+# Reutiliza REDIS_URL, que ya se utiliza en CHANNEL_LAYERS.
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": REDIS_URL,
+        "KEY_PREFIX": "gestor_colas",
+        "TIMEOUT": 120,
+    }
+}
+
+
+
 ASGI_APPLICATION = "config.asgi.application"
 
 CHANNEL_LAYERS = {
@@ -211,3 +224,16 @@ CHANNEL_LAYERS = {
 
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Servicio Piper TTS externo (contenedor Docker independiente).
+# Para backend en el mismo host: http://127.0.0.1:5001/synthesize
+# Para backend en Docker Compose: http://piper-tts:5000/synthesize
+PIPER_TTS_URL = os.getenv(
+    "PIPER_TTS_URL",
+    "http://127.0.0.1:5001/synthesize",
+)
+PIPER_TTS_TIMEOUT = float(os.getenv("PIPER_TTS_TIMEOUT", "30"))
+PIPER_TTS_VOICE = os.getenv("PIPER_TTS_VOICE", "es_ES-davefx-medium")
+PIPER_TTS_LENGTH_SCALE = float(os.getenv("PIPER_TTS_LENGTH_SCALE", "0.95"))
+PIPER_TTS_NOISE_SCALE = float(os.getenv("PIPER_TTS_NOISE_SCALE", "0.75"))
+PIPER_TTS_NOISE_W_SCALE = float(os.getenv("PIPER_TTS_NOISE_W_SCALE", "0.8"))

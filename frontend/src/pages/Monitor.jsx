@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import api from "../services/api";
+import { generarAudioLlamado } from "../services/speechService";
 import "./Monitor.css";
 
 const RETRASO_RECONEXION_INICIAL = 2000;
@@ -146,6 +147,96 @@ function resolverUrlVideo(url) {
   }
 }
 
+
+/**
+ * URL HTTP del MP3 silencioso publicado en frontend/public.
+ * Se evita Blob URL para comprobar compatibilidad con navegadores Smart TV.
+ */
+function obtenerUrlAudioSilencioso() {
+  const baseFrontend = new URL(import.meta.env.BASE_URL, window.location.origin);
+  return new URL("monitor-silence.mp3", baseFrontend).href;
+}
+
+function esperarAudioListo(audio, tiempoMaximo = 12000) {
+  return new Promise((resolve, reject) => {
+    if (audio.readyState >= 3) {
+      resolve();
+      return;
+    }
+
+    let finalizado = false;
+    let temporizador = null;
+
+    const limpiar = () => {
+      audio.removeEventListener("canplay", alEstarListo);
+      audio.removeEventListener("error", alOcurrirError);
+      if (temporizador !== null) {
+        window.clearTimeout(temporizador);
+      }
+    };
+
+    const alEstarListo = () => {
+      if (finalizado) return;
+      finalizado = true;
+      limpiar();
+      resolve();
+    };
+
+    const alOcurrirError = () => {
+      if (finalizado) return;
+      finalizado = true;
+      limpiar();
+      reject(new Error("El MP3 no pudo cargarse correctamente."));
+    };
+
+    audio.addEventListener("canplay", alEstarListo);
+    audio.addEventListener("error", alOcurrirError);
+
+    temporizador = window.setTimeout(() => {
+      if (finalizado) return;
+      finalizado = true;
+      limpiar();
+      reject(new Error("Tiempo de espera agotado al preparar el audio."));
+    }, tiempoMaximo);
+  });
+}
+
+function esperarFinAudio(audio, cancelarEsperaRef) {
+  return new Promise((resolve, reject) => {
+    let finalizado = false;
+
+    const limpiar = () => {
+      audio.onended = null;
+      audio.onerror = null;
+      if (cancelarEsperaRef.current === cancelar) {
+        cancelarEsperaRef.current = null;
+      }
+    };
+
+    const terminar = (resultado, error = null) => {
+      if (finalizado) return;
+      finalizado = true;
+      limpiar();
+      if (error) reject(error);
+      else resolve(resultado);
+    };
+
+    const cancelar = () => terminar(false);
+    cancelarEsperaRef.current = cancelar;
+    audio.onended = () => terminar(true);
+    audio.onerror = () => terminar(false, new Error("El navegador no pudo reproducir el audio MP3."));
+
+    try {
+      const promesa = audio.play();
+      if (promesa && typeof promesa.catch === "function") {
+        promesa.catch((error) => terminar(false, error));
+      }
+    } catch (error) {
+      terminar(false, error);
+    }
+  });
+}
+
 export default function Monitor() {
   const [monitorToken, setMonitorToken] = useState(() => localStorage.getItem("monitor_token") || "");
   const [codigo, setCodigo] = useState("");
@@ -156,6 +247,8 @@ export default function Monitor() {
   const [mensaje, setMensaje] = useState("");
   const [sonidoActivo, setSonidoActivo] = useState(true);
   const [audioHabilitado, setAudioHabilitado] = useState(false);
+  const [habilitandoAudio, setHabilitandoAudio] = useState(false);
+  const [diagnosticoAudio, setDiagnosticoAudio] = useState("");
   const [pantallaCompleta, setPantallaCompleta] = useState(Boolean(document.fullscreenElement));
   const [controlesVisibles, setControlesVisibles] = useState(false);
   const [indiceVideo, setIndiceVideo] = useState(0);
@@ -171,6 +264,93 @@ export default function Monitor() {
   const montadoRef = useRef(false);
   const anunciadosRef = useRef(new Set());
   const temporizadorVozRef = useRef(null);
+  const temporizadorHabilitacionRef = useRef(null);
+  const reproductorAudioRef = useRef(null);
+  const reproductorVideoRef = useRef(null);
+  const solicitudVozAbortRef = useRef(null);
+  const cancelarEsperaAudioRef = useRef(null);
+  const urlAudioRef = useRef(null);
+  const urlSilencioRef = useRef(null);
+  const versionVozRef = useRef(0);
+
+  const detenerAudio = useCallback(() => {
+    // Invalida cualquier síntesis/reproducción que siga pendiente.
+    versionVozRef.current += 1;
+
+    if (solicitudVozAbortRef.current) {
+      if (typeof solicitudVozAbortRef.current.abort === "function") {
+        solicitudVozAbortRef.current.abort();
+      }
+      solicitudVozAbortRef.current = null;
+    }
+
+    if (cancelarEsperaAudioRef.current) {
+      cancelarEsperaAudioRef.current();
+      cancelarEsperaAudioRef.current = null;
+    }
+
+    if (temporizadorVozRef.current) {
+      window.clearTimeout(temporizadorVozRef.current);
+      temporizadorVozRef.current = null;
+    }
+
+    if (temporizadorHabilitacionRef.current) {
+      window.clearTimeout(temporizadorHabilitacionRef.current);
+      temporizadorHabilitacionRef.current = null;
+    }
+
+    const reproductor = reproductorAudioRef.current;
+    if (reproductor) {
+      reproductor.pause();
+      reproductor.onended = null;
+      reproductor.onerror = null;
+      reproductor.onplay = null;
+      reproductor.removeAttribute("src");
+      reproductor.load();
+    }
+
+    if (urlAudioRef.current) {
+      URL.revokeObjectURL(urlAudioRef.current);
+      urlAudioRef.current = null;
+    }
+
+    // La prueba usa un recurso HTTP estático, no un Blob URL.
+    urlSilencioRef.current = null;
+
+    reproduciendoRef.current = false;
+  }, []);
+
+  // En algunos navegadores de Smart TV, la reproducción de un audio puede
+  // dejar pausado el elemento de video. Se intenta recuperar el video al terminar
+  // cada locución, sin recargar su fuente ni reiniciar su posición.
+  const recuperarVideo = useCallback((motivo = "recuperación") => {
+    const video = reproductorVideoRef.current;
+    if (!video) return;
+
+    // No forzamos el silencio desde JavaScript: los controles nativos
+    // del televisor deben permitir al usuario activar/desactivar el audio.
+
+    if (!video.paused && !video.ended) return;
+
+    console.info(`[Monitor] Reanudando video (${motivo}).`, {
+      paused: video.paused,
+      ended: video.ended,
+      readyState: video.readyState,
+      currentTime: video.currentTime,
+      currentSrc: video.currentSrc,
+    });
+
+    try {
+      const promesa = video.play();
+      if (promesa && typeof promesa.catch === "function") {
+        promesa.catch((error) => {
+          console.warn(`[Monitor] El navegador no permitió reanudar el video (${motivo}):`, error);
+        });
+      }
+    } catch (error) {
+      console.warn(`[Monitor] Error al reanudar el video (${motivo}):`, error);
+    }
+  }, []);
 
   useEffect(() => {
     setIndiceVideo(0);
@@ -212,20 +392,21 @@ export default function Monitor() {
   }
 
   const limpiarSesionLocal = useCallback((mensajeUsuario = "") => {
+    detenerAudio();
     localStorage.removeItem("monitor_token");
     localStorage.removeItem("monitor_nombre_equipo");
     setMonitorToken("");
     setDatos(null);
     audioHabilitadoRef.current = false;
+    sonidoActivoRef.current = false;
     setAudioHabilitado(false);
+    setHabilitandoAudio(false);
     setError(mensajeUsuario);
     setCargandoSesion(false);
     cursorRef.current = null;
     colaVozRef.current = [];
-    reproduciendoRef.current = false;
-    if (temporizadorVozRef.current) window.clearTimeout(temporizadorVozRef.current);
-    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-  }, []);
+    anunciadosRef.current = new Set();
+  }, [detenerAudio]);
 
   async function activarMonitor(event) {
     event.preventDefault();
@@ -281,93 +462,311 @@ export default function Monitor() {
     }
   }, [limpiarSesionLocal]);
 
-  const procesarVoz = useCallback(() => {
-    // Chrome exige una interacción real del usuario antes de permitir
-    // SpeechSynthesis.speak(). La cola se conserva hasta habilitar el audio.
-    if (!audioHabilitadoRef.current || !sonidoActivoRef.current || reproduciendoRef.current || colaVozRef.current.length === 0 || !("speechSynthesis" in window)) return;
+  const procesarVoz = useCallback(async () => {
+    if (
+      !audioHabilitadoRef.current ||
+      !sonidoActivoRef.current ||
+      reproduciendoRef.current ||
+      colaVozRef.current.length === 0
+    ) {
+      return;
+    }
+
     const anuncio = colaVozRef.current.shift();
     if (!anuncio?.nombre || !anuncio?.consultorio) {
-      temporizadorVozRef.current = window.setTimeout(() => procesarVoz(), 0);
+      temporizadorVozRef.current = window.setTimeout(() => {
+        void procesarVoz();
+      }, 0);
       return;
     }
 
+    const texto = `${anuncio.nombre}, acercarse a ${anuncio.consultorio}.`;
+    const versionActual = ++versionVozRef.current;
+    let urlGenerada = null;
+    let controlador = null;
     reproduciendoRef.current = true;
-    const hablar = (repeticion) => {
-      if (!sonidoActivoRef.current) {
-        reproduciendoRef.current = false;
-        return;
-      }
-      const mensajeVoz = new SpeechSynthesisUtterance(`${anuncio.nombre}, acercarse a ${anuncio.consultorio}.`);
-      mensajeVoz.lang = "es-PE";
-      mensajeVoz.rate = 0.88;
-      mensajeVoz.pitch = 1;
-      mensajeVoz.volume = 1;
-      mensajeVoz.onend = () => {
-        if (repeticion === 1 && sonidoActivoRef.current) {
-          temporizadorVozRef.current = window.setTimeout(() => hablar(2), 850);
-        } else {
-          reproduciendoRef.current = false;
-          temporizadorVozRef.current = window.setTimeout(() => procesarVoz(), 250);
-        }
-      };
-      mensajeVoz.onerror = () => {
-        reproduciendoRef.current = false;
-        temporizadorVozRef.current = window.setTimeout(() => procesarVoz(), 250);
-      };
-      window.speechSynthesis.speak(mensajeVoz);
-    };
-    hablar(1);
-  }, []);
-
-  // Se ejecuta directamente desde el clic del usuario. Esto habilita
-  // SpeechSynthesis para el resto de la sesión de esta página.
-  const habilitarAudio = useCallback(() => {
-    if (!("speechSynthesis" in window)) {
-      setError("Este navegador no admite los anuncios de voz.");
-      return;
-    }
-
-    const sintesis = window.speechSynthesis;
-    sintesis.cancel();
-
-    audioHabilitadoRef.current = true;
-    sonidoActivoRef.current = true;
-    setAudioHabilitado(true);
-    setSonidoActivo(true);
-    setError("");
-
-    // La primera locución debe iniciarse dentro del propio evento click.
-    const confirmacion = new SpeechSynthesisUtterance("Audio de llamados habilitado.");
-    confirmacion.lang = "es-PE";
-    confirmacion.rate = 0.9;
-    confirmacion.pitch = 1;
-    confirmacion.volume = 0;
-
-    reproduciendoRef.current = true;
-
-    confirmacion.onend = () => {
-      reproduciendoRef.current = false;
-      procesarVoz();
-    };
-
-    confirmacion.onerror = (evento) => {
-      console.error("No se pudo iniciar la voz de confirmación:", evento.error);
-      reproduciendoRef.current = false;
-      audioHabilitadoRef.current = false;
-      setAudioHabilitado(false);
-      setError("No se pudo habilitar el audio. Verifica el volumen y los permisos de sonido del navegador e inténtalo nuevamente.");
-    };
 
     try {
-      sintesis.speak(confirmacion);
-    } catch (error) {
-      console.error("Error al habilitar SpeechSynthesis:", error);
-      reproduciendoRef.current = false;
-      audioHabilitadoRef.current = false;
-      setAudioHabilitado(false);
-      setError("El navegador no pudo habilitar el audio. Inténtalo nuevamente.");
+      // AbortController no está disponible en algunos navegadores antiguos de TV.
+      // La síntesis funciona igualmente; solo se pierde la cancelación HTTP.
+      controlador = typeof AbortController !== "undefined"
+        ? new AbortController()
+        : null;
+      solicitudVozAbortRef.current = controlador;
+
+      // Django genera el MP3 y devuelve una URL HTTP temporal.
+      // El audio se conserva brevemente en Redis, no como archivo en disco.
+      const urlAudio = await generarAudioLlamado(
+        texto,
+        monitorToken,
+        controlador?.signal
+      );
+
+      if (
+        versionActual !== versionVozRef.current ||
+        !audioHabilitadoRef.current ||
+        !sonidoActivoRef.current
+      ) {
+        return;
+      }
+
+      urlGenerada = urlAudio;
+      urlAudioRef.current = urlGenerada;
+
+      const reproductor = reproductorAudioRef.current;
+      if (!reproductor) {
+        throw new Error("El reproductor de audio del monitor no está disponible.");
+      }
+      reproductor.preload = "auto";
+      reproductor.volume = 1;
+      reproductor.src = urlGenerada;
+      reproductor.load();
+
+      // Espera a que el navegador tenga datos suficientes antes de iniciar
+      // la locución. Esto evita que algunos Smart TV corten el comienzo del audio.
+      await esperarAudioListo(reproductor);
+
+      if (
+        versionActual !== versionVozRef.current ||
+        !audioHabilitadoRef.current ||
+        !sonidoActivoRef.current
+      ) {
+        return;
+      }
+
+      // Se reproduce dos veces la misma URL temporal. No se vuelve a sintetizar.
+      for (let repeticion = 0; repeticion < 2; repeticion += 1) {
+        if (
+          versionActual !== versionVozRef.current ||
+          !sonidoActivoRef.current
+        ) {
+          break;
+        }
+
+        if (repeticion > 0) {
+          reproductor.currentTime = 0;
+        }
+
+        const finalizo = await esperarFinAudio(
+          reproductor,
+          cancelarEsperaAudioRef
+        );
+
+        if (!finalizo || versionActual !== versionVozRef.current) {
+          break;
+        }
+
+        if (repeticion === 0) {
+          await new Promise((resolve) => window.setTimeout(resolve, 850));
+        }
+      }
+    } catch (err) {
+      if (
+        versionActual === versionVozRef.current &&
+        err?.name !== "AbortError" &&
+        err?.code !== "ERR_CANCELED"
+      ) {
+        console.error("No se pudo generar o reproducir la locución:", err);
+        setError(
+          err?.message ||
+            "No se pudo generar el audio del llamado. Verifica el servicio de voz del servidor."
+        );
+      }
+    } finally {
+      // Una reproducción cancelada no debe limpiar los recursos de otra nueva.
+      if (versionActual === versionVozRef.current) {
+        const reproductor = reproductorAudioRef.current;
+        if (reproductor) {
+          reproductor.pause();
+          reproductor.onended = null;
+          reproductor.onerror = null;
+          reproductor.removeAttribute("src");
+          reproductor.load();
+        }
+
+        if (urlGenerada) {
+          // Las URLs HTTP pertenecen al servidor y vencen por TTL en Redis.
+          // Solo revocamos URLs Blob si en el futuro se vuelve a utilizar ese mecanismo.
+          if (urlGenerada.startsWith("blob:")) {
+            URL.revokeObjectURL(urlGenerada);
+          }
+          if (urlAudioRef.current === urlGenerada) {
+            urlAudioRef.current = null;
+          }
+        }
+
+        if (solicitudVozAbortRef.current === controlador) {
+          solicitudVozAbortRef.current = null;
+        }
+
+        cancelarEsperaAudioRef.current = null;
+        reproduciendoRef.current = false;
+
+        // La recuperación se realiza al finalizar la locución completa.
+        // No se llama load(): así se conserva la fuente y el punto del video.
+        recuperarVideo("fin de locución");
+
+        if (
+          audioHabilitadoRef.current &&
+          sonidoActivoRef.current &&
+          colaVozRef.current.length > 0
+        ) {
+          temporizadorVozRef.current = window.setTimeout(() => {
+            void procesarVoz();
+          }, 250);
+        }
+      }
     }
-  }, [procesarVoz]);
+  }, [monitorToken, recuperarVideo]);
+
+  // Se ejecuta directamente desde el clic. El elemento <audio> persistente
+  // reproduce el MP3 de prueba y luego se reutiliza para las locuciones de Piper.
+  const habilitarAudio = useCallback(() => {
+    if (audioHabilitadoRef.current || habilitandoAudio) return;
+
+    setError("");
+    setDiagnosticoAudio("");
+    setHabilitandoAudio(true);
+
+    // El elemento <audio> está montado permanentemente en el DOM.
+    // Reutilizar el mismo elemento es importante en navegadores de Smart TV:
+    // la reproducción inicial ocurre directamente dentro del clic del usuario
+    // y ese mismo reproductor se reutiliza luego para las locuciones de Piper.
+    const reproductor = reproductorAudioRef.current;
+    if (!reproductor) {
+      setHabilitandoAudio(false);
+      setError("No se encontró el reproductor de audio del monitor. Recarga la pantalla e inténtalo nuevamente.");
+      return;
+    }
+
+    reproductor.pause();
+    reproductor.removeAttribute("src");
+
+    // Recurso MP3 estático servido por HTTP desde frontend/public.
+    const urlSilenciosa = obtenerUrlAudioSilencioso();
+    urlSilencioRef.current = urlSilenciosa;
+
+    let finalizada = false;
+
+    const limpiarPrueba = (conservarFuente = true) => {
+      if (temporizadorHabilitacionRef.current) {
+        window.clearTimeout(temporizadorHabilitacionRef.current);
+        temporizadorHabilitacionRef.current = null;
+      }
+      reproductor.onended = null;
+      reproductor.onerror = null;
+      reproductor.pause();
+
+      // Conservamos el elemento y su fuente después de la prueba. No se crea
+      // otro Audio: el mismo reproductor recibirá después la URL HTTP de Piper.
+      try {
+        reproductor.currentTime = 0;
+      } catch {
+        // Algunos navegadores antiguos no permiten cambiar currentTime aún.
+      }
+
+      if (!conservarFuente) {
+        reproductor.removeAttribute("src");
+        reproductor.load();
+      }
+      if (urlSilencioRef.current === urlSilenciosa) {
+        urlSilencioRef.current = null;
+      }
+    };
+
+    const finalizarHabilitacion = () => {
+      if (finalizada) return;
+      finalizada = true;
+      limpiarPrueba(true);
+
+      audioHabilitadoRef.current = true;
+      sonidoActivoRef.current = true;
+      setAudioHabilitado(true);
+      setSonidoActivo(true);
+      setHabilitandoAudio(false);
+      setDiagnosticoAudio("");
+
+      // Se intenta iniciar el video después de habilitar el audio de los llamados.
+      // El volumen queda bajo control de los controles nativos del reproductor.
+      recuperarVideo("habilitación inicial del audio");
+
+      void procesarVoz();
+    };
+
+    const fallarHabilitacion = (error, origen = "reproducción de prueba") => {
+      if (finalizada) return;
+      finalizada = true;
+      const errorMedia = reproductor.error;
+      const codigosMedia = {
+        1: "reproducción abortada",
+        2: "error de red",
+        3: "error al decodificar el MP3",
+        4: "formato o fuente no compatible",
+      };
+      const soporteMp3 = reproductor.canPlayType
+        ? (reproductor.canPlayType('audio/mpeg; codecs="mp3"') || reproductor.canPlayType("audio/mpeg") || "no reconocido")
+        : "canPlayType no disponible";
+      const detalleMedia = errorMedia
+        ? `${errorMedia.code}: ${codigosMedia[errorMedia.code] || "error multimedia desconocido"}`
+        : "sin MediaError del navegador";
+      const detalleError = `${error?.name || "Error"}: ${error?.message || String(error || "sin detalle")}`;
+      const diagnostico = [
+        `Origen: ${origen}`,
+        `Detalle: ${detalleError}`,
+        `Soporte MP3: ${soporteMp3}`,
+        `Media: ${detalleMedia}`,
+        `readyState: ${reproductor.readyState}`,
+        `networkState: ${reproductor.networkState}`,
+        `Fuente de prueba: ${urlSilenciosa}`,
+        `User-Agent: ${navigator.userAgent || "no disponible"}`,
+      ].join(" · ");
+
+      limpiarPrueba(false);
+      setHabilitandoAudio(false);
+      setDiagnosticoAudio(diagnostico);
+      setError("El navegador del televisor no confirmó la reproducción MP3 de prueba. Revisa el diagnóstico mostrado en esta ventana.");
+      console.error("Diagnóstico de habilitación de audio del monitor:", {
+        origen,
+        error,
+        soporteMp3,
+        mediaError: errorMedia,
+        readyState: reproductor.readyState,
+        networkState: reproductor.networkState,
+        urlSilenciosa,
+        userAgent: navigator.userAgent,
+      });
+    };
+
+    reproductor.onended = finalizarHabilitacion;
+    reproductor.onerror = () => {
+      fallarHabilitacion(
+        new Error("El elemento Audio rechazó el MP3 silencioso."),
+        "evento error del elemento Audio"
+      );
+    };
+    reproductor.src = urlSilenciosa;
+
+    // No llamamos load() antes de play(): en algunos Smart TV, load() puede
+    // interrumpir el gesto de usuario que autoriza la reproducción.
+    // play() se invoca sincrónicamente dentro del manejador del botón.
+    temporizadorHabilitacionRef.current = window.setTimeout(() => {
+      fallarHabilitacion(
+        new Error("El navegador no terminó la reproducción del MP3 silencioso en 8 segundos."),
+        "tiempo de espera agotado"
+      );
+    }, 8000);
+
+    try {
+      const promesa = reproductor.play();
+      if (promesa && typeof promesa.catch === "function") {
+        promesa.catch((error) => {
+          fallarHabilitacion(error, "rechazo de HTMLAudioElement.play()");
+        });
+      }
+    } catch (error) {
+      fallarHabilitacion(error, "excepción al llamar HTMLAudioElement.play()");
+    }
+  }, [habilitandoAudio, procesarVoz, recuperarVideo]);
 
   function alternarSonido() {
     if (!audioHabilitadoRef.current) {
@@ -378,13 +777,14 @@ export default function Monitor() {
     const nuevoEstado = !sonidoActivoRef.current;
     sonidoActivoRef.current = nuevoEstado;
     setSonidoActivo(nuevoEstado);
+
     if (nuevoEstado) {
       procesarVoz();
     } else {
       colaVozRef.current = [];
-      reproduciendoRef.current = false;
-      if (temporizadorVozRef.current) window.clearTimeout(temporizadorVozRef.current);
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      detenerAudio();
+      // Se conserva el permiso obtenido con el clic inicial.
+      audioHabilitadoRef.current = true;
     }
   }
 
@@ -623,16 +1023,11 @@ export default function Monitor() {
         }
       }
 
-      if (temporizadorVozRef.current) {
-        window.clearTimeout(temporizadorVozRef.current);
-        temporizadorVozRef.current = null;
-      }
-
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
       colaVozRef.current = [];
-      reproduciendoRef.current = false;
+      detenerAudio();
+      reproductorAudioRef.current = null;
     };
-  }, [monitorToken, obtenerDatos, obtenerEventos, limpiarSesionLocal]);
+  }, [monitorToken, obtenerDatos, obtenerEventos, limpiarSesionLocal, detenerAudio]);
 
   async function cambiarMonitor() {
     const confirmar = window.confirm("¿Deseas desactivar este monitor en este equipo? Para volver a usarlo necesitarás otro código de activación.");
@@ -698,6 +1093,13 @@ export default function Monitor() {
 
   return (
     <main className="monitor">
+      {/* Reproductor único y persistente para navegadores Smart TV. */}
+      <audio
+        ref={reproductorAudioRef}
+        preload="auto"
+        style={{ display: "none" }}
+        aria-hidden="true"
+      />
       <header className="monitor-header">
         <div className="monitor-brand">
           <div className="monitor-logo"><img src={`${import.meta.env.BASE_URL}minsa-logo.png`} alt="Logo del MINSA" /></div>
@@ -757,8 +1159,7 @@ export default function Monitor() {
             alignItems: "center",
             justifyContent: "center",
             padding: "24px",
-            background: "rgba(10, 25, 45, 0.58)",
-            backdropFilter: "blur(5px)",
+            background: "rgba(10, 25, 45, 0.42)",
           }}
         >
           <section
@@ -781,9 +1182,34 @@ export default function Monitor() {
             <p style={{ margin: "0 0 24px", color: "#5b6b7b", lineHeight: 1.5 }}>
               Para escuchar los nombres de los pacientes, habilita el audio de este monitor. Solo necesitas hacerlo una vez al abrir esta pantalla.
             </p>
+            {(error || diagnosticoAudio) && (
+              <div
+                role="alert"
+                style={{
+                  margin: "0 0 16px",
+                  padding: "12px",
+                  borderRadius: "8px",
+                  background: "#fff0f0",
+                  border: "1px solid #e6a0a0",
+                  color: "#9b1c1c",
+                  fontSize: "13px",
+                  lineHeight: 1.45,
+                  textAlign: "left",
+                  overflowWrap: "anywhere",
+                }}
+              >
+                <strong>{error || "No se pudo habilitar la reproducción de audio."}</strong>
+                {diagnosticoAudio && (
+                  <p style={{ margin: "8px 0 0", fontSize: "12px" }}>
+                    {diagnosticoAudio}
+                  </p>
+                )}
+              </div>
+            )}
             <button
               type="button"
               onClick={habilitarAudio}
+              disabled={habilitandoAudio}
               style={{
                 width: "100%",
                 minHeight: "48px",
@@ -796,7 +1222,7 @@ export default function Monitor() {
                 cursor: "pointer",
               }}
             >
-              Habilitar audio
+              {habilitandoAudio ? "Habilitando audio…" : "Habilitar audio"}
             </button>
           </section>
         </div>
@@ -809,14 +1235,28 @@ export default function Monitor() {
           {videoActual?.url ? (
             <div className="monitor-video-playback">
               <video
-                key={videoActual.id}
+                ref={reproductorVideoRef}
                 className="monitor-video-player"
                 src={resolverUrlVideo(videoActual.url)}
                 autoPlay
                 muted
+                defaultMuted
+                controls
                 playsInline
                 preload="auto"
                 loop={videosReproduccion.length === 1}
+                onPause={() => {
+                  const video = reproductorVideoRef.current;
+                  console.info("[Monitor] Video pausado.", {
+                    currentTime: video?.currentTime,
+                    readyState: video?.readyState,
+                    currentSrc: video?.currentSrc,
+                  });
+                }}
+                onWaiting={() => console.info("[Monitor] Video esperando datos (waiting).")}
+                onStalled={() => console.warn("[Monitor] Video detenido por falta de datos (stalled).")}
+                onPlaying={() => console.info("[Monitor] Video reproduciéndose.")}
+                onEmptied={() => console.warn("[Monitor] La fuente del video quedó vacía (emptied).")}
                 onEnded={() => {
                   if (videosReproduccion.length > 1) setIndiceVideo((actual) => (actual + 1) % videosReproduccion.length);
                 }}
@@ -826,14 +1266,11 @@ export default function Monitor() {
                 Tu navegador no puede reproducir este formato de video.
               </video>
               <div className="monitor-video-overlay">
-                <span>MINISTERIO DE SALUD</span>
-                <strong>{videoActual.titulo || "Contenido institucional"}</strong>
                 {videosReproduccion.length > 1 && <small>{indiceVideo + 1} / {videosReproduccion.length}</small>}
               </div>
             </div>
           ) : (
             <div className="monitor-video-placeholder">
-              <div className="monitor-video-placeholder-mark">MINSA</div>
               <h2>Contenido institucional</h2>
               <p>Los videos asignados a este monitor se mostrarán aquí.</p>
             </div>

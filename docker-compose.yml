@@ -1,8 +1,6 @@
-
 name: gestor-colas-sihce
 
 services:
-
   redis:
     image: redis:7-alpine
     restart: unless-stopped
@@ -15,6 +13,27 @@ services:
     networks:
       - interna
 
+  piper-tts:
+    build:
+      context: ./piper-tts
+      dockerfile: Dockerfile
+    image: gestor-colas-piper:davefx-medium
+    restart: unless-stopped
+    expose:
+      - "5000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/info', timeout=3)"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks:
+      - interna
+
   backend:
     build:
       context: ./backend
@@ -23,6 +42,7 @@ services:
       - .env
     environment:
       REDIS_URL: redis://redis:6379
+      PIPER_TTS_URL: ${PIPER_TTS_URL:-http://piper-tts:5000/synthesize}
     volumes:
       - static_files:/app/staticfiles
       - media_data:/app/media
@@ -30,6 +50,8 @@ services:
       - interna
     depends_on:
       redis:
+        condition: service_healthy
+      piper-tts:
         condition: service_healthy
     expose:
       - "8000"

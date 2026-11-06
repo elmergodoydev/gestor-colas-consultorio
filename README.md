@@ -44,7 +44,7 @@ scp "$env:USERPROFILE\Desktop\gestor-colas.tar.gz" USUARIO@IP_SERVIDOR:/home/USU
 Conectarse por SSH y ejecutar:
 
 ```bash
-mkdir -p ~/apps/gestor-colas-sihce
+mkdir -p ~/apps/gestor-colas
 tar -xzf ~/apps/gestor-colas.tar.gz -C ~/apps/gestor-colas
 cd ~/apps/gestor-colas
 ```

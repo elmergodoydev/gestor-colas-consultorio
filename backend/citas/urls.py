@@ -37,6 +37,8 @@ from citas.views import (
 )
 
 from citas.video_views import BibliotecaVideosAPIView, BibliotecaVideoDetalleAPIView
+from citas.speech_views import MonitorVozAPIView
+
 
 urlpatterns = [
     path(
@@ -88,6 +90,11 @@ urlpatterns = [
         "monitor/",
         MonitorDatosActivadosAPIView.as_view(),
         name="monitor",
+    ),
+    path(
+        "monitor/voz/",
+        MonitorVozAPIView.as_view(),
+        name="monitor-voz",
     ),
     path(
         "monitor/eventos/",
